@@ -105,3 +105,25 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "bio-lipoproteins", "unit": "Biochemistry", "title": "Lipoproteins and cholesterol metabolism (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "Statins competitively inhibit HMG CoA reductase, the enzyme insulin activates in the fed state.",
+         "In hypothyroidism cholesterol is high because conversion of cholesterol to bile acids is impaired.",
+         "Apo B-100 is the structural apolipoprotein of VLDL; nascent chylomicrons and VLDL get apo C-II and apo E from HDL.",
+         "Apo C-II activates lipoprotein lipase; apo A-I activates LCAT, which converts free cholesterol to cholesterol esters.",
+         "Fatty liver: the liver makes more triglyceride than it can export as VLDL.",
+         "Tangier disease: low HDL. Abetalipoproteinemia: decreased VLDL and chylomicrons.",
+     ]},
+    {"id": "bio-eicosanoids", "unit": "Biochemistry", "title": "Eicosanoids: COX-2 and prostacyclin (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "COX-2 makes the prostaglandins of the inflammatory response.",
+         "Prostacyclin (PGI2) is a vasodilator.",
+     ]},
+]
+PROSE_PAST = {'bio-lipoproteins': {'mechanism': 'Lipoproteins carry fat in the blood: the intestine makes chylomicrons (apo B-48) and the liver makes VLDL (apo B-100). HDL donates apo C-II and apo E to them; apo C-II activates lipoprotein lipase to unload triglyceride, and apo A-I activates LCAT to esterify cholesterol on HDL. Cholesterol synthesis is controlled at HMG CoA reductase (activated by insulin, blocked by statins), and cholesterol leaves the body as bile acids. Your uploaded lectures do not cover this; the facts come from the past-paper keys.', 'actions': ['Match each apo to its job: B-100 VLDL structure, B-48 chylomicron, C-II activates LPL, A-I activates LCAT.', 'Hypothyroidism with high cholesterol: less conversion to bile acids.', 'Fatty liver: triglyceride made faster than VLDL can export it.'], 'example': 'A client with Tangier disease has orange tonsils and a very low HDL.', 'trap': 'Mixing up apo B-100 (VLDL, LDL) and apo B-48 (chylomicrons).', 'trick': "B-48 is the Bowel's apo; B-100 is the liver's full-length one.", 'blanks': ['Apo C-II activates [[lipoprotein lipase]].', 'Abetalipoproteinemia lowers both [[VLDL]] and chylomicrons.']}, 'bio-eicosanoids': {'mechanism': 'Eicosanoids are made from fatty acids. COX-2 is induced in inflammation and makes inflammatory prostaglandins; prostacyclin (PGI2) from the vessel wall dilates vessels. Your slides list prostaglandin synthesis as a source of free radicals; the rest comes from the past-paper keys.', 'actions': ['Link COX-2 to inflammation and PGI2 to vasodilation.'], 'example': 'A question on the enzyme behind inflammatory prostaglandins: COX-2.', 'trap': 'Calling PGI2 a promoter of platelet aggregation; that is thromboxane A2.', 'trick': 'PGI2 = Protects (dilates, stops platelets).', 'blanks': ['PGI2 is a [[vasodilator]].']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])

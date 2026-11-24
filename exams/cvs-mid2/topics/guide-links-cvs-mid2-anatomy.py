@@ -9,4 +9,5 @@ LINKS = {
     "anat-subclavian": "anat-subclavian",
     "anat-facial-veins": "anat-facial-veins",
     "anat-neck-veins": "anat-neck-veins",
+    "anat-limb-vessels": "anat-limb-vessels",
 }

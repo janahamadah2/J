@@ -15,11 +15,16 @@ cards = []
 for t in master["units"]:
     slug = t.lower()
     sys.path.insert(0, HERE)
-    spec = importlib.util.spec_from_file_location(slug, os.path.join(HERE, "items-cvs-mid2-%s.py" % slug))
-    m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+    nq = nb = nc = 0
+    for f in master["items_module"]:
+        if f == "items-cvs-mid2-%s.py" % slug or f.startswith("items-cvs-mid2-%s-" % slug):
+            spec = importlib.util.spec_from_file_location(f, os.path.join(HERE, f))
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            nq += len(m.ITEMS); nc += len([c for c in m.CONCEPTS if "title" in c])
+            if f != "items-cvs-mid2-%s.py" % slug: nb += len(m.ITEMS)
     u = urls[slug]
     cards.append(f"""<article class="t"><h2>{html.escape(t)}</h2><p class="m">{html.escape(LECT[t])}</p>
-<p class="n">{len(m.ITEMS)} questions · {len(m.CONCEPTS)} guide sections</p>
+<p class="n">{nq} questions ({nb} from the Shams past papers) · {nc} guide sections</p>
 <div class="b"><a class="btn p" href="{u['drill']}" target="_blank" rel="noopener">Drill</a><a class="btn" href="{u['guide']}" target="_blank" rel="noopener">Mastery guide</a></div></article>""")
 a = urls["all"]
 page = f"""<title>CVS Mid 2 Study Hub</title>

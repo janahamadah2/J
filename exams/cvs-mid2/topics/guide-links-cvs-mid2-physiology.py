@@ -16,4 +16,5 @@ LINKS = {
     "phys-phasic-flow": "phys-phasic-flow",
     "phys-coronary-control": "phys-coronary-control",
     "phys-ihd": "phys-ihd",
+    "phys-past": "phys-past",
 }

@@ -49,11 +49,11 @@ for topic in master["units"]:
         "items_module": files,
         "explanations": files, "misconceptions": files, "concepts": files,
         "row_stems": files, "numeric": numeric, "last_pass": files,
-        "rationales": [], "item_overrides": [], "deck_overrides": [],
+        "rationales": [], "item_overrides": [], "deck_overrides": [], "images": files,
         "high_roi_units": [],
         "pretest_per_topic": 10,
         "last_pass_tags": master["last_pass_tags"],
-        "last_pass_note": ("The %s questions from the Shams Practices bank, the cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER." if extra else "The %s questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.") % topic,
+        "last_pass_note": ("The %s questions from the Shams Practices past-paper bank, the cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER." if extra else "The %s questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.") % topic,
         "hub_url": urls.get("hub", ""),
         "guide": {
             "parts": [guide_file],

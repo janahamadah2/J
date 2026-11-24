@@ -56,6 +56,15 @@ class Bank:
             self.numeric[q] = numeric
         return q
 
+    def keyed(self, stem, opts, key, why, wrong, src, labels=None, last=True):
+        """A past-paper question written as printed: options a-d and the key letter.
+        wrong = {letter: why that option is wrong}; labels = {letter: misconception}."""
+        key = key.lower()
+        labels = labels or {}
+        k = "abcde".index(key)
+        wr = [(o, wrong[l], labels.get(l)) for l, o in zip("abcde", opts) if l != key]
+        return self.mc(stem, opts[k], wr, why, src, last=last)
+
     def fill(self, q, right, wrongs, why, src, last=False):
         return self.mc(q, right, wrongs, why, src, last, typ="fill")
 

@@ -13,4 +13,5 @@ LINKS = {
     "path-arteriosclerosis": "path-arteriosclerosis",
     "path-athero": "path-athero",
     "path-athero-complications": "path-athero-complications",
+    "path-past": "path-past",
 }

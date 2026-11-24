@@ -7,4 +7,7 @@ LINKS = {
     "pharm-central": "pharm-central",
     "pharm-alpha-beta": "pharm-alpha-beta",
     "pharm-vasodilators": "pharm-vasodilators",
+    "pharm-antiarrhythmic": "pharm-antiarrhythmic",
+    "pharm-lipid": "pharm-lipid",
+    "pharm-antianginal": "pharm-antianginal",
 }

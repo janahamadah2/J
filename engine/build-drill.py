@@ -11,6 +11,7 @@ Content files (every key is the exact question text):
   CONCEPTS  = [{"id", "unit", "title", "points", "source", "items": [question, ...]}]
   MISC      = {question: {wrong option: "short misconception label"}}
   ROW_STEMS = {matching question: {row prompt: "one-section question for that row"}}
+  IMAGES    = {question: "relative/path.png"}  (shown under the question, e.g. an ECG strip)
   NUMERIC   = {question: {"answer", "unit", "accept": {}, "near": {}}}
   WHY       = {question: "full repaired rationale"}
   OVERRIDES = {question: {"question"|"options"|"correct"|"why"|"topic": value}}
@@ -226,6 +227,17 @@ def build(cfg_path):
             if prompt not in it["o"]["rows"]:
                 die("row stem prompt %r is not a row of %r" % (prompt, q[:70]))
             it["rs"][str(it["o"]["rows"].index(prompt))] = stem
+
+    # ---------------------------------------------------------------- images
+    import base64, mimetypes
+    for rel in cfg.get("images") or []:
+        for q, path in (getattr(load(cfg_dir, rel), "IMAGES", None) or {}).items():
+            it = find(q, "image")
+            fp = os.path.normpath(os.path.join(cfg_dir, os.path.dirname(rel), path))
+            if not os.path.exists(fp):
+                die("image file %s not found for %r" % (path, q[:70]))
+            mt = mimetypes.guess_type(fp)[0] or "image/png"
+            it["img"] = "data:%s;base64,%s" % (mt, base64.b64encode(open(fp, "rb").read()).decode())
 
     # ---------------------------------------------------------------- numeric
     for q, spec in gather(cfg, cfg_dir, "numeric", "NUMERIC", "dict").items():

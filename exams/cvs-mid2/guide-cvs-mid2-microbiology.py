@@ -108,3 +108,18 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "micro-past", "unit": "Microbiology", "title": "Myocarditis and other CVS infections (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "Coxsackievirus B causes myocarditis; Coxsackievirus also causes pleurodynia.",
+         "Trypanosoma cruzi (Chagas disease) is a flagellated protozoan seen in Giemsa stain in South America; acute symptoms include loss of appetite, chronic ones megacolon, megaesophagus and dilated cardiomyopathy.",
+         "Ixodes ticks transmit Borrelia and Babesia; Trichinella spiralis gives eosinophilia with encysted larvae.",
+         "Portal pyemia (pylephlebitis) after intra-abdominal abscess or enteric infection is caused by Enterococcus and anaerobic bacteria.",
+     ]},
+]
+PROSE_PAST = {'micro-past': {'mechanism': 'Past papers include infections of the heart muscle and vessels beyond endocarditis. Coxsackievirus B causes myocarditis; T. cruzi causes Chagas disease with acute nonspecific symptoms and chronic megaorgans and cardiomyopathy; Ixodes ticks transmit Borrelia and Babesia; Trichinella larvae encyst in muscle with eosinophilia; gut organisms cause portal pyemia. Your uploaded lecture covers only endocarditis.', 'actions': ['Viral myocarditis: Coxsackievirus B.', 'Separate acute Chagas (loss of appetite) from chronic Chagas (megacolon, megaesophagus, cardiomyopathy).', 'Portal pyemia after abdominal infection: Enterococcus and anaerobes.'], 'example': 'A client from South America with constipation has a flagellated protozoan on Giemsa stain: Chagas disease.', 'trap': 'Picking a chronic Chagas complication when the question asks for an ACUTE symptom.', 'trick': 'Coxsackie B = Bad heart (myocarditis).', 'blanks': ['Ixodes ticks transmit Borrelia and [[Babesia]].']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])

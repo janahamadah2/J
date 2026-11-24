@@ -72,3 +72,16 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "emb-past", "unit": "Embryology", "title": "Other embryology from past papers", "source": "Shams Practices QB (past papers); partly in Embryology L3 slides",
+     "key": [
+         "The septum intermedium forms by fusion of the endocardial cushions and divides the common atrioventricular canal into right and left channels.",
+         "After birth the umbilical arteries become the medial umbilical ligaments; the left umbilical vein becomes the ligamentum teres.",
+     ]},
+]
+PROSE_PAST = {'emb-past': {'mechanism': 'Two past-paper facts sit outside the aortic arches lecture. The endocardial cushions fuse in the middle of the common atrioventricular canal to form the septum intermedium, splitting it into right and left channels. After birth the umbilical vessels close: the arteries become the medial umbilical ligaments and the left umbilical vein the ligamentum teres.', 'actions': ['Keep arteries and veins apart: umbilical ARTERIES become medial umbilical ligaments; the umbilical VEIN becomes the ligamentum teres.'], 'example': 'A question asks which structure divides the AV canal: the septum intermedium from the fused endocardial cushions.', 'trap': 'Giving the medial umbilical ligaments to the umbilical veins.', 'trick': 'Medial umbilical ligaments come from arteries; ligamentum teres from the vein.', 'blanks': ['The endocardial cushions fuse to form the [[septum intermedium]].']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])

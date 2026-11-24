@@ -127,3 +127,30 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "pharm-antiarrhythmic", "unit": "Pharmacology", "title": "Antiarrhythmic drugs (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "Class I antiarrhythmics block Na+ channels: quinidine and procainamide (IA, also block K+), lidocaine (IB), flecainide (IC, no effect on action potential duration).",
+         "Quinidine causes cinchonism: headache, dizziness and tinnitus.",
+         "Class III antiarrhythmics block K+ channels: sotalol (also a beta blocker) and amiodarone.",
+         "Amiodarone treats both ventricular and supraventricular arrhythmias; it can cause pulmonary fibrosis and gray-blue (smurf) skin.",
+         "Adenosine is the choice for paroxysmal supraventricular tachycardia; esmolol is used intraoperatively.",
+     ]},
+    {"id": "pharm-lipid", "unit": "Pharmacology", "title": "Lipid-lowering drugs (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "Statins (lovastatin, atorvastatin) competitively inhibit HMG CoA reductase; they can cause muscle pain and rhabdomyolysis.",
+         "Niacin lowers triglycerides and raises HDL; adverse effects are skin flushing and hyperuricemia.",
+         "Fenofibrate is the drug of choice for hypertriglyceridemia; ezetimibe selectively inhibits intestinal cholesterol absorption; cholestyramine binds bile acids in the intestine.",
+     ]},
+    {"id": "pharm-antianginal", "unit": "Pharmacology", "title": "Nitrates and beta blockers in angina (past papers)", "source": "Shams Practices QB (past papers); nitrates and beta blockers for IHD are on Physiology L9 slides",
+     "key": [
+         "Nitrate tolerance is treated by a nitrate-free interval (no therapy for a brief time).",
+         "Beta blockers relieve angina by decreasing myocardial O2 demand.",
+     ]},
+]
+PROSE_PAST = {'pharm-antiarrhythmic': {'mechanism': 'Antiarrhythmics are grouped by the channel or receptor they block: class I sodium channels, class II beta receptors, class III potassium channels and class IV calcium channels. Many questions test one signature adverse effect per drug. This lecture is not among your uploads; the facts come from the past-paper keys.', 'actions': ['Classify first: Na+ = I, beta = II, K+ = III, Ca++ = IV.', 'Match adverse effects: quinidine = cinchonism (headache, tinnitus); amiodarone = pulmonary fibrosis and blue-gray skin.', 'PSVT: adenosine. Intraoperative rate control: esmolol.'], 'example': 'After treatment for a ventricular arrhythmia a client reports tinnitus and headache: quinidine.', 'trap': 'Thinking sotalol is a pure beta blocker; it also blocks K+ channels (class III).', 'trick': 'Quinidine Quiets your hearing (tinnitus); Amiodarone turns you Azure.', 'blanks': ['Class III antiarrhythmics block [[potassium]] channels.', 'Flecainide is class [[IC]].']}, 'pharm-lipid': {'mechanism': 'Lipid-lowering drugs attack different steps: statins block cholesterol synthesis at HMG CoA reductase, ezetimibe blocks intestinal absorption, cholestyramine traps bile acids in the gut, fibrates lower triglycerides, and niacin lowers triglycerides while raising HDL. Your slides cover only the statin effect size (30-40% LDL reduction) and large-dose vitamin B3 as a cholesterol-lowering factor.', 'actions': ['Muscle pain or rhabdomyolysis on a lipid drug: suspect a statin.', 'High triglycerides: fenofibrate; high TG with low HDL despite a statin: niacin.', 'Warn about flushing and hyperuricemia with niacin.'], 'example': 'A client on lovastatin develops muscle pain.', 'trap': 'Mixing up ezetimibe (absorption) and cholestyramine (bile acid binding).', 'trick': 'Statins Stop synthesis; Ezetimibe Excludes absorption; Cholestyramine Captures bile.', 'blanks': ['Statins competitively inhibit [[HMG CoA reductase]].']}, 'pharm-antianginal': {'mechanism': "Your coronary circulation slides list nitrates and beta blockers as treatments for ischemic heart disease. Past papers add how: beta blockers lower heart rate and contractility and so the heart's O2 demand, and continuous nitrate exposure causes tolerance, prevented by a nitrate-free interval.", 'actions': ['Schedule a daily nitrate-free interval to avoid tolerance.', 'Explain beta blockers in angina as lowering O2 demand.'], 'example': 'A client whose nitrates have stopped working is given a nitrate-free interval.', 'trap': 'Treating nitrate tolerance with MORE frequent or continuous nitrate.', 'trick': 'Tolerance? Take a break.', 'blanks': ['Beta blockers relieve angina by decreasing myocardial [[O2 demand]].']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])

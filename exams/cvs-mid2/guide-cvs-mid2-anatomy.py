@@ -158,3 +158,19 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "anat-limb-vessels", "unit": "Anatomy", "title": "Upper and lower limb vessels (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "The subclavian artery becomes the axillary artery at the outer border of the 1st rib.",
+         "Axillary artery: the anterior circumflex humeral artery is one of its branches; the lateral thoracic artery comes from its 2nd part.",
+         "The deep palmar arch is formed mainly by the radial artery, joined by the deep branch of the ulnar artery; the superficial palmar arch is formed mainly by the ulnar artery.",
+         "The dorsalis pedis artery is the continuation of the anterior tibial artery.",
+         "The cephalic vein drains into the axillary vein; the lesser (small) saphenous vein drains into the popliteal vein; blood tests are drawn from the median cubital vein.",
+     ]},
+]
+PROSE_PAST = {'anat-limb-vessels': {'mechanism': "These limb vessels appear in past Mid 2 papers but not in your uploaded slides, so this section only restates the bank's answers. The subclavian artery continues as the axillary artery beyond the 1st rib; in the hand the radial and ulnar arteries join in two palmar arches; in the foot the anterior tibial continues as the dorsalis pedis.", 'actions': ['Pair each palmar arch with its main artery: deep = radial, superficial = ulnar.', 'Trace superficial veins to their endings: cephalic to axillary, lesser saphenous to popliteal.', 'Ask for the lecture on limb vessels if it is part of your exam, so this section can be taught from it.'], 'example': 'A nurse draws a routine blood sample from the median cubital vein at the elbow.', 'trap': 'Swapping the arches: the DEEP arch is mainly radial, the SUPERFICIAL arch mainly ulnar.', 'trick': 'Radial runs Deep (R-D); Ulnar is on the sUrface.', 'blanks': ['The dorsalis pedis artery continues the [[anterior tibial]] artery.', 'The lateral thoracic artery comes from the [[2nd]] part of the axillary artery.']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])

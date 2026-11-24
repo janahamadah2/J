@@ -21,7 +21,14 @@
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
     "items-cvs-mid2-embryology.py",
-    "items-cvs-mid2-anatomy-shams.py"
+    "items-cvs-mid2-anatomy-shams.py",
+    "items-cvs-mid2-anatomy-shamsqb.py",
+    "items-cvs-mid2-physiology-shamsqb.py",
+    "items-cvs-mid2-pathology-shamsqb.py",
+    "items-cvs-mid2-pharmacology-shamsqb.py",
+    "items-cvs-mid2-biochemistry-shamsqb.py",
+    "items-cvs-mid2-microbiology-shamsqb.py",
+    "items-cvs-mid2-embryology-shamsqb.py"
   ],
   "explanations": [
     "items-cvs-mid2-anatomy.py",
@@ -31,7 +38,14 @@
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
     "items-cvs-mid2-embryology.py",
-    "items-cvs-mid2-anatomy-shams.py"
+    "items-cvs-mid2-anatomy-shams.py",
+    "items-cvs-mid2-anatomy-shamsqb.py",
+    "items-cvs-mid2-physiology-shamsqb.py",
+    "items-cvs-mid2-pathology-shamsqb.py",
+    "items-cvs-mid2-pharmacology-shamsqb.py",
+    "items-cvs-mid2-biochemistry-shamsqb.py",
+    "items-cvs-mid2-microbiology-shamsqb.py",
+    "items-cvs-mid2-embryology-shamsqb.py"
   ],
   "misconceptions": [
     "items-cvs-mid2-anatomy.py",
@@ -41,7 +55,14 @@
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
     "items-cvs-mid2-embryology.py",
-    "items-cvs-mid2-anatomy-shams.py"
+    "items-cvs-mid2-anatomy-shams.py",
+    "items-cvs-mid2-anatomy-shamsqb.py",
+    "items-cvs-mid2-physiology-shamsqb.py",
+    "items-cvs-mid2-pathology-shamsqb.py",
+    "items-cvs-mid2-pharmacology-shamsqb.py",
+    "items-cvs-mid2-biochemistry-shamsqb.py",
+    "items-cvs-mid2-microbiology-shamsqb.py",
+    "items-cvs-mid2-embryology-shamsqb.py"
   ],
   "concepts": [
     "items-cvs-mid2-anatomy.py",
@@ -51,7 +72,14 @@
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
     "items-cvs-mid2-embryology.py",
-    "items-cvs-mid2-anatomy-shams.py"
+    "items-cvs-mid2-anatomy-shams.py",
+    "items-cvs-mid2-anatomy-shamsqb.py",
+    "items-cvs-mid2-physiology-shamsqb.py",
+    "items-cvs-mid2-pathology-shamsqb.py",
+    "items-cvs-mid2-pharmacology-shamsqb.py",
+    "items-cvs-mid2-biochemistry-shamsqb.py",
+    "items-cvs-mid2-microbiology-shamsqb.py",
+    "items-cvs-mid2-embryology-shamsqb.py"
   ],
   "row_stems": [
     "items-cvs-mid2-anatomy.py",
@@ -73,7 +101,14 @@
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
     "items-cvs-mid2-embryology.py",
-    "items-cvs-mid2-anatomy-shams.py"
+    "items-cvs-mid2-anatomy-shams.py",
+    "items-cvs-mid2-anatomy-shamsqb.py",
+    "items-cvs-mid2-physiology-shamsqb.py",
+    "items-cvs-mid2-pathology-shamsqb.py",
+    "items-cvs-mid2-pharmacology-shamsqb.py",
+    "items-cvs-mid2-biochemistry-shamsqb.py",
+    "items-cvs-mid2-microbiology-shamsqb.py",
+    "items-cvs-mid2-embryology-shamsqb.py"
   ],
   "rationales": [],
   "item_overrides": [],
@@ -86,7 +121,7 @@
     "slide note",
     "Shams Practices"
   ],
-  "last_pass_note": "Every question from the Shams Practices bank, every case and question asked in class, the slide exercises (the Interpretation?, fill-in and ??? slides) and the facts flagged on slides with NOTE, N.B. or REMEMBER.",
+  "last_pass_note": "Every question from the Shams Practices past-paper bank (2022-2025), every case and question asked in class, the slide exercises and the facts flagged on slides with NOTE, N.B. or REMEMBER.",
   "guide": {
     "parts": [
       "guide-cvs-mid2-anatomy.py",
@@ -104,5 +139,8 @@
     "drill_url": "https://claude.ai/artifact/F16ffDggDNEKMrvNsnAP4D",
     "links": "guide-links-cvs-mid2.py"
   },
-  "hub_url": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe"
+  "hub_url": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe",
+  "images": [
+    "items-cvs-mid2-physiology-shamsqb.py"
+  ]
 }

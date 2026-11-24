@@ -89,6 +89,7 @@ p { margin: 6px 0; }
 .think { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; }
 .think .bar { height: 6px; background: var(--soft); border-radius: 3px; overflow: hidden; margin: 10px 0 4px; }
 .think .bar i { display: block; height: 100%; background: var(--fg); width: 100%; transition: width 1s linear; }
+.qimg { overflow-x: auto; margin: 0 0 12px; } .qimg img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
 .fillblank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--fg); text-align: center; padding: 0 4px; }
 table.match { width: 100%; border-collapse: collapse; }
 table.match td { border-top: 1px solid var(--line); padding: 10px 6px; vertical-align: middle; }
@@ -501,7 +502,8 @@ table.rates td.n { text-align: right; }
         return '<select class="inline' + cls + '" data-blank="' + b + '"' + (cur.checked ? ' disabled' : '') + ' aria-label="Blank ' + d + '"><option value="-1">Choose…</option>' + opts + '</select>';
       });
     }
-    return '<div class="stem">' + q + '</div>';
+    var img = x.img || (x.parent && x.parent.img);
+    return '<div class="stem">' + q + '</div>' + (img ? '<div class="qimg"><img src="' + esc(img) + '" alt="Image for this question"></div>' : '');
   }
   function renderAnswerArea(x, cur) {
     if (!cur.revealed) {

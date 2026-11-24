@@ -227,3 +227,18 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "path-past", "unit": "Pathology", "title": "Endocarditis types, pyemia and MI healing (past papers)", "source": "Shams Practices QB (past papers); vegetations in SLE are on Pathology L2 slides",
+     "key": [
+         "Libman-Sacks endocarditis: sterile, wart-like (verrucous) vegetations on the valves in systemic lupus erythematosus.",
+         "Nonbacterial thrombotic endocarditis (NBTE) is associated with mucinous adenocarcinoma.",
+         "Acute infective endocarditis is a suppurative inflammation and can cause systemic pyemic abscesses.",
+         "Stable angina is caused by an uncomplicated atheroma; granulation tissue appears in an infarct at about 7 days.",
+     ]},
+]
+PROSE_PAST = {'path-past': {'mechanism': 'Not all vegetations are infected. Your slides list SLE among the causes of valve vegetations; past papers call these sterile verrucous vegetations Libman-Sacks endocarditis, and link nonbacterial thrombotic endocarditis to mucinous adenocarcinoma. Acute infective endocarditis is suppurative, and its septic emboli cause pyemic abscesses. Stable angina reflects an uncomplicated atheroma; an infarct shows granulation tissue at about 7 days.', 'actions': ['Sterile vegetations + SLE: Libman-Sacks. Sterile vegetations + cancer: NBTE.', 'Pyemic abscesses point back to acute infective endocarditis.'], 'example': 'An autopsy of a woman with lupus shows wart-like sterile vegetations: Libman-Sacks endocarditis.', 'trap': 'Calling Libman-Sacks vegetations infected; they are sterile.', 'trick': 'Lupus = Libman-Sacks (both L-S).', 'blanks': ['NBTE is associated with [[mucinous adenocarcinoma]].']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])

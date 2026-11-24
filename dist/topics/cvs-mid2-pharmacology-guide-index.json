@@ -78,5 +78,36 @@
 "Fenoldopam: IV D1 agonist, renal and mesenteric vasodilation and natriuresis; reflex tachycardia, raised intraocular pressure, low potassium; contraindicated in angina, glaucoma and hypokalemia."
 ],
 "text": "direct vasodilators direct vasodilators relax vessel smooth muscle by different routes: no (nitroprusside), k+ channel opening (minoxidil, diazoxide), d1 activation (fenoldopam) or an uncertain mechanism (hydralazine). their toxicities are drug-specific and well worth memorizing. a client on minoxidil notices new hair growth: hypertrichosis. expecting diazoxide to cause diuresis like a thiazide. nitroprusside: nitric oxide and cyanide. minoxidil: more hair. diazoxide: diabetes-like sugar. during nitroprusside infusion, watch for cyanide toxicity. check glucose with diazoxide, hair growth with minoxidil, lupus-like symptoms with high-dose hydralazine. question fenoldopam in glaucoma, angina or hypokalemia. nitroprusside is metabolized by red blood cells, releasing cyanide that becomes thiocyanate. hydralazine is combined with isosorbide mononitrate in heart failure. nitroprusside: arterioles and veins, nitric oxide; metabolized by red cells releasing cyanide (to thiocyanate); half-life about 2 minutes, continuous infusion; for emergencies, severe heart failure, controlled hypotension. hydralazine: arterioles, uncertain mechanism; headache, palpitations, flushing; immunological lupoid syndrome (up to 20% at very high doses). minoxidil: arteriolar k+ channel opener, a prodrug; salt and water retention, tachycardia, hypertrichosis; also used for baldness. diazoxide: k+ channel opener without diuresis (lacks a sulfonamide group); salt and water retention, hyperglycemia; for hypertensive emergencies. fenoldopam: iv d1 agonist, renal and mesenteric vasodilation and natriuresis; reflex tachycardia, raised intraocular pressure, low potassium; contraindicated in angina, glaucoma and hypokalemia."
+},
+"pharm-antiarrhythmic": {
+"title": "Antiarrhythmic drugs (past papers)",
+"unit": "Pharmacology",
+"key": [
+"Class I antiarrhythmics block Na+ channels: quinidine and procainamide (IA, also block K+), lidocaine (IB), flecainide (IC, no effect on action potential duration).",
+"Quinidine causes cinchonism: headache, dizziness and tinnitus.",
+"Class III antiarrhythmics block K+ channels: sotalol (also a beta blocker) and amiodarone.",
+"Amiodarone treats both ventricular and supraventricular arrhythmias; it can cause pulmonary fibrosis and gray-blue (smurf) skin.",
+"Adenosine is the choice for paroxysmal supraventricular tachycardia; esmolol is used intraoperatively."
+],
+"text": "antiarrhythmic drugs (past papers) antiarrhythmics are grouped by the channel or receptor they block: class i sodium channels, class ii beta receptors, class iii potassium channels and class iv calcium channels. many questions test one signature adverse effect per drug. this lecture is not among your uploads; the facts come from the past-paper keys. after treatment for a ventricular arrhythmia a client reports tinnitus and headache: quinidine. thinking sotalol is a pure beta blocker; it also blocks k+ channels (class iii). quinidine quiets your hearing (tinnitus); amiodarone turns you azure. classify first: na+ = i, beta = ii, k+ = iii, ca++ = iv. match adverse effects: quinidine = cinchonism (headache, tinnitus); amiodarone = pulmonary fibrosis and blue-gray skin. psvt: adenosine. intraoperative rate control: esmolol. class iii antiarrhythmics block potassium channels. flecainide is class ic. class i antiarrhythmics block na+ channels: quinidine and procainamide (ia, also block k+), lidocaine (ib), flecainide (ic, no effect on action potential duration). quinidine causes cinchonism: headache, dizziness and tinnitus. class iii antiarrhythmics block k+ channels: sotalol (also a beta blocker) and amiodarone. amiodarone treats both ventricular and supraventricular arrhythmias; it can cause pulmonary fibrosis and gray-blue (smurf) skin. adenosine is the choice for paroxysmal supraventricular tachycardia; esmolol is used intraoperatively."
+},
+"pharm-lipid": {
+"title": "Lipid-lowering drugs (past papers)",
+"unit": "Pharmacology",
+"key": [
+"Statins (lovastatin, atorvastatin) competitively inhibit HMG CoA reductase; they can cause muscle pain and rhabdomyolysis.",
+"Niacin lowers triglycerides and raises HDL; adverse effects are skin flushing and hyperuricemia.",
+"Fenofibrate is the drug of choice for hypertriglyceridemia; ezetimibe selectively inhibits intestinal cholesterol absorption; cholestyramine binds bile acids in the intestine."
+],
+"text": "lipid-lowering drugs (past papers) lipid-lowering drugs attack different steps: statins block cholesterol synthesis at hmg coa reductase, ezetimibe blocks intestinal absorption, cholestyramine traps bile acids in the gut, fibrates lower triglycerides, and niacin lowers triglycerides while raising hdl. your slides cover only the statin effect size (30-40% ldl reduction) and large-dose vitamin b3 as a cholesterol-lowering factor. a client on lovastatin develops muscle pain. mixing up ezetimibe (absorption) and cholestyramine (bile acid binding). statins stop synthesis; ezetimibe excludes absorption; cholestyramine captures bile. muscle pain or rhabdomyolysis on a lipid drug: suspect a statin. high triglycerides: fenofibrate; high tg with low hdl despite a statin: niacin. warn about flushing and hyperuricemia with niacin. statins competitively inhibit hmg coa reductase. statins (lovastatin, atorvastatin) competitively inhibit hmg coa reductase; they can cause muscle pain and rhabdomyolysis. niacin lowers triglycerides and raises hdl; adverse effects are skin flushing and hyperuricemia. fenofibrate is the drug of choice for hypertriglyceridemia; ezetimibe selectively inhibits intestinal cholesterol absorption; cholestyramine binds bile acids in the intestine."
+},
+"pharm-antianginal": {
+"title": "Nitrates and beta blockers in angina (past papers)",
+"unit": "Pharmacology",
+"key": [
+"Nitrate tolerance is treated by a nitrate-free interval (no therapy for a brief time).",
+"Beta blockers relieve angina by decreasing myocardial O2 demand."
+],
+"text": "nitrates and beta blockers in angina (past papers) your coronary circulation slides list nitrates and beta blockers as treatments for ischemic heart disease. past papers add how: beta blockers lower heart rate and contractility and so the heart's o2 demand, and continuous nitrate exposure causes tolerance, prevented by a nitrate-free interval. a client whose nitrates have stopped working is given a nitrate-free interval. treating nitrate tolerance with more frequent or continuous nitrate. tolerance? take a break. schedule a daily nitrate-free interval to avoid tolerance. explain beta blockers in angina as lowering o2 demand. beta blockers relieve angina by decreasing myocardial o2 demand. nitrate tolerance is treated by a nitrate-free interval (no therapy for a brief time). beta blockers relieve angina by decreasing myocardial o2 demand."
 }
 }

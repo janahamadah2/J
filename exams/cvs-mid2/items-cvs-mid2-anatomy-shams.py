@@ -177,4 +177,33 @@ B.mc("Axillary artery is a continuation of which artery?",
      "The subclavian artery becomes the axillary artery at the outer border of the 1st rib. Note: this repeats question 10 of the same set; both are kept as uploaded.",
      N % 8, last=True)
 
+# Past papers where each question also appears (Shams Practices CVS MID-2 QB)
+PAPERS = {
+    "Where is the anatomical surface projection": "2025 Q1",
+    "In a right-dominant heart": "2025 Q3",
+    "Which of the following is a content of the posterior": "2024 Nov Q32",
+    "The posterior surface of the heart": "2023 Q92",
+    "Vein in the posterior interventricular": "2023 Q93",
+    "Lateral infarct": "Unknown-1 Q149",
+    "The anterior division of the retromandibular": "2025 Q2",
+    "Union of Anterior facial vein": "2024 Nov Q31",
+    "Branch of 1st part of subclavian": "2024 Nov Q33",
+    "An artery which is medial to IJV": "2024 Nov Q34",
+    "Which of the following is a branch from the 2nd part": "2024 May Q61",
+    "The brachiocephalic vein is formed": "2024 May Q64",
+    "Posterior branch of facial vein": "2023 Q91",
+    "Artery running in the sheath": "2023 Q94",
+    "Facial artery branch of": "Unknown-1 Q135",
+    "Axillary Artery is a continuation of :": "Unknown-1 Q136",
+    "Internal jugular Vein drains into": "Unknown-1 Q137",
+    "Axillary artery is a continuation of which artery": "Unknown-2 Q163",
+}
+for _i, _t in enumerate(B.items):
+    for _k, _v in PAPERS.items():
+        if _t[2].startswith(_k):
+            _w = _t[5]
+            _cut = _w.rfind(" (")
+            B.items[_i] = _t[:5] + (_w[:_cut] + " Also asked in past papers: " + _v + "." + _w[_cut:],)
+assert sum(1 for t in B.items if "Also asked in past papers" in t[5]) == len(PAPERS), "a PAPERS key matched nothing"
+
 ITEMS, EXPLAIN, MISC, LAST_PASS, CONCEPTS, ROW_STEMS, NUMERIC = B.export()

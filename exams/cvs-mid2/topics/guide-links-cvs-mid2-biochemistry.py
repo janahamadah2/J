@@ -6,4 +6,6 @@ LINKS = {
     "bio-ros": "bio-ros",
     "bio-burst-no": "bio-burst-no",
     "bio-oxldl": "bio-oxldl",
+    "bio-lipoproteins": "bio-lipoproteins",
+    "bio-eicosanoids": "bio-eicosanoids",
 }

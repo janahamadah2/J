@@ -268,3 +268,17 @@ PROSE = {
 }
 for _s in SECTIONS:
     _s.update(PROSE[_s["id"]])
+
+# ---------------------------------------------------------------- past-paper sections (Shams Practices QB)
+SECTIONS += [
+    {"id": "phys-past", "unit": "Physiology", "title": "Resistance, blood pressure regulation and cardiac markers (past papers)", "source": "Shams Practices QB (past papers); not in your uploaded slides",
+     "key": [
+         "Arterioles are the vessels with maximum resistance.",
+         "Blood pressure on standing up from lying down is regulated through the baroreceptors.",
+         "Troponin I (cTnI) stays elevated about 10 days after a myocardial infarction.",
+     ]},
+]
+PROSE_PAST = {'phys-past': {'mechanism': 'Past papers add a few facts beyond your slides. Arterioles are the main resistance vessels, while veins are the capacitance vessels. Standing up lowers blood pressure briefly and the baroreceptor reflex restores it. After an MI, troponin stays raised for about 10 days, longer than myoglobin or CK-MB.', 'actions': ['Answer resistance questions with arterioles and compliance questions with veins.', 'For a late presentation after MI, pick troponin I.'], 'example': 'A client seen 10 days after an MI still has a raised cTnI.', 'trap': 'Confusing compliance (veins) with resistance (arterioles).', 'trick': 'Arterioles Resist; veins Store.', 'blanks': ['The vessels with maximum resistance are the [[arterioles]].']}}
+for _s in SECTIONS:
+    if _s["id"] in PROSE_PAST:
+        _s.update(PROSE_PAST[_s["id"]])
