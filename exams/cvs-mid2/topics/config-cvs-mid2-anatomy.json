@@ -8,23 +8,29 @@
   "out": "../../../dist/topics/cvs-mid2-anatomy-drill.html",
   "deck": null,
   "items_module": [
-    "../items-cvs-mid2-anatomy.py"
+    "../items-cvs-mid2-anatomy.py",
+    "../items-cvs-mid2-anatomy-shams.py"
   ],
   "explanations": [
-    "../items-cvs-mid2-anatomy.py"
+    "../items-cvs-mid2-anatomy.py",
+    "../items-cvs-mid2-anatomy-shams.py"
   ],
   "misconceptions": [
-    "../items-cvs-mid2-anatomy.py"
+    "../items-cvs-mid2-anatomy.py",
+    "../items-cvs-mid2-anatomy-shams.py"
   ],
   "concepts": [
-    "../items-cvs-mid2-anatomy.py"
+    "../items-cvs-mid2-anatomy.py",
+    "../items-cvs-mid2-anatomy-shams.py"
   ],
   "row_stems": [
-    "../items-cvs-mid2-anatomy.py"
+    "../items-cvs-mid2-anatomy.py",
+    "../items-cvs-mid2-anatomy-shams.py"
   ],
   "numeric": [],
   "last_pass": [
-    "../items-cvs-mid2-anatomy.py"
+    "../items-cvs-mid2-anatomy.py",
+    "../items-cvs-mid2-anatomy-shams.py"
   ],
   "rationales": [],
   "item_overrides": [],
@@ -35,9 +41,10 @@
     "in-class case",
     "in-class question",
     "slide exercise",
-    "slide note"
+    "slide note",
+    "Shams Practices"
   ],
-  "last_pass_note": "The Anatomy questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.",
+  "last_pass_note": "The Anatomy questions from the Shams Practices bank, the cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.",
   "hub_url": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe",
   "guide": {
     "parts": [

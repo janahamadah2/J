@@ -243,7 +243,14 @@ def build(cfg_path):
 
     # ---------------------------------------------------------------- concepts
     concepts, owner = {}, {}
-    for c in gather(cfg, cfg_dir, "concepts", "CONCEPTS", "list"):
+    allc = gather(cfg, cfg_dir, "concepts", "CONCEPTS", "list")
+    full = [c for c in allc if "title" in c]
+    for c in [c for c in allc if "title" not in c]:   # {"id", "items"} adds questions to a card defined elsewhere
+        tgt = [f for f in full if f["id"] == c["id"]]
+        if not tgt:
+            die("questions added to concept %r, which no content file defines" % c["id"])
+        tgt[0]["items"] = tgt[0]["items"] + c["items"]
+    for c in full:
         if c["unit"] not in units:
             die("concept %r has unknown topic %r" % (c["id"], c["unit"]))
         if c["id"] in concepts:

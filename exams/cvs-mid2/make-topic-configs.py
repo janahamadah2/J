@@ -25,6 +25,9 @@ LINKS = ns["LINKS"]
 for topic in master["units"]:
     slug = topic.lower()
     item_file = "../items-cvs-mid2-%s.py" % slug
+    extra = ["../" + os.path.basename(x) for x in master["items_module"]
+             if os.path.basename(x).startswith("items-cvs-mid2-%s-" % slug)]   # uploaded banks, added after the topic's own file
+    files = [item_file] + extra
     guide_file = "../guide-cvs-mid2-%s.py" % slug
     # links for this topic's concepts only (concept ids come from the guide part's section ids)
     gns = {}
@@ -43,14 +46,14 @@ for topic in master["units"]:
         "units": [topic],
         "out": "../../../dist/topics/cvs-mid2-%s-drill.html" % slug,
         "deck": None,
-        "items_module": [item_file],
-        "explanations": [item_file], "misconceptions": [item_file], "concepts": [item_file],
-        "row_stems": [item_file], "numeric": numeric, "last_pass": [item_file],
+        "items_module": files,
+        "explanations": files, "misconceptions": files, "concepts": files,
+        "row_stems": files, "numeric": numeric, "last_pass": files,
         "rationales": [], "item_overrides": [], "deck_overrides": [],
         "high_roi_units": [],
         "pretest_per_topic": 10,
         "last_pass_tags": master["last_pass_tags"],
-        "last_pass_note": "The %s questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER." % topic,
+        "last_pass_note": ("The %s questions from the Shams Practices bank, the cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER." if extra else "The %s questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.") % topic,
         "hub_url": urls.get("hub", ""),
         "guide": {
             "parts": [guide_file],

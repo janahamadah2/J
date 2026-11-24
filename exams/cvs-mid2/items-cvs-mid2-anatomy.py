@@ -9,6 +9,7 @@ B.concept("anat-coronary", "Coronary arteries: origin, course and territories", 
     "Right coronary artery: from the right (anterior) aortic sinus; left coronary artery: from the left (anterior) aortic sinus.",
     "LAD runs in the anterior interventricular groove and supplies the sternocostal surface of both ventricles, the anterior 2/3 of the interventricular septum and the A-V bundle.",
     "The posterior interventricular artery (PDA) runs in the posterior interventricular groove and supplies the diaphragmatic surface of both ventricles and the posterior 1/3 of the septum.",
+    "Circumflex (LCx): branches to the left atrium and to the left ventricle, including the left (obtuse) marginal artery.",
     "Artery to the SA node: RCA 65%, circumflex 35%. Artery to the AV node: RCA 80%, circumflex 20%.",
 ], L4)
 

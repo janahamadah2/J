@@ -23,6 +23,11 @@ class Bank:
                     "points": points, "source": source, "items": []}
         self.concepts.append(self.cur)
 
+    # add the questions that follow to a concept card defined in another file
+    def join(self, cid):
+        self.cur = {"id": cid, "items": []}
+        self.concepts.append(self.cur)
+
     def _add(self, typ, q, options, correct, why, src, last):
         q = " ".join(q.split())
         self.items.append((self.topic, typ, q, options, correct,

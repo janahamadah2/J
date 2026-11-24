@@ -20,7 +20,8 @@
     "items-cvs-mid2-pharmacology.py",
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
-    "items-cvs-mid2-embryology.py"
+    "items-cvs-mid2-embryology.py",
+    "items-cvs-mid2-anatomy-shams.py"
   ],
   "explanations": [
     "items-cvs-mid2-anatomy.py",
@@ -29,7 +30,8 @@
     "items-cvs-mid2-pharmacology.py",
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
-    "items-cvs-mid2-embryology.py"
+    "items-cvs-mid2-embryology.py",
+    "items-cvs-mid2-anatomy-shams.py"
   ],
   "misconceptions": [
     "items-cvs-mid2-anatomy.py",
@@ -38,7 +40,8 @@
     "items-cvs-mid2-pharmacology.py",
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
-    "items-cvs-mid2-embryology.py"
+    "items-cvs-mid2-embryology.py",
+    "items-cvs-mid2-anatomy-shams.py"
   ],
   "concepts": [
     "items-cvs-mid2-anatomy.py",
@@ -47,7 +50,8 @@
     "items-cvs-mid2-pharmacology.py",
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
-    "items-cvs-mid2-embryology.py"
+    "items-cvs-mid2-embryology.py",
+    "items-cvs-mid2-anatomy-shams.py"
   ],
   "row_stems": [
     "items-cvs-mid2-anatomy.py",
@@ -68,7 +72,8 @@
     "items-cvs-mid2-pharmacology.py",
     "items-cvs-mid2-biochemistry.py",
     "items-cvs-mid2-microbiology.py",
-    "items-cvs-mid2-embryology.py"
+    "items-cvs-mid2-embryology.py",
+    "items-cvs-mid2-anatomy-shams.py"
   ],
   "rationales": [],
   "item_overrides": [],
@@ -78,9 +83,10 @@
     "in-class case",
     "in-class question",
     "slide exercise",
-    "slide note"
+    "slide note",
+    "Shams Practices"
   ],
-  "last_pass_note": "Every case and question asked in class, the slide exercises (the Interpretation?, fill-in and ??? slides) and the facts flagged on slides with NOTE, N.B. or REMEMBER.",
+  "last_pass_note": "Every question from the Shams Practices bank, every case and question asked in class, the slide exercises (the Interpretation?, fill-in and ??? slides) and the facts flagged on slides with NOTE, N.B. or REMEMBER.",
   "guide": {
     "parts": [
       "guide-cvs-mid2-anatomy.py",
