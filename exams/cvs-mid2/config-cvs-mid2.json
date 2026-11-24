@@ -1,0 +1,101 @@
+{
+  "title": "CVS Mid 2 Drill",
+  "eyebrow": "CVS block · Mid 2 · Sunday 29 November 2026 · 40 questions",
+  "storage_key": "cvs-mid2-2026-11-29",
+  "units": [
+    "Anatomy",
+    "Physiology",
+    "Pathology",
+    "Pharmacology",
+    "Biochemistry",
+    "Microbiology",
+    "Embryology"
+  ],
+  "out": "../../dist/cvs-mid2-drill.html",
+  "deck": null,
+  "items_module": [
+    "items-cvs-mid2-anatomy.py",
+    "items-cvs-mid2-physiology.py",
+    "items-cvs-mid2-pathology.py",
+    "items-cvs-mid2-pharmacology.py",
+    "items-cvs-mid2-biochemistry.py",
+    "items-cvs-mid2-microbiology.py",
+    "items-cvs-mid2-embryology.py"
+  ],
+  "explanations": [
+    "items-cvs-mid2-anatomy.py",
+    "items-cvs-mid2-physiology.py",
+    "items-cvs-mid2-pathology.py",
+    "items-cvs-mid2-pharmacology.py",
+    "items-cvs-mid2-biochemistry.py",
+    "items-cvs-mid2-microbiology.py",
+    "items-cvs-mid2-embryology.py"
+  ],
+  "misconceptions": [
+    "items-cvs-mid2-anatomy.py",
+    "items-cvs-mid2-physiology.py",
+    "items-cvs-mid2-pathology.py",
+    "items-cvs-mid2-pharmacology.py",
+    "items-cvs-mid2-biochemistry.py",
+    "items-cvs-mid2-microbiology.py",
+    "items-cvs-mid2-embryology.py"
+  ],
+  "concepts": [
+    "items-cvs-mid2-anatomy.py",
+    "items-cvs-mid2-physiology.py",
+    "items-cvs-mid2-pathology.py",
+    "items-cvs-mid2-pharmacology.py",
+    "items-cvs-mid2-biochemistry.py",
+    "items-cvs-mid2-microbiology.py",
+    "items-cvs-mid2-embryology.py"
+  ],
+  "row_stems": [
+    "items-cvs-mid2-anatomy.py",
+    "items-cvs-mid2-physiology.py",
+    "items-cvs-mid2-pathology.py",
+    "items-cvs-mid2-pharmacology.py",
+    "items-cvs-mid2-biochemistry.py",
+    "items-cvs-mid2-microbiology.py",
+    "items-cvs-mid2-embryology.py"
+  ],
+  "numeric": [
+    "items-cvs-mid2-physiology.py"
+  ],
+  "last_pass": [
+    "items-cvs-mid2-anatomy.py",
+    "items-cvs-mid2-physiology.py",
+    "items-cvs-mid2-pathology.py",
+    "items-cvs-mid2-pharmacology.py",
+    "items-cvs-mid2-biochemistry.py",
+    "items-cvs-mid2-microbiology.py",
+    "items-cvs-mid2-embryology.py"
+  ],
+  "rationales": [],
+  "item_overrides": [],
+  "deck_overrides": [],
+  "high_roi_units": [],
+  "last_pass_tags": [
+    "in-class case",
+    "in-class question",
+    "slide exercise",
+    "slide note"
+  ],
+  "last_pass_note": "Every case and question asked in class, the slide exercises (the Interpretation?, fill-in and ??? slides) and the facts flagged on slides with NOTE, N.B. or REMEMBER.",
+  "guide": {
+    "parts": [
+      "guide-cvs-mid2-anatomy.py",
+      "guide-cvs-mid2-physiology.py",
+      "guide-cvs-mid2-pathology.py",
+      "guide-cvs-mid2-pharmacology.py",
+      "guide-cvs-mid2-biochemistry.py",
+      "guide-cvs-mid2-microbiology.py",
+      "guide-cvs-mid2-embryology.py"
+    ],
+    "title": "CVS Mid 2 Mastery Guide",
+    "out": "../../dist/cvs-mid2-guide.html",
+    "index_out": "../../dist/cvs-mid2-guide-index.json",
+    "url": "https://claude.ai/artifact/A1TLoMo73wpzbXEL8EnYGF",
+    "drill_url": "https://claude.ai/artifact/F16ffDggDNEKMrvNsnAP4D",
+    "links": "guide-links-cvs-mid2.py"
+  }
+}

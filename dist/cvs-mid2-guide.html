@@ -1,0 +1,1014 @@
+<title>CVS Mid 2 Mastery Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Mastery Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/F16ffDggDNEKMrvNsnAP4D" target="_blank" rel="noopener">Open the drill</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Sunday 29 November 2026 · 40 questions</p>
+    <h1>CVS Mid 2 Mastery Guide</h1>
+    <p class="lede">61 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Anatomy</li>
+<li><a href="#anat-coronary">Coronary arteries: origin, course and territories</a></li>
+<li><a href="#anat-dominance">Coronary dominance</a></li>
+<li><a href="#anat-cardiac-veins">Venous drainage of the heart</a></li>
+<li><a href="#anat-surface">Surface anatomy of the heart and valves</a></li>
+<li><a href="#anat-pci">Coronary angiography and PCI</a></li>
+<li><a href="#anat-carotid">Common, external and internal carotid arteries</a></li>
+<li><a href="#anat-subclavian">Subclavian artery</a></li>
+<li><a href="#anat-facial-veins">Facial veins and the dangerous area of the face</a></li>
+<li><a href="#anat-neck-veins">Jugular, subclavian and brachiocephalic veins</a></li>
+<li class="toc-unit">Physiology</li>
+<li><a href="#phys-ecg-leads">ECG leads and what they record</a></li>
+<li><a href="#phys-ecg-waves">ECG paper, waves and intervals</a></li>
+<li><a href="#phys-ecg-rate">Rhythm analysis and heart rate</a></li>
+<li><a href="#phys-sinus">Normal sinus rhythm and its variations</a></li>
+<li><a href="#phys-arrhythmia">Atrial fibrillation and atrial flutter</a></li>
+<li><a href="#phys-av-block">AV nodal blocks</a></li>
+<li><a href="#phys-axis">Mean QRS axis</a></li>
+<li><a href="#phys-co">Cardiac output, stroke volume and ejection fraction</a></li>
+<li><a href="#phys-autonomic">Autonomic control of heart rate and contractility</a></li>
+<li><a href="#phys-starling">Frank-Starling law, preload and afterload</a></li>
+<li><a href="#phys-venous-return">Factors controlling venous return</a></li>
+<li><a href="#phys-co-measure">Measuring cardiac output and conditions that change it</a></li>
+<li><a href="#phys-coronary-flow">Coronary blood flow and oxygen extraction</a></li>
+<li><a href="#phys-phasic-flow">Phasic changes in coronary flow</a></li>
+<li><a href="#phys-coronary-control">Chemical and neural control of coronary flow</a></li>
+<li><a href="#phys-ihd">Ischemic heart disease and myocardial infarction</a></li>
+<li class="toc-unit">Pathology</li>
+<li><a href="#path-congestion">Hyperemia and congestion</a></li>
+<li><a href="#path-edema">Edema: causes and classification</a></li>
+<li><a href="#path-ischemia-infarct">Ischemia and infarction</a></li>
+<li><a href="#path-virchow">Thrombosis and Virchow&#x27;s triad</a></li>
+<li><a href="#path-thrombus-types">Sites, types and fate of thrombi</a></li>
+<li><a href="#path-embolism">Embolism and pulmonary embolism</a></li>
+<li><a href="#path-systemic-emboli">Systemic, fat, air and amniotic fluid emboli</a></li>
+<li><a href="#path-arf">Acute rheumatic fever: pathogenesis and lesions</a></li>
+<li><a href="#path-jones">Jones criteria</a></li>
+<li><a href="#path-rhd">Chronic rheumatic heart disease and mitral stenosis</a></li>
+<li><a href="#path-arteriosclerosis">Arteriosclerosis patterns</a></li>
+<li><a href="#path-athero">Atherosclerosis: risk factors, pathogenesis and plaque</a></li>
+<li><a href="#path-athero-complications">Complications and sites of atherosclerosis</a></li>
+<li class="toc-unit">Pharmacology</li>
+<li><a href="#pharm-classes">Hypertension: definition and drug classes</a></li>
+<li><a href="#pharm-diuretics">Diuretics in hypertension</a></li>
+<li><a href="#pharm-ccb">Calcium channel blockers</a></li>
+<li><a href="#pharm-ras">Renin inhibitors, ACE inhibitors and ARBs</a></li>
+<li><a href="#pharm-central">Centrally acting sympatholytics</a></li>
+<li><a href="#pharm-alpha-beta">Alpha blockers, beta blockers and alpha-beta blockers</a></li>
+<li><a href="#pharm-vasodilators">Direct vasodilators</a></li>
+<li class="toc-unit">Biochemistry</li>
+<li><a href="#bio-lipids-chd">Blood lipids and coronary heart disease</a></li>
+<li><a href="#bio-fats">Types of dietary fat and their effects</a></li>
+<li><a href="#bio-cholesterol-sterols">Dietary cholesterol, plant sterols and cholesterol-lowering factors</a></li>
+<li><a href="#bio-ros">Free radicals, ROS and RNS</a></li>
+<li><a href="#bio-burst-no">Respiratory burst, nitric oxide and antioxidants</a></li>
+<li><a href="#bio-oxldl">Oxidized LDL and the stages of atherosclerosis</a></li>
+<li class="toc-unit">Microbiology</li>
+<li><a href="#micro-ie-types">Infective endocarditis: classification and organisms</a></li>
+<li><a href="#micro-organisms">Specific organisms and their associations</a></li>
+<li><a href="#micro-patho">Pathophysiology of infective endocarditis</a></li>
+<li><a href="#micro-signs">Clinical features of infective endocarditis</a></li>
+<li><a href="#micro-dx-tx">Diagnosis, treatment and prophylaxis</a></li>
+<li><a href="#micro-lab-id">Laboratory identification of IE organisms</a></li>
+<li class="toc-unit">Embryology</li>
+<li><a href="#emb-arches">Formation and derivatives of the aortic arches</a></li>
+<li><a href="#emb-sac-dorsal">Aortic sac, dorsal aorta and the origin of the great arteries</a></li>
+<li><a href="#emb-anomalies">Anomalies of the aortic arches</a></li>
+<li><a href="#emb-veins">Development of the veins</a></li></ul></details>
+    <h2 class="unit-h" id="unit-anatomy">Anatomy</h2>
+
+<section class="sec" id="anat-coronary" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 1</p>
+  <h3>Coronary arteries: origin, course and territories</h3>
+  <div class="block mech"><h4>How it works</h4><p>The two coronary arteries leave the ascending aorta from sinuses just above the aortic valve cusps. The <b>RCA</b> runs in the coronary groove between right atrium and right ventricle, then posteriorly, and ends as the posterior interventricular artery. The short <b>left main</b> runs between the pulmonary trunk and the left auricle and divides into the <b>circumflex</b> and the <b>LAD</b>. Which artery feeds which wall follows from which groove it runs in.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Read the stenosed artery on the angiogram, then name the wall it feeds: LAD = front (sternocostal surface, anterior 2/3 of the septum, A-V bundle).</li><li>Occlusion of the RCA can threaten the SA node (65%) and the AV node (80%): watch the rhythm.</li><li>The septum is split: anterior 2/3 LAD, posterior 1/3 posterior interventricular artery.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A 68-year-old with recurrent angina has a 90% LAD stenosis on angiography: the anterior two thirds of the septum is at risk.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the AV node to the LAD. The LAD supplies the A-V <i>bundle</i>; the AV <i>node</i> artery comes from the RCA (80%) or circumflex (20%).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Anterior groove = Anterior descending = Anterior septum. RCA numbers: SA 65, AV 80.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The LAD runs in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">anterior interventricular</span></button> groove with the great cardiac vein.</li><li>The artery to the AV node arises from the RCA in <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">80%</span></button> of people.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Right coronary artery: from the right (anterior) aortic sinus; left coronary artery: from the left (anterior) aortic sinus.</li><li>LAD runs in the anterior interventricular groove and supplies the sternocostal surface of both ventricles, the anterior 2/3 of the interventricular septum and the A-V bundle.</li><li>The posterior interventricular artery (PDA) runs in the posterior interventricular groove and supplies the diaphragmatic surface of both ventricles and the posterior 1/3 of the septum.</li><li>Artery to the SA node: RCA 65%, circumflex 35%. Artery to the AV node: RCA 80%, circumflex 20%.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-dominance" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 2</p>
+  <h3>Coronary dominance</h3>
+  <div class="block mech"><h4>How it works</h4><p>Dominance is named after the artery that gives the posterior interventricular artery to the diaphragmatic surface. The slide gives three patterns with their frequencies.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>When a report says left dominant, expect the posterior interventricular artery from the circumflex.</li><li>Note the slide's frequencies (70 / 15 / 15) and check with your instructor: many textbooks give right dominance as the most common pattern.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's report reads "left dominant": a circumflex occlusion could then threaten the posterior septum and diaphragmatic surface.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing co-dominance (RCA gives the PDA AND the circumflex also reaches the diaphragmatic LV) with left dominance (PDA from the circumflex).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dominance = who owns the PDA.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In left dominance the posterior interventricular artery is a branch of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">circumflex</span></button> artery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Co-dominance (balanced) 70%: the right coronary has the posterior interventricular branch and the circumflex has a branch to the diaphragmatic surface of the left ventricle.</li><li>Right dominance (15%): the posterior interventricular artery is a large branch.</li><li>Left dominance (15%): the posterior interventricular artery is a large branch of the circumflex coronary.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-cardiac-veins" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 3</p>
+  <h3>Venous drainage of the heart</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cardiac veins run with the arteries in the same grooves and drain three ways: most into the <b>coronary sinus</b>, which empties into the right atrium; some straight into the right atrium (anterior cardiac veins); and some straight into any chamber (venae cordis minimi).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Pair each vein with its artery: great cardiac vein with the LAD, middle cardiac vein with the posterior interventricular artery.</li><li>Remember the coronary sinus ends in the posterior wall of the RIGHT atrium.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>During cannulation of the coronary sinus, the nurse expects the great, middle and small cardiac veins, the posterior vein of the left ventricle and the oblique vein of the left atrium to drain through it.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Sending the coronary sinus to the left atrium because it lies next to it. It lies between the left atrium and the diaphragmatic surface but ends in the right atrium.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Great goes with the Grand anterior artery (LAD); Middle goes with the middle of the back (PDA).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The anterior cardiac veins end in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">anterior wall of the right atrium</span></button>.</li><li>Venae cordis minimi drain <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">directly into the cardiac chambers</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Coronary sinus: lies between the left atrium and the diaphragmatic surface and ends in the posterior wall of the right atrium.</li><li>Tributaries of the coronary sinus: great, middle and small cardiac veins, posterior vein of the left ventricle and oblique vein of the left atrium.</li><li>Anterior cardiac veins arise from the right ventricle and end in the anterior wall of the right atrium.</li><li>Venae cordis minimi drain directly into the cardiac chambers, especially on the right side.</li><li>The great cardiac vein runs with the LAD in the anterior interventricular groove; the middle cardiac vein runs with the posterior interventricular artery.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-surface" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 4</p>
+  <h3>Surface anatomy of the heart and valves</h3>
+  <div class="block mech"><h4>How it works</h4><p>Four points 0.5 inch from the sternum (and the apex 3.5 inches from the midline) outline the heart on the chest wall; joining them in order gives the four borders. The valves lie in a diagonal line behind the sternum, PAMT from top left to bottom middle.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Mark A (left 2nd costal cartilage, lower border), B (right 3rd costal cartilage, upper border), C (right 6th costal cartilage), D (left 5th intercostal space).</li><li>Join A-B (upper), B-C (right), C-D (lower), D-A (left).</li><li>Place the valves in order: pulmonary 3rd costal cartilage, aortic 3rd space, mitral 4th cartilage, tricuspid 4th space.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>Before an exam a nurse marks a client's apex at the left 5th intercostal space, 3.5 inches from the midline.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Confusing a costal cartilage with the intercostal space below it, e.g. putting the mitral valve at the 4th space (that is the tricuspid).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>PAMT goes down half a level at a time: P 3rd cartilage, A 3rd space, M 4th cartilage, T 4th space.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The right border of the heart runs from point <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">B</span></button> to point <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">C</span></button>.</li><li>The coronary groove is marked by a line from the left 3rd costal cartilage to point <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">C</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Point A: lower border of the left 2nd costal cartilage, 0.5 inch from the sternum; point B: upper border of the right 3rd costal cartilage, 0.5 inch from the sternum.</li><li>Point C: right 6th costal cartilage, 0.5 inch from the sternum; point D: left 5th intercostal space, 3.5 inches from the midline.</li><li>Borders: upper A-B, right B-C, lower C-D, left D-A.</li><li>Valves (PAMT): pulmonary behind the left 3rd costal cartilage; aortic opposite the left 3rd intercostal space; mitral opposite the left 4th costal cartilage; tricuspid opposite the left 4th intercostal space behind the midline of the sternum.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-pci" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 5</p>
+  <h3>Coronary angiography and PCI</h3>
+  <div class="block mech"><h4>How it works</h4><p>Coronary angiography and PCI reach the coronary orifices from the ascending aorta by passing a catheter backwards (retrograde) up the arterial tree from the wrist or groin.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Expect local anesthesia, catheter entry through the radial or femoral artery, contrast injected into each coronary orifice, then a stent if a vessel is narrowed by plaque.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a narrowed coronary artery has a stent placed after contrast pictures show the stenosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the catheter is passed through a vein: it goes retrograde from the radial or femoral ARTERY.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>In through the wrist or groin, up to the aorta, dye, picture, stent.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The catheter is passed <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">retrograde</span></button> from the radial or femoral artery into the ascending aorta.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>A catheter is passed retrograde from the radial or femoral artery into the ascending aorta under local anesthesia.</li><li>Radiopaque contrast is injected into the orifice of each coronary artery to photograph all segments of each vessel.</li><li>A stent may be placed to open vessels narrowed by plaque buildup (atherosclerosis).</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-carotid" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 6</p>
+  <h3>Common, external and internal carotid arteries</h3>
+  <div class="block mech"><h4>How it works</h4><p>The common carotid arteries start differently on each side, climb inside the carotid sheath and divide at the upper border of the thyroid cartilage. The external carotid gives the face and neck their branches and ends in the parotid gland; the internal carotid gives nothing in the neck and goes straight into the skull.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Find the bifurcation at the upper border of the thyroid cartilage (C3-4).</li><li>Before a jugular puncture, remember the IJV lies lateral to the artery in the sheath.</li><li>Feel the superficial temporal pulse just in front of the tragus.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An anesthesiologist at the head of the table checks the pulse in front of the tragus: the superficial temporal artery.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Looking for neck branches on the internal carotid. It has none; all named neck branches are from the external carotid or subclavian.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>ECA branches in order: Some Anatomists Like Freaking Out Poor Medical Students (superior thyroid, ascending pharyngeal, lingual, facial, occipital, posterior auricular, maxillary, superficial temporal).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The external carotid ends in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">parotid gland</span></button> behind the neck of the mandible.</li><li>The right common carotid arises from the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">brachiocephalic artery</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Right common carotid: from the brachiocephalic artery behind the sternoclavicular joint; left common carotid: from the arch of the aorta.</li><li>The common carotid ascends in the carotid sheath, related medially to the trachea and larynx and laterally to the IJV, and ends at the upper border of the thyroid cartilage (C3-4).</li><li>The external carotid ends in the parotid gland behind the neck of the mandible by dividing into the maxillary and superficial temporal arteries.</li><li>External carotid branches: superior thyroid, ascending pharyngeal, lingual, facial, occipital, posterior auricular, superficial temporal and maxillary.</li><li>The internal carotid has no branches in the neck; it enters the skull through the carotid canal.</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+
+<section class="sec" id="anat-subclavian" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 7</p>
+  <h3>Subclavian artery</h3>
+  <div class="block mech"><h4>How it works</h4><p>Scalenus anterior crosses in front of the subclavian artery and so divides it into three parts. Each part has its own branches, and the artery ends at the outer border of the 1st rib by becoming the axillary artery.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Sort branches by part: 1st = vertebral, internal thoracic, thyrocervical trunk; 2nd = costocervical trunk; 3rd = dorsal scapular.</li><li>Remember the thyrocervical trunk gives the inferior thyroid, transverse cervical and suprascapular arteries.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>During thyroid surgery near the thyrocervical trunk, the inferior thyroid artery is at risk, not the superior thyroid (an external carotid branch).</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing the superior thyroid artery (external carotid) with the inferior thyroid artery (thyrocervical trunk).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>1st part 3 branches, 2nd part 1 trunk, 3rd part 1 branch.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The subclavian artery becomes the axillary artery at the outer border of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">1st rib</span></button>.</li><li>The costocervical trunk arises from the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">2nd</span></button> part of the subclavian artery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Right subclavian: from the brachiocephalic artery behind the right sternoclavicular joint; left subclavian: from the arch of the aorta.</li><li>It ends at the outer border of the 1st rib by becoming the axillary artery.</li><li>Scalenus anterior passes anterior to the artery and divides it into 3 parts: medial, behind and lateral to the muscle.</li><li>1st part: vertebral, internal thoracic and thyrocervical trunk (inferior thyroid, transverse cervical, suprascapular). 2nd part: costocervical trunk. 3rd part: dorsal scapular (66%).</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+
+<section class="sec" id="anat-facial-veins" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 8</p>
+  <h3>Facial veins and the dangerous area of the face</h3>
+  <div class="block mech"><h4>How it works</h4><p>The facial veins join and divide around the parotid gland. The anterior facial vein links to the cavernous sinus inside the skull through the ophthalmic veins and through the deep facial vein and pterygoid plexus, which is why the nose and upper lip are the dangerous area.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Teach clients not to squeeze lesions on the nose and upper lip: infection can reach the cavernous sinus.</li><li>Trace formation: supraorbital + supratrochlear = anterior facial; maxillary + superficial temporal = retromandibular; anterior facial + anterior division of retromandibular = common facial (to IJV).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client squeezes an infected pimple on the upper lip; the nurse is concerned about spread to the cavernous sinus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the route goes through the jugular veins. The dangerous route runs backwards from the anterior facial vein into the skull.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dangerous triangle: nose and upper lip drain back to the brain.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The deep facial vein connects the anterior facial vein to the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">pterygoid plexus</span></button>.</li><li>The retromandibular vein is formed inside the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">parotid gland</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Anterior facial vein: formed by the supraorbital and supratrochlear veins at the medial angle of the eye.</li><li>Retromandibular (posterior facial) vein: formed by the maxillary and superficial temporal veins inside the parotid gland; divides at the lower pole of the parotid.</li><li>Common facial vein: anterior facial vein + anterior division of the retromandibular vein; drains into the IJV.</li><li>The deep facial vein connects the anterior facial vein to the pterygoid plexus.</li><li>Dangerous area of the face (nose and upper lip): infection can reach the cavernous sinus through the connections of the anterior facial vein.</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+
+<section class="sec" id="anat-neck-veins" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 9</p>
+  <h3>Jugular, subclavian and brachiocephalic veins</h3>
+  <div class="block mech"><h4>How it works</h4><p>Blood from the head reaches the heart by two jugular veins. The external jugular is superficial and drains into the subclavian vein; the internal jugular is deep, begins at the jugular foramen and joins the subclavian to form the brachiocephalic vein. Both brachiocephalic veins form the SVC.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Sort tributaries: EJV = transverse cervical, suprascapular, anterior jugular; IJV = pharyngeal, common facial, lingual, superior and middle thyroid.</li><li>Trace face to heart: anterior facial, common facial, IJV, brachiocephalic, SVC.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A nurse sees a distended vein crossing sternomastoid: the external jugular vein, formed by the posterior division of the retromandibular vein and the posterior auricular vein.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Draining the external jugular into the internal jugular. It ends in the subclavian vein.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>External ends External-ish (subclavian); Internal starts Inside the skull (sigmoid sinus).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The internal jugular vein begins as the continuation of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">sigmoid sinus</span></button>.</li><li>The external jugular vein ends in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">subclavian vein</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>External jugular vein: formed by the posterior division of the retromandibular vein and the posterior auricular vein; descends superficial to sternomastoid; ends in the subclavian vein.</li><li>External jugular tributaries: transverse cervical, suprascapular and anterior jugular veins.</li><li>Internal jugular vein: begins as the continuation of the sigmoid sinus at the jugular foramen; joins the subclavian vein to form the brachiocephalic vein.</li><li>Internal jugular tributaries: pharyngeal, common facial, lingual, superior thyroid and middle thyroid veins.</li><li>Right and left brachiocephalic veins unite to form the SVC.</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+<h2 class="unit-h" id="unit-physiology">Physiology</h2>
+
+<section class="sec" id="phys-ecg-leads" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 1</p>
+  <h3>ECG leads and what they record</h3>
+  <div class="block mech"><h4>How it works</h4><p>The heart's electrical activity creates potential differences that the body, a good conductor, carries to the skin. Each lead is a picture of that activity from one direction: limb leads in the frontal plane, chest leads in the horizontal plane. Einthoven's triangle is formed by the axes of the limb leads around the heart.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Check electrode placement before recording: wrong leads give wrong pictures.</li><li>Read a deflection by direction: toward the electrode = up, away = down.</li><li>Localize changes by lead group: inferior II, III, aVF; lateral I, aVL, V5, V6; septal V1, V2; anterior V3, V4.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A nurse reassures an anxious client that the ECG only records electrical activity; it does not measure blood flow.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the ECG measures how well blood is pumped. It records electrical events only.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Bipolar = the Big three (I, II, III); augmented = the aV letters.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In a bipolar lead the potential difference is recorded between <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">two active electrodes</span></button>.</li><li>Leads II, III and aVF view the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">inferior</span></button> portion of the heart.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>The ECG measures the electrical activity of the heart per unit time; it does NOT measure the flow of blood through the heart.</li><li>Six limb leads (frontal plane): bipolar I, II, III and unipolar augmented aVR, aVL, aVF. Six precordial leads V1-V6 (horizontal plane).</li><li>Current flowing towards the recording electrode gives an upward deflection; current flowing away gives a downward deflection.</li><li>Views: left lateral I, aVL, V5, V6; septum V1, V2; anterior V3, V4; inferior II, III, aVF.</li></ul></div>
+  <p class="src">Source: Physiology L6 slides (ECG I)</p>
+</section>
+
+<section class="sec" id="phys-ecg-waves" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 2</p>
+  <h3>ECG paper, waves and intervals</h3>
+  <div class="block mech"><h4>How it works</h4><p>Paper speed converts time to distance: at 25 mm/s each 1 mm is 0.04 s. Each wave marks a step in the conduction sequence SA node, AV node, bundle of His, bundle branches, Purkinje fibers.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Measure intervals horizontally: small box 0.04 s, large box 0.20 s.</li><li>Check PR 0.12-0.20 s, QRS 0.08-0.10 s, QT 0.40-0.43 s.</li><li>Remember the PR includes the AV-junction delay that lets the atria finish contracting.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A nurse counts 5 small boxes for a PR interval: 5 x 0.04 = 0.20 s, the upper limit of normal.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Reading the vertical 0.5 mV as a time, or using 0.20 s for a small box.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>P = atria, QRS = ventricles go, T = ventricles recover.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The T wave represents ventricular <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">repolarization</span></button>.</li><li>One large box horizontally equals <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">0.20</span></button> s.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Paper speed is 25 mm/sec: one small box = 0.04 s, one large box = 0.20 s; vertically one large box = 0.5 mV.</li><li>P wave = atrial depolarization; QRS = ventricular depolarization; T wave = ventricular repolarization.</li><li>PR interval = atrial depolarization + delay in the AV junction; the delay lets the atria contract before the ventricles.</li><li>PR 0.12-0.20 s; QRS 0.08-0.10 s; QT 0.40-0.43 s.</li></ul></div>
+  <p class="src">Source: Physiology L6 slides (ECG I)</p>
+</section>
+
+<section class="sec" id="phys-ecg-rate" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 3</p>
+  <h3>Rhythm analysis and heart rate</h3>
+  <div class="block mech"><h4>How it works</h4><p>Because paper runs at a fixed speed, the R-R distance gives the rate: there are 1500 small squares or 300 large squares in a minute. Dividing by the squares between beats gives beats per minute.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Analyze in order: regularity, rate, P waves, PR interval, QRS duration.</li><li>Use 1500 with small squares and 300 with large squares.</li><li>Quick count from an R on a heavy line: 300, 150, 100, 75.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>R-R = 20 small squares: 1500 / 20 = 75 beats/min.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Dividing 300 by small squares (or 1500 by large squares).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Small with big number (1500), big with small number (300).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>HR = <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">1500</span></button> divided by the number of small squares between R waves.</li><li>If the next R wave is 3 large boxes away, the rate is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">100</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Steps: 1 regularity, 2 rate, 3 P waves, 4 PR interval, 5 QRS duration.</li><li>HR = 1500 / number of small squares between R-R, or 300 / number of large squares.</li><li>Large boxes to the next R wave: 1 = 300, 2 = 150, 3 = 100, 4 = 75.</li></ul></div>
+  <p class="src">Source: Physiology L7 slides (ECG II)</p>
+</section>
+
+<section class="sec" id="phys-sinus" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 4</p>
+  <h3>Normal sinus rhythm and its variations</h3>
+  <div class="block mech"><h4>How it works</h4><p>A sinus rhythm starts in the SA node and conducts normally, so every P is normal and followed by a QRS. Only the rate (or its variation with breathing) changes in the sinus variants.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>If P, PR and QRS are normal, name the rhythm by rate: slow = sinus bradycardia, fast = sinus tachycardia.</li><li>If the rate rises with inspiration and falls with expiration, call it sinus arrhythmia.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>Rate 35, regular, normal P, PR 0.12 s, QRS 0.10 s: sinus bradycardia.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling every slow rhythm a heart block. Check whether every P is followed by a QRS.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Sinus arrhythmia breathes with the client: in = faster.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In sinus arrhythmia the heart rate <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">increases</span></button> during inspiration.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Normal sinus rhythm: regular, normal P waves with one P for every QRS, PR 0.12-0.20 s, normal QRS.</li><li>Sinus bradycardia: everything normal but a slow rate (35 bpm on the slide); sinus tachycardia: normal but fast (130 bpm).</li><li>Sinus arrhythmia: heart rate increases during inspiration and decreases during expiration.</li></ul></div>
+  <p class="src">Source: Physiology L7 slides (ECG II)</p>
+</section>
+
+<section class="sec" id="phys-arrhythmia" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 5</p>
+  <h3>Atrial fibrillation and atrial flutter</h3>
+  <div class="block mech"><h4>How it works</h4><p>In atrial fibrillation the atria have no organized depolarization because impulses are not coming from the sinus node, so there are no P waves and the ventricles respond irregularly. In atrial flutter, flutter waves replace the P waves.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Look for P waves first: none and irregularly irregular = atrial fibrillation.</li><li>Flutter waves with a regular rhythm = atrial flutter.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An 84-year-old client's strip shows no P waves and an irregularly irregular rate: atrial fibrillation.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Confusing the regularly irregular pattern of Mobitz I with the irregularly irregular pattern of AF.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>AF: Absent P, Frenzied atria (over 350).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In atrial fibrillation the atrial rate is usually above <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">350</span></button> per minute.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Atrial fibrillation: no organized atrial depolarization, so no normal P waves; atrial rate usually above 350/min; irregularly irregular.</li><li>Atrial fibrillation affects 2-4%, up to 5-10% of people over 80 years old.</li><li>Atrial flutter: flutter waves instead of P waves, no measurable PR interval; rhythm regular in the slide example.</li></ul></div>
+  <p class="src">Source: Physiology L7 slides (ECG II)</p>
+</section>
+
+<section class="sec" id="phys-av-block" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 6</p>
+  <h3>AV nodal blocks</h3>
+  <div class="block mech"><h4>How it works</h4><p>AV blocks grade how much gets through the AV junction: all but slowly (1st degree), progressively slower until one fails (Mobitz I), all or nothing (Mobitz II, usually in the bundle of His), or nothing at all (3rd degree). When the ventricles must pace themselves, the impulse starts in a ventricle and the QRS is wide.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Measure the PR on every beat: constant and long = 1st degree; lengthening then dropped = Mobitz I; constant with sudden drops = Mobitz II.</li><li>If P waves have no relation to QRS and the rate is 30-45 with wide QRS, think 3rd degree.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>PR 0.36 s, every P conducted, regular rate 60: first-degree AV block.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing Mobitz I (PR lengthens) with Mobitz II (PR constant).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Mobitz I: longer, longer, longer, drop. Mobitz II: steady, steady, drop.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In 3rd-degree block the ventricular pacemaker fires at about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">30-45</span></button> beats/minute.</li><li>Mobitz type II block is typically located in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">bundle of His</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>1st degree: PR interval > 0.20 s; prolonged conduction delay in the AV node or bundle of His.</li><li>2nd degree Mobitz I: PR progressively lengthens until one impulse (usually the 3rd or 4th) fails to make it through the AV node.</li><li>2nd degree Mobitz II: occasional P waves are completely blocked with no PR prolongation (all or nothing); block typically in the bundle of His.</li><li>3rd degree: complete block in the AV junction; atria and ventricles beat independently; ventricular pacemaker at 30-45 beats/minute.</li><li>When an impulse originates in a ventricle, conduction is inefficient and the QRS is wide and bizarre.</li></ul></div>
+  <p class="src">Source: Physiology L7 slides (ECG II)</p>
+</section>
+
+<section class="sec" id="phys-axis" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 7</p>
+  <h3>Mean QRS axis</h3>
+  <div class="block mech"><h4>How it works</h4><p>The mean QRS axis is the sum of all ventricular depolarization vectors. Normally it points left and down because the left ventricle has most of the mass. On the hexaxial circle, 0 degrees points to the client's left and degrees increase clockwise, so +90 points down.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Check lead I and aVF: + + normal; + - left; - + right; - - right superior (indeterminate).</li><li>Report an abnormal axis: it can suggest disease such as pulmonary hypertension from pulmonary embolism.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>Lead I positive, aVF negative: left axis deviation.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Reversing left and right: a NEGATIVE lead I means the vector points to the right.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Two thumbs up (I and aVF positive) = normal.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The normal QRS axis lies between <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">-30</span></button> and <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">+110</span></button> degrees.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Normal ventricular depolarization flows leftward and downward because most of the ventricular mass is in the left ventricle.</li><li>Normal QRS axis: -30 to +110 degrees. Left axis deviation: -30 to -90. Right axis deviation: +110 to +180. Indeterminate (extreme right): +180 to -90.</li><li>Lead I and aVF: + + normal; + - left axis deviation; - + right axis deviation; - - right superior / indeterminate.</li><li>An abnormal axis can suggest disease such as pulmonary hypertension from a pulmonary embolism.</li></ul></div>
+  <p class="src">Source: Physiology L7 slides (ECG II)</p>
+</section>
+
+<section class="sec" id="phys-co" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 8</p>
+  <h3>Cardiac output, stroke volume and ejection fraction</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cardiac output is how much each ventricle pumps per minute: rate times stroke volume. Stroke volume is the difference between how full the ventricle gets (EDV) and how much is left (ESV); ejection fraction expresses it as a percentage of EDV and is a good index of ventricular function.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Calculate CO = HR x SV and convert mL to L.</li><li>Calculate SV = EDV - ESV, then EF = SV / EDV x 100.</li><li>Flag an EF of 30% or less as consistent with a failing heart.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>EDV 125 mL, ESV 50 mL: SV 75 mL, EF 75/125 x 100 = 60%.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Putting ESV instead of SV on top of the EF fraction.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>EF = what left / what was there.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Normal ejection fraction is about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">50-75%</span></button>.</li><li>Normal cardiac index is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">3.2</span></button> L/min/m2.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Cardiac output = heart rate x stroke volume = 70 x 70 = 4900 ml/min, about 5 L/min.</li><li>Stroke volume = EDV - ESV (about 70-80 ml); EDV about 120-130 ml; ESV about 50-60 ml.</li><li>EF = SV / EDV x 100; normal 50-75%, up to 90% in strenuous exercise; 30% or less in a failing heart.</li><li>Cardiac index = cardiac output per minute per square meter of body surface area; normal 3.2 L/min/m2.</li><li>Cardiac reserve = the difference between cardiac output at rest and the maximum the heart can pump per minute.</li></ul></div>
+  <p class="src">Source: Physiology L8 slides (cardiac output)</p>
+</section>
+
+<section class="sec" id="phys-autonomic" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 9</p>
+  <h3>Autonomic control of heart rate and contractility</h3>
+  <div class="block mech"><h4>How it works</h4><p>The vagus reaches mainly the atria (SA and AV nodes), so it can slow the rate and AV conduction but cannot touch ventricular contractility. Sympathetic fibers reach the nodes AND the ventricles, so they speed the rate and conduction and strengthen both atria and ventricles; they also release adrenal epinephrine.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Predict vagal effects: slower rate, longer AV delay, weaker atria, ventricles unchanged.</li><li>Predict sympathetic effects: faster rate, shorter AV delay, stronger atria and ventricles.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A frightened client's sympathetic surge raises the heart rate and ventricular contractility.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the vagus an effect on ventricular muscle: it has none.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Vagus = brakes on the top floor only (atria).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Parasympathetic stimulation <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">increases</span></button> AV nodal delay.</li><li>At rest, <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">parasympathetic</span></button> discharge dominates heart rate.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Parasympathetic (vagus) mainly supplies the atria (SA and AV nodes); parasympathetic innervation of the ventricles is sparse.</li><li>Parasympathetic: decreases heart rate, increases AV nodal delay, decreases atrial contractility, no effect on ventricular muscle.</li><li>Sympathetic: increases heart rate, decreases AV nodal delay, hastens ventricular conduction, increases atrial and ventricular contractility, promotes adrenal epinephrine.</li><li>Under resting conditions parasympathetic discharge dominates.</li></ul></div>
+  <p class="src">Source: Physiology L8 slides (cardiac output)</p>
+</section>
+
+<section class="sec" id="phys-starling" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 10</p>
+  <h3>Frank-Starling law, preload and afterload</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cardiac fibers at rest are shorter than their optimum length. More filling stretches them toward optimum, so the next contraction is stronger: the Frank-Starling law (intrinsic control). Sympathetic stimulation is extrinsic: it raises contractility at any filling by increasing Ca2+ influx, shifting the curve to the left.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Link a rise in EDV (preload) to a stronger contraction through Frank-Starling.</li><li>Link sympathetic stimulation to a left shift of the curve.</li><li>Keep the loads apart: preload = EDV; afterload = arterial pressure.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A fluid bolus raises EDV and the stroke volume rises: Frank-Starling.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling EDV afterload.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>PRE comes before contraction (filling); AFTER is what the ventricle pushes against.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The extent of filling is referred to as <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">preload</span></button>.</li><li>Sympathetic stimulation shifts the Frank-Starling curve to the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">left</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Frank-Starling law: force of contraction is proportional to the initial length of the cardiac muscle fiber (EDV and stroke volume).</li><li>Resting cardiac fiber length is less than optimum, so more filling stretches fibers closer to optimum and increases the force of the next contraction.</li><li>Preload = load before contraction, the end-diastolic volume. Afterload = load the ventricle pumps against, the arterial blood pressure.</li><li>Sympathetic stimulation and epinephrine increase contractility at any EDV (more Ca2+ influx) and shift the Frank-Starling curve to the left.</li></ul></div>
+  <p class="src">Source: Physiology L8 slides (cardiac output)</p>
+</section>
+
+<section class="sec" id="phys-venous-return" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 11</p>
+  <h3>Factors controlling venous return</h3>
+  <div class="block mech"><h4>How it works</h4><p>Veins are capacitance vessels holding 60-70% of the blood. Anything that squeezes them or pulls blood toward the chest moves blood back to the heart and raises EDV.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Encourage leg exercise (muscle pump) and deep breathing (respiratory pump) in clients on bed rest.</li><li>Remember sympathetic venoconstriction, cardiac suction and venous valves also help.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on bed rest does leg exercises; muscle contraction compresses the veins and increases venous return.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking veins storing more blood increases return. Less storage means more return.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Squeeze, suck, shut: muscle pump squeezes, inspiration and cardiac suction suck, valves shut backflow.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>During inspiration, intrathoracic pressure falls to about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">-5</span></button> mmHg.</li><li>Venous valves are placed at <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">2 to 4</span></button> cm intervals.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Veins are capacitance vessels holding about 60-70% of blood; when veins store less blood, more returns to the heart.</li><li>Skeletal muscle pump: contraction compresses veins and moves blood toward the heart.</li><li>Respiratory pump: in inspiration intrathoracic pressure falls (-5 mmHg), drawing blood into the chest.</li><li>Sympathetic venoconstriction, the cardiac suction effect and one-way venous valves (every 2-4 cm) also increase venous return.</li></ul></div>
+  <p class="src">Source: Physiology L8 slides (cardiac output)</p>
+</section>
+
+<section class="sec" id="phys-co-measure" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 12</p>
+  <h3>Measuring cardiac output and conditions that change it</h3>
+  <div class="block mech"><h4>How it works</h4><p>The Fick principle says the oxygen the lungs take up equals blood flow times the oxygen each liter picks up. So flow (cardiac output) = O2 uptake / arterial-venous O2 difference, with venous blood taken from the pulmonary artery.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Set up Fick: O2 uptake (mL/min) / (arterial - venous O2, mL/L).</li><li>Recognize conditions that raise CO (hyperthyroidism, anemia, fever) and lower it (hypothyroidism, failure, valve disease, arrhythmias, hemorrhage).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>O2 uptake 250 mL/min, A-V difference 50 mL/L: cardiac output 5 L/min.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Dividing by arterial O2 content instead of the A-V difference.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Fick: flow = uptake / difference.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Cardiac output can also be measured by dye dilution and <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">Doppler</span></button> combined with echocardiography.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Fick principle: cardiac output = O2 uptake by the lungs / (arterial O2 - venous O2), e.g. 200 / (200 - 160) = 5 L/min.</li><li>Cardiac output rises in hyperthyroidism, anemia and fever; falls in hypothyroidism, myocardial damage and failure, valvular disease, arrhythmias, hemorrhage and shock.</li><li>Most common causes of heart failure: myocardial infarction, then working against increased afterload (hypertension, aortic stenosis).</li></ul></div>
+  <p class="src">Source: Physiology L8 slides (cardiac output)</p>
+</section>
+
+<section class="sec" id="phys-coronary-flow" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 13</p>
+  <h3>Coronary blood flow and oxygen extraction</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cardiac muscle is packed with mitochondria and works aerobically, so it already takes 60-70% of the oxygen it receives. With so little left to extract, more oxygen can reach it only by more flow.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Expect symptoms when demand rises and flow cannot: angina on effort.</li><li>Link ischemic pain to lactic acid from anaerobic glycolysis.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with coronary disease starts exercising; the heart can meet the extra demand only by increasing coronary flow.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the heart can extract much more oxygen when needed, like other tissues.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Heart takes two thirds already; it needs more flow, not more extraction.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>At rest the heart extracts <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">60-70%</span></button> of oxygen; other tissues extract about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">25%</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Coronary blood flow at rest is about 225-250 ml/minute, about 5% of cardiac output.</li><li>At rest the heart extracts 60-70% of the oxygen from each unit of blood (other tissues about 25%).</li><li>Up to 40% of the cardiac cell is mitochondria, so the heart needs more O2; when more O2 is needed, delivery rises only by increasing blood flow.</li><li>The heart uses mainly free fatty acids; in ischemia it uses anaerobic glycolysis, forming lactic acid (one cause of cardiac pain).</li></ul></div>
+  <p class="src">Source: Physiology L9 slides (coronary circulation)</p>
+</section>
+
+<section class="sec" id="phys-phasic-flow" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 14</p>
+  <h3>Phasic changes in coronary flow</h3>
+  <div class="block mech"><h4>How it works</h4><p>The left ventricle squeezes its own coronary vessels in systole and the open aortic valve partly covers their openings, so left ventricular flow happens mainly in diastole. The right ventricle's lower pressure leaves a large aorta-RV gradient in systole, so its flow is preserved.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Treat tachycardia as a threat to coronary flow because diastole shortens.</li><li>Expect the LV subendocardium to be hit first in ischemia.</li><li>Remember aortic stenosis and low aortic diastolic pressure reduce LV flow.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a rate of 150 complains of chest tightness: shortened diastole reduces coronary flow.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking a faster rate improves coronary flow.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>The left heart feeds itself between beats.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In systole the aorta-to-left-ventricle pressure gradient is about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">-1</span></button> mmHg.</li><li>The most common site of myocardial infarction is the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">subendocardial</span></button> layer of the left ventricle.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Left ventricular flow falls in systole: the contracting LV compresses the coronary arteries and the open aortic valve partially blocks their entrance.</li><li>Systole: aorta 120, LV 121 mmHg (gradient -1); diastole: aorta 80, LV 0 (gradient 80). Right ventricle gradient is 95 in systole, 80 in diastole.</li><li>The subendocardial surface of the left ventricle gets almost no flow in systole, so it is the most common site of myocardial infarction.</li><li>Tachycardia shortens diastole and reduces coronary flow; aortic stenosis and low aortic diastolic pressure also reduce LV flow.</li></ul></div>
+  <p class="src">Source: Physiology L9 slides (coronary circulation)</p>
+</section>
+
+<section class="sec" id="phys-coronary-control" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 15</p>
+  <h3>Chemical and neural control of coronary flow</h3>
+  <div class="block mech"><h4>How it works</h4><p>Coronary flow follows metabolism: working muscle produces CO2, H+, K+, lactate, adenosine and other metabolites, and lack of oxygen itself dilates the vessels. Sympathetic nerves act two ways: directly they constrict (alpha), but indirectly, by making the heart work harder (beta-1), they release dilating metabolites, which wins in the intact body.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Expect coronary dilation in hypoxia and with local metabolites (adenosine).</li><li>Explain that beta blockade unmasks the direct constrictor effect of norepinephrine.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>In shock, reflex sympathetic discharge raises coronary flow through metabolic changes while other organs are compromised.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Assuming the direct sympathetic effect on coronaries is dilation.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Directly: Constrict. Indirectly: Increase work, Increase flow.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Adenosine is formed from <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">ATP</span></button> during cardiac metabolic activity.</li><li>Parasympathetic influences on coronary vessels are minor and weakly <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">vasodilatory</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Coronary blood flow shows considerable autoregulation.</li><li>Vasodilators: lack of oxygen, increased CO2, H+, K+, lactate, prostaglandins, adenosine and adenine nucleotides.</li><li>Adenosine, formed from ATP during cardiac metabolic activity, causes coronary vasodilatation.</li><li>Direct sympathetic effect: alpha-receptor vasoconstriction (seen when beta receptors are blocked). Indirect effect in the intact body: beta-1 raises heart rate and contractility, releasing vasodilator metabolites.</li><li>Parasympathetic influences are minor and weakly vasodilatory.</li></ul></div>
+  <p class="src">Source: Physiology L9 slides (coronary circulation)</p>
+</section>
+
+<section class="sec" id="phys-ihd" data-unit="Physiology">
+  <p class="sec-eyebrow">Physiology · 16</p>
+  <h3>Ischemic heart disease and myocardial infarction</h3>
+  <div class="block mech"><h4>How it works</h4><p>Atherosclerotic plaque narrows the coronary lumen. When demand rises, flow cannot keep up and the client gets angina; when a thrombus blocks at least 75% of the lumen, myocardium dies (MI). The ECG separates them: ST depression in ischemia, ST elevation in infarction.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Ask about effort-related retrosternal pain relieved by rest.</li><li>Report ST elevation in a client with chest pain as consistent with MI.</li><li>Expect investigations: ECG, cardiac enzymes (CK, LDH, troponin), echo, treadmill, thallium, angiography.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An exercise test shows horizontal ST depression: ischemic heart disease.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up ST depression (angina) and ST elevation (MI).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Elevation = Emergency (infarct); Depression = Demand ischemia.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Treatment of IHD includes coronary dilators such as <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">nitrates</span></button>, beta-blockers, angioplasty, stents and bypass surgery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Risk factors of IHD: cigarette smoking, hypertension, diabetes mellitus, increased lipids (cholesterol), lack of exercise, anxiety.</li><li>Angina: retrosternal tightness or pain for a few minutes, often radiating to the inner side of the left arm, precipitated by effort and relieved by rest.</li><li>MI: at least 75% of the coronary lumen blocked by thrombus.</li><li>ECG: ST depression in IHD; ST elevation in MI, in the respective leads.</li><li>Treatment: coronary dilators (nitrates), beta-blockers, angioplasty, stent, bypass surgery.</li></ul></div>
+  <p class="src">Source: Physiology L9 slides (coronary circulation)</p>
+</section>
+<h2 class="unit-h" id="unit-pathology">Pathology</h2>
+
+<section class="sec" id="path-congestion" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 1</p>
+  <h3>Hyperemia and congestion</h3>
+  <div class="block mech"><h4>How it works</h4><p>Both hyperemia and congestion mean more blood in a tissue, with dilated capillaries and a risk of edema. The difference is the direction of the problem: hyperemia is active arterial inflow (red, oxygenated), congestion is passive venous outflow failure (blue, deoxygenated). Chronic left failure or mitral stenosis congests the lungs, producing heart failure cells and brown induration.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Use color to tell them apart: red = hyperemia, dusky blue = congestion.</li><li>Link chronic right-sided failure to generalized congestion and cardiac edema.</li><li>Link chronic left-sided failure and mitral stenosis to pulmonary congestion.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a DVT has a dusky reddish-blue swollen leg: acute localized congestion.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling the red face of exercise or blushing congestion; it is hyperemia.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Hyperemia is Hot and red (active); congestion is Clogged and blue (passive).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Hemosiderin-laden alveolar macrophages are called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">heart failure cells</span></button>.</li><li>Long-standing pulmonary congestion with fibrosis causes <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">brown induration</span></button> of the lung.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Hyperemia: an active process in which arteriolar dilation increases blood flow; tissue turns red (erythema) from oxygenated blood.</li><li>Congestion: a passive process from impaired venous outflow; tissue is dusky reddish-blue (cyanosis) from deoxygenated blood.</li><li>Acute localized congestion: sudden complete venous obstruction (DVT, ligature, twisted pedicle of an ovary) causing rapid edema and hemorrhage.</li><li>Chronic generalized venous congestion is caused by chronic right-sided heart failure; acute generalized congestion by acute heart failure.</li></ul></div>
+  <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
+</section>
+
+<section class="sec" id="path-edema" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 2</p>
+  <h3>Edema: causes and classification</h3>
+  <div class="block mech"><h4>How it works</h4><p>Fluid leaves capillaries when the pushing force rises (hydrostatic pressure), the holding force falls (colloid osmotic pressure), the wall leaks (permeability) or the drain is blocked (lymphatics). Edema fluid may be a transudate, an exudate or lymph.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Match the cause to the mechanism before choosing a treatment focus.</li><li>Press the skin: pitting suggests generalized or venous edema; non-pitting suggests inflammatory or lymphatic edema.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A malnourished client with serum albumin below 1.5 gm% develops nutritional edema from low colloid osmotic pressure.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting lymphatic edema (e.g. filariasis) to pit.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Four ways to flood: push up, pull down, leak, block.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Fluid in the pleural cavity is called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">hydrothorax</span></button>.</li><li>Generalized edema due to renal failure is called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">renal</span></button> edema.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Edema: an abnormal increase in interstitial fluid within tissues; fluid may be transudate, exudate or lymph.</li><li>Causes: increased capillary hydrostatic pressure, decreased plasma colloid osmotic pressure, increased capillary permeability, lymphatic obstruction.</li><li>Hypoproteinemia: total plasma proteins below 2.5 gm% or serum albumin below 1.5 gm%.</li><li>Pitting edema: generalized edema and obstructive venous edema. Non-pitting: inflammatory and lymphatic edema.</li></ul></div>
+  <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
+</section>
+
+<section class="sec" id="path-ischemia-infarct" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 3</p>
+  <h3>Ischemia and infarction</h3>
+  <div class="block mech"><h4>How it works</h4><p>Ischemia is too little arterial supply. Whether it kills tissue depends on speed and collaterals: sudden complete occlusion in an organ with poor collaterals gives an infarct. Infarct color depends on whether blood can seep in: loose tissue, dual supply, venous occlusion or reperfusion give red infarcts; dense end-arterial organs give white ones.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Predict red vs white from the organ: lung, liver, intestine, ovary red; heart, spleen, kidney white.</li><li>Think venous infarction in organs with a single venous outflow (testis, ovary).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>After angioplasty restores flow to an infarcted area, the infarct turns red (reperfusion).</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling a lung infarct white.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Solid organs, end arteries, white (heart, spleen, kidney).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>About <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">99%</span></button> of infarcts result from thrombosis or embolism.</li><li>Infarcts are also classified as septic or <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">bland</span></button> (aseptic).</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Ischemia: deficient arterial blood supply due to partial or complete occlusion of the artery; acute (sudden complete) or chronic (gradual partial).</li><li>Organs with good collateral circulation show no effect; poor collateral circulation leads to infarction (acute) or chronic ischemic changes.</li><li>Infarct: an area of ischemic necrosis from occlusion of the arterial supply or venous drainage; 99% from thrombosis or embolism.</li><li>Red infarct: venous occlusion (ovary), loose tissue (lung), dual circulation (lung, liver, small intestine), reperfusion after angioplasty.</li><li>White infarct: arterial occlusion in solid organs with end-arterial circulation (heart, spleen, kidney); tissue density limits seepage of blood.</li></ul></div>
+  <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
+</section>
+
+<section class="sec" id="path-virchow" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 4</p>
+  <h3>Thrombosis and Virchow&#x27;s triad</h3>
+  <div class="block mech"><h4>How it works</h4><p>Hemostasis depends on the vessel wall, platelets and coagulation factors. Virchow's triad names the three ways it tips into thrombosis: damaged or dysfunctional endothelium, abnormal flow (stasis or turbulence), and blood that clots too easily.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Screen surgical and immobile clients for all three triad factors.</li><li>Separate hereditary (factor V, prothrombin gene, antithrombin III deficiency) from acquired hypercoagulability.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A postoperative client on bed rest has stasis and acquired hypercoagulability: two arms of the triad.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Listing edema mechanisms (permeability, lymphatic obstruction) as causes of thrombosis.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Virchow = Vessel wall, Velocity (flow), Viscosity-like clotting (hypercoagulability).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Turbulence <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">mechanically injures</span></button> endothelial cells.</li><li>DIC is an <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">acquired</span></button> cause of hypercoagulability.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Thrombosis: formation of a compact mass of circulating blood elements inside the cardiovascular system during life.</li><li>Virchow's triad: endothelial injury/dysfunction, alterations in blood flow (stasis or turbulence), hypercoagulability.</li><li>Endothelial dysfunction increases procoagulants (thromboplastin, vWF, PAI) and decreases anticoagulants (thrombomodulin, antithrombin III, NO, PA).</li><li>Stasis reduces inflow of fresh blood containing natural anticoagulants and retards removal of small platelet aggregates.</li><li>Acquired hypercoagulability: prolonged bed rest, surgery, burns, pregnancy, oral contraceptives, disseminated cancer, smoking, DIC. Hereditary: factor V and prothrombin gene mutations, antithrombin III deficiency.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-thrombus-types" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 5</p>
+  <h3>Sites, types and fate of thrombi</h3>
+  <div class="block mech"><h4>How it works</h4><p>Where a thrombus forms depends on local conditions: slow venous flow plus hypercoagulability gives venous (red) thrombi; atherosclerotic arteries give arterial thrombi; stasis in a dilated atrium or over an infarct gives cardiac thrombi. Once formed, a thrombus can dissolve, grow, break off or be organized.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Monitor a client with DVT for pulmonary embolism.</li><li>Watch for propagation: a tail makes detachment more likely.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with mitral stenosis develops an auricular thrombus in the left atrium.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking arterial thrombi are most common. Venous thrombi are.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Veins: slow and sticky; arteries: fast and thick-walled.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Thrombi of infected veins are called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">thrombophlebitis</span></button>.</li><li>Septic thrombi that embolize produce <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">pyemia</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Venous thrombi (phlebothrombosis, red thrombi) are the most common type, associated with stasis and hypercoagulability.</li><li>DVT sites: popliteal, femoral and iliac veins; complication: embolism to the lungs (pulmonary infarction).</li><li>Arterial thrombosis is less common because of rapid flow and the thick elastic arterial wall; most common cause is atherosclerosis (coronary, cerebral, femoral).</li><li>Cardiac thrombi: auricular thrombus in the left atrium in mitral stenosis; mural thrombus in the left ventricle over an infarct; vegetations on valves.</li><li>Fate: dissolution, propagation (a tail liable to detach), embolization, organization and recanalization.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-embolism" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 6</p>
+  <h3>Embolism and pulmonary embolism</h3>
+  <div class="block mech"><h4>How it works</h4><p>An embolus is anything solid, liquid or gas carried away from where it formed. Almost all are thromboemboli, and almost all pulmonary emboli come from leg DVT. What happens next depends on embolus size and the state of the lung.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Suspect PE in a postoperative or immobile client with sudden dyspnea.</li><li>Expect a saddle embolus to cause sudden death from acute right-sided failure.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with heart failure and lung congestion gets a medium embolus: pulmonary infarction.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting a medium embolus in a healthy lung to infarct; it causes hemorrhage only.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Big = dead, medium = depends on the lung, small and many = pulmonary hypertension.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>About <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">60-80%</span></button> of pulmonary emboli are small and clinically silent.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>An embolus is a detached intravascular solid, liquid or gaseous mass carried by the blood to a site distant from its origin.</li><li>Thromboemboli are the most common type (99%); others: fat, parasitic, air or nitrogen, amniotic fluid, tumor, cholesterol and foreign body emboli.</li><li>Pulmonary emboli: 95% originate from deep vein thrombi of the legs; seen in up to 25-30% of DVT patients; 60-80% are small and silent.</li><li>Saddle embolus causes sudden death (acute right failure); medium emboli give hemorrhage in a normal lung or infarction in a congested lung; small repeated emboli give pulmonary hypertension and cor pulmonale.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-systemic-emboli" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 7</p>
+  <h3>Systemic, fat, air and amniotic fluid emboli</h3>
+  <div class="block mech"><h4>How it works</h4><p>Systemic emboli travel in arteries, so they come from the left heart or arteries. A venous embolus reaches the systemic side only through a septal defect (paradoxical). Fat, air and amniotic fluid emboli each have a typical setting.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>After a large MI, check limb pulses: most systemic emboli lodge in the legs.</li><li>Two days after a long bone fracture, watch for fat embolism syndrome.</li><li>During delivery, sudden dyspnea, shock, seizures and bleeding suggest amniotic fluid embolism.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with an atrial septal defect and DVT has a stroke: paradoxical embolism.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Sending a leg DVT embolus to the brain without a septal defect.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Fat after fracture, air after access, amniotic at delivery.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Fat embolism syndrome is fatal in about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">5% to 15%</span></button> of cases.</li><li>Decompression sickness is also called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">Caisson</span></button> disease.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Systemic emboli: 80% from intracardiac thrombi (2/3 left ventricular wall infarcts, 1/3 dilated left atria or vegetations); also aortic aneurysm, ulcerated plaques, paradoxical emboli.</li><li>Paradoxical emboli start as venous emboli but pass through an interatrial or interventricular defect into the systemic circulation.</li><li>Site of arrest: 75% lower extremities, 10% brain.</li><li>Fat embolism: long bone fracture is the most common cause; the syndrome begins 1-3 days after injury with tachypnea, dyspnea, tachycardia, neurologic symptoms, thrombocytopenia and anemia.</li><li>Air embolism needs more than 100 cc of air for a pulmonary effect; causes include neck vein injury, chest wall injury, obstetric or laparoscopic procedures, bypass surgery and decompression sickness.</li><li>Amniotic fluid embolism: 1 in 40,000 deliveries, mortality 80%; sudden dyspnea, cyanosis, shock, seizures, pulmonary edema and DIC.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-arf" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 8</p>
+  <h3>Acute rheumatic fever: pathogenesis and lesions</h3>
+  <div class="block mech"><h4>How it works</h4><p>Weeks after strep throat, antibodies and T cells made against streptococcal M proteins cross-react with heart antigens. Complement and macrophages are activated and Aschoff bodies form in every layer of the heart, giving pancarditis.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Ask about a sore throat 10 days to 6 weeks before.</li><li>Recognize Aschoff bodies and Anitschkow cells as pathognomonic.</li><li>Prompt antibiotic treatment of strep pharyngitis prevents disease.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A 14-year-old with a sore throat 3 weeks ago, fever, nodules and a new apical murmur: biopsy shows fibrinoid necrosis with histiocytes.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the streptococcus infects the heart directly; the damage is immune cross-reaction.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>M protein Mimics heart.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Anitschkow cells are also called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">caterpillar</span></button> cells.</li><li>Rheumatic vegetations overlie foci of <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fibrinoid necrosis</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>ARF is an acute, immunologically mediated, multisystem inflammatory disease a few weeks after group A streptococcal pharyngitis.</li><li>It appears 10 days to 6 weeks after pharyngitis, in about 3% of infected patients, most often in children aged 5-15.</li><li>Antibodies and CD4+ T cells against streptococcal M proteins cross-react with self antigens in the heart.</li><li>Aschoff bodies are pathognomonic: focal necrosis, T lymphocytes and Anitschkow (caterpillar) cells with a slender wavy ribbon of chromatin.</li><li>Pancarditis: fibrinous "bread and butter" pericarditis, myocarditis, and small vegetations along the lines of closure over fibrinoid necrosis (mitral 65%, aortic 25%).</li></ul></div>
+  <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
+</section>
+
+<section class="sec" id="path-jones" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 9</p>
+  <h3>Jones criteria</h3>
+  <div class="block mech"><h4>How it works</h4><p>Because no single test proves rheumatic fever, the Jones criteria combine clinical features with evidence of a recent group A strep infection.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Count majors and minors, then check for strep evidence.</li><li>Diagnose with 2 major, or 1 major + 2 minor, plus strep evidence.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>Chorea + fever + raised ESR + high antibody titer = 1 major + 2 minor with evidence: criteria met.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling arthralgia a major criterion; migratory polyarthritis is major, arthralgia is minor.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Majors spell J-O-N-E-S: Joints, O (carditis, the heart), Nodules, Erythema marginatum, Sydenham chorea.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>A prolonged <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">PR interval</span></button> on ECG is a minor criterion.</li><li>Subcutaneous nodules are firm, painless and found on <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">extensor</span></button> surfaces.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Major: carditis, migratory polyarthritis, Sydenham chorea, erythema marginatum, subcutaneous nodules.</li><li>Minor: fever, arthralgia, previous rheumatic fever, raised ESR, CRP or leukocytosis, prolonged PR interval.</li><li>Evidence of preceding group A strep: positive throat culture or rapid antigen test, or raised or rising streptococcal antibody titer.</li><li>Diagnosis: 2 major, or 1 major and 2 minor, supported by evidence of preceding group A streptococcal infection.</li><li>Migratory polyarthritis of large joints is self-limited with no chronic deformities.</li></ul></div>
+  <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
+</section>
+
+<section class="sec" id="path-rhd" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 10</p>
+  <h3>Chronic rheumatic heart disease and mitral stenosis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Each attack of rheumatic endocarditis heals by fibrosis; repeated infections reactivate it, scarring the valves over decades. A scarred mitral valve narrows (fish mouth), blood dams up behind it in the left atrium and lungs, and the right heart eventually fails.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>In mitral stenosis, monitor for atrial fibrillation, thromboembolism and right heart failure.</li><li>Remember surgery (repair or replacement) has greatly improved the outlook.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A 9-year-old from an endemic area with recurrent fever, lung crackles and an apical diastolic murmur dies of rheumatic heart disease.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting the left ventricle to enlarge in pure mitral stenosis; it is largely unaffected.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Fish mouth valve, flooded lungs, failing right heart.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The mitral valve in chronic RHD looks like a <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fish mouth</span></button> or buttonhole.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Endocarditis of ARF heals by fibrosis; repeated pharyngeal infections reactivate the disease and scar the valves.</li><li>Mitral valve most commonly affected, then aortic; fibrosis of the leaflets leads to stenosis ("fish mouth" or "buttonhole").</li><li>Usually becomes clinically manifest decades after ARF.</li><li>Mitral stenosis: left atrial dilatation (with thrombi), chronic pulmonary venous congestion, lung fibrosis, pulmonary hypertension, chronic right-sided failure; the left ventricle is largely unaffected.</li><li>Other complications: arrhythmias (especially atrial fibrillation), thromboembolism, infective endocarditis.</li></ul></div>
+  <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
+</section>
+
+<section class="sec" id="path-arteriosclerosis" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 11</p>
+  <h3>Arteriosclerosis patterns</h3>
+  <div class="block mech"><h4>How it works</h4><p>Arteriosclerosis is the umbrella term for stiff, thick arteries. Its three patterns differ in which vessel layer and size they hit: intima of large arteries (atherosclerosis), media of muscular arteries (Mönckeberg) or small arteries and arterioles (arteriolosclerosis).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Link arteriolosclerosis to hypertension and diabetes.</li><li>Recognize onion-skinning as hyperplastic arteriolosclerosis.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A diabetic client's renal arterioles are thickened by amorphous protein: hyaline arteriolosclerosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Putting Mönckeberg sclerosis in arterioles.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Athero = intima plaque; Mönckeberg = Media calcium; arteriolo = tiny vessels.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Mönckeberg medial sclerosis occurs in people older than <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">50</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Arteriosclerosis: thickening and loss of elasticity of arterial walls ("hardening of the arteries").</li><li>Atherosclerosis: the most frequent and important pattern.</li><li>Mönckeberg medial sclerosis: calcific deposits in muscular arteries in people older than 50.</li><li>Arteriolosclerosis: small arteries and arterioles, with hypertension and diabetes; hyaline (amorphous proteinaceous wall) and hyperplastic ("onion-skinning").</li></ul></div>
+  <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
+</section>
+
+<section class="sec" id="path-athero" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 12</p>
+  <h3>Atherosclerosis: risk factors, pathogenesis and plaque</h3>
+  <div class="block mech"><h4>How it works</h4><p>In the response-to-injury view, atherosclerosis is chronic inflammation started by endothelial injury. Monocytes enter the intima, smooth muscle cells are recruited, both swallow lipid as foam cells, and smooth muscle proliferation and collagen turn the lesion into a fibrofatty plaque.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Target modifiable risk factors: hyperlipidemia, hypertension, smoking, diabetes.</li><li>Know the lesion sequence: fatty spot, fatty streak, atheroma.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A young client's aorta shows flat yellow foam-cell streaks that do not narrow the lumen: fatty streaks.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking fatty streaks obstruct flow.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Spot (under 1 mm), streak (1 cm, flat), plaque (raised, capped).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The earliest lesion of atherosclerosis is the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fatty spot</span></button>.</li><li>The atheroma's lipid core is covered by a firm white <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fibrous cap</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Atherosclerosis: a chronic inflammatory disease of the arterial wall with intimal atheromas that protrude into the lumen and weaken the media.</li><li>Non-modifiable risk factors: increasing age, male gender, family history. Modifiable: hyperlipidemia (LDL), hypertension, cigarette smoking, diabetes mellitus.</li><li>Response to injury: chronic endothelial injury, endothelial dysfunction with monocyte adhesion, smooth muscle recruitment and macrophage activation, foam cells, then smooth muscle proliferation and collagen deposition.</li><li>Fatty spots (<1 mm, foam cells) are the earliest lesion; fatty streaks (1 cm or longer) are not significantly raised and do not disturb blood flow.</li><li>Atheroma: raised intimal patch with a soft yellow lipid core under a firm white fibrous cap; cells, ECM and lipid.</li></ul></div>
+  <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
+</section>
+
+<section class="sec" id="path-athero-complications" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 13</p>
+  <h3>Complications and sites of atherosclerosis</h3>
+  <div class="block mech"><h4>How it works</h4><p>A plaque causes disease by narrowing a lumen slowly or by changing suddenly: rupture, ulceration or erosion exposes material that triggers thrombosis, and hemorrhage into a plaque can expand or rupture it. Pressure atrophy of the media leads to aneurysm.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Suspect acute plaque change behind a sudden MI or stroke.</li><li>Link each site to its disease: coronary IHD, cerebral stroke, aorta aneurysm, legs gangrene.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with known coronary plaques suddenly has an MI: plaque rupture with thrombosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Blaming calcification for the acute event.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Rupture, bleed, shower, bulge, calcify: the five plaque complications.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Rupture and hemorrhage into a plaque are called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">acute plaque changes</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Common sites: lower abdominal aorta, coronary, popliteal and internal carotid arteries, and the circle of Willis.</li><li>Acute plaque changes: rupture, ulceration or erosion (induces thrombosis), and fissure with hemorrhage into the plaque.</li><li>Other complications: atheroembolism, aneurysm from weakened media, calcification.</li><li>Consequences: ischemic heart disease (coronary), stroke (cerebral), aortic aneurysm (aorta), peripheral vascular disease with gangrene (leg arteries).</li></ul></div>
+  <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
+</section>
+<h2 class="unit-h" id="unit-pharmacology">Pharmacology</h2>
+
+<section class="sec" id="pharm-classes" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 1</p>
+  <h3>Hypertension: definition and drug classes</h3>
+  <div class="block mech"><h4>How it works</h4><p>Blood pressure is cardiac output times peripheral resistance, kept up by volume, the sympathetic system and the renin-angiotensin system. Each drug class removes one of these supports: diuretics (volume), sympatholytics (nerves), RAS drugs (angiotensin), CCBs and vasodilators (vessel tone).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Classify every drug on a client's list before giving it.</li><li>Use the current threshold: 130/80 mm Hg or higher is hypertension.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's readings average 132/82: hypertension by the ACC/AHA and SHA definitions.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Using the old 140/90 threshold.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>-pril = ACE inhibitor, -sartan = ARB, -olol = beta blocker, -dipine = dihydropyridine CCB.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The only renin inhibitor listed is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">aliskiren</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Hypertension is defined as 130/80 mm Hg or higher (ACC/AHA 2023 and Saudi Heart Association).</li><li>Classes: diuretics, calcium channel blockers, drugs acting on the renin-angiotensin system, sympatholytic drugs, vasodilators.</li><li>Drug list: hydrochlorothiazide, indapamide, furosemide, spironolactone (diuretics); clonidine, methyldopa, prazosin, propranolol, labetalol, esmolol (sympathoplegic); hydralazine, nitroprusside, minoxidil, diazoxide, fenoldopam, CCBs (vasodilators); captopril, enalapril, enalaprilat (ACE inhibitors); losartan (ARB); aliskiren (renin inhibitor).</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-diuretics" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 2</p>
+  <h3>Diuretics in hypertension</h3>
+  <div class="block mech"><h4>How it works</h4><p>Diuretics lower pressure first by shrinking plasma volume and cardiac output. Over 4-8 weeks the volume recovers but resistance falls: sodium depletion lowers smooth muscle Na+, which lowers intracellular Ca++ through the Na/Ca exchanger, relaxing arterioles.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Use thiazides first in normal renal function; loop diuretics in CKD or malignant hypertension.</li><li>Add a potassium-sparing diuretic to a thiazide to counteract hypokalemia; spironolactone for hyperaldosteronism.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client 6 weeks into thiazide therapy has normal urine output but a lower blood pressure: peripheral resistance has fallen.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Believing diuretics work only by making urine.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Thiazide first, Loop for kidney failure, K-sparing for K.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Diuretics can <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">enhance</span></button> the hypotensive effects of many antihypertensive agents.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Early: diuretics lower plasma volume and cardiac output. After 4-8 weeks volume and output return toward normal while peripheral vascular resistance falls (arteriolar vasodilation).</li><li>Main mechanism of the vasodilation: depletion of body Na+, lowering smooth muscle Na+ and then intracellular Ca++ via the Na/Ca exchanger.</li><li>Thiazides are first choice; antihypertensive doses are lower than diuretic doses.</li><li>Loop diuretics are preferable in malignant hypertension and chronic kidney disease.</li><li>Potassium-sparing diuretics are used with thiazides to counteract hypokalemia; spironolactone is used in hyperaldosteronism.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-ccb" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 3</p>
+  <h3>Calcium channel blockers</h3>
+  <div class="block mech"><h4>How it works</h4><p>CCBs block L-type Ca++ channels, so less calcium enters smooth muscle (and, for verapamil and diltiazem, heart muscle). Dihydropyridines act on vessels only, so heart rate may rise; verapamil and diltiazem also slow the heart.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Expect a possible rise in heart rate with nifedipine and a fall with verapamil or diltiazem.</li><li>Use nicardipine for hypertensive emergencies; avoid short-acting nifedipine.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client starting nifedipine has a slightly faster pulse.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting nifedipine to slow the heart like verapamil.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dihydropyridine = Dilates only; Verapamil = Ventricle too.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>CCBs are first-choice drugs and are more effective in <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">African</span></button> patients.</li><li>Nicardipine has <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">very high</span></button> vascular selectivity.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>CCBs bind the L-type voltage-gated Ca++ channel from the inner side of the membrane.</li><li>Verapamil and diltiazem block Ca++ channels in heart and vessels; dihydropyridines (nifedipine, nicardipine) block vessels only.</li><li>Heart rate: increased with dihydropyridines; unchanged or decreased with verapamil and diltiazem. Postural hypotension is negligible.</li><li>First-choice drugs, more effective in African patients; nicardipine for hypertensive emergencies; short-acting nifedipine increases mortality.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-ras" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 4</p>
+  <h3>Renin inhibitors, ACE inhibitors and ARBs</h3>
+  <div class="block mech"><h4>How it works</h4><p>Renin turns angiotensinogen into angiotensin I, ACE turns angiotensin I into angiotensin II (and breaks down bradykinin), and angiotensin II acts on AT1 receptors. Blocking any step lowers angiotensin II effects; the step blocked decides the side effects: ACE inhibitors raise bradykinin (cough, angioedema), ARBs do not.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Monitor potassium, renal function, first-dose blood pressure and the airway (angioedema).</li><li>Question ACE inhibitors and ARBs in pregnancy and bilateral renal artery stenosis.</li><li>Switch to an ARB when an ACE inhibitor causes cough.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on captopril develops a dry cough and is switched to losartan.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking losartan inhibits ACE.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>ACE inhibitors Accumulate bradykinin; ARBs Avoid it.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The ACE inhibitor given intravenously is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">enalaprilat</span></button>.</li><li>ARBs selectively block <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">AT1</span></button> receptors.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Aliskiren competitively inhibits renin: angiotensin I, II and aldosterone fall and renin rises; hyperkalemia when combined with ACE inhibitors or ARBs.</li><li>ACE inhibitors block conversion of angiotensin I to II and raise bradykinin; less angiotensin II removes negative feedback, so renin rises.</li><li>Captopril, lisinopril and enalaprilat are active drugs; enalapril, benazepril and fosinopril are prodrugs activated by the liver; enalaprilat is the IV form.</li><li>ACE inhibitor adverse effects: first-dose hypotension, dry cough (bradykinin, prostaglandins or substance P), renal insufficiency in bilateral renal artery stenosis, hyperkalemia, angioedema; pregnancy category D.</li><li>ARBs (losartan) selectively block AT1 receptors, inhibit angiotensin more completely and have no effect on bradykinin; contraindicated in bilateral renal artery stenosis and pregnancy.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-central" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 5</p>
+  <h3>Centrally acting sympatholytics</h3>
+  <div class="block mech"><h4>How it works</h4><p>Clonidine and methyldopa act in the brain: they stimulate central alpha-2 (and, for clonidine, imidazoline) receptors that turn down sympathetic outflow. Methyldopa first has to be converted to methylnorepinephrine inside neurons.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Teach clients on clonidine never to stop it suddenly.</li><li>Prefer methyldopa in pregnancy.</li><li>Expect sedation; check for a positive Coombs' test with methyldopa.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on clonidine wants to stop abruptly; the nurse warns of a hypertensive crisis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking methyldopa is unsafe in pregnancy.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Clonidine: don't Cut it suddenly. Methyldopa: Mothers.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Transdermal clonidine causes skin eruption in up to <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">20%</span></button> of clients.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Clonidine and methyldopa are alpha-2 receptor agonists; methyldopa is a false neurotransmitter converted to methylnorepinephrine; clonidine also acts on imidazoline receptors in the medulla.</li><li>The final common effect is a decrease in central adrenergic tone.</li><li>Second-choice drugs; methyldopa is often preferred in pregnancy.</li><li>Adverse effects: sedation, depression, bradycardia, AV block, sexual dysfunction; clonidine withdrawal can cause a hypertensive crisis; methyldopa can cause a positive Coombs' test.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-alpha-beta" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 6</p>
+  <h3>Alpha blockers, beta blockers and alpha-beta blockers</h3>
+  <div class="block mech"><h4>How it works</h4><p>Alpha-1 blockers dilate arterioles and veins, so standing can drop the pressure, especially after the first dose. Beta blockers lower cardiac output and renin release and leave veins alone, so they do not cause postural hypotension but can slow the heart, narrow airways and mask or cause low glucose.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>After a first prazosin dose, monitor for postural hypotension.</li><li>Choose a beta-1 selective drug (atenolol, bisoprolol, metoprolol) when airways are a concern.</li><li>Never stop a beta blocker abruptly: rebound hypertension.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with heart failure and hypertension is treated with carvedilol.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting postural hypotension from a pure beta blocker.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>A for alpha-1 and Arise-dizzy; B for beta and Bradycardia, Bronchospasm, Blood sugar low.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>IV <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">labetalol</span></button> is used for hypertensive emergencies.</li><li>Peripheral edema with alpha blockers after chronic treatment is due to <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">sodium and water</span></button> retention.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Prazosin and doxazosin selectively block alpha-1 receptors, dilating resistance and capacitance vessels; postural hypotension after the first dose ("first-dose phenomenon").</li><li>Beta blockers lower cardiac output (cardiac beta-1) and inhibit renin release (juxtaglomerular beta-1); they do not cause postural hypotension.</li><li>Selective beta-1: atenolol, bisoprolol, metoprolol. Non-selective: propranolol, penbutolol, timolol.</li><li>Beta-blocker adverse effects: bradycardia, rebound hypertension on abrupt withdrawal, bronchoconstriction, insomnia, depression, hypoglycemia, sexual dysfunction.</li><li>Labetalol and carvedilol block alpha and beta; labetalol for hypertension in pregnancy and IV in emergencies; carvedilol for heart failure.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-vasodilators" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 7</p>
+  <h3>Direct vasodilators</h3>
+  <div class="block mech"><h4>How it works</h4><p>Direct vasodilators relax vessel smooth muscle by different routes: NO (nitroprusside), K+ channel opening (minoxidil, diazoxide), D1 activation (fenoldopam) or an uncertain mechanism (hydralazine). Their toxicities are drug-specific and well worth memorizing.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>During nitroprusside infusion, watch for cyanide toxicity.</li><li>Check glucose with diazoxide, hair growth with minoxidil, lupus-like symptoms with high-dose hydralazine.</li><li>Question fenoldopam in glaucoma, angina or hypokalemia.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on minoxidil notices new hair growth: hypertrichosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting diazoxide to cause diuresis like a thiazide.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Nitroprusside: Nitric oxide and cyaNide. Minoxidil: More hair. Diazoxide: Diabetes-like sugar.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Nitroprusside is metabolized by red blood cells, releasing cyanide that becomes <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">thiocyanate</span></button>.</li><li>Hydralazine is combined with isosorbide mononitrate in <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">heart failure</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Nitroprusside: arterioles and veins, nitric oxide; metabolized by red cells releasing cyanide (to thiocyanate); half-life about 2 minutes, continuous infusion; for emergencies, severe heart failure, controlled hypotension.</li><li>Hydralazine: arterioles, uncertain mechanism; headache, palpitations, flushing; immunological lupoid syndrome (up to 20% at very high doses).</li><li>Minoxidil: arteriolar K+ channel opener, a prodrug; salt and water retention, tachycardia, hypertrichosis; also used for baldness.</li><li>Diazoxide: K+ channel opener without diuresis (lacks a sulfonamide group); salt and water retention, hyperglycemia; for hypertensive emergencies.</li><li>Fenoldopam: IV D1 agonist, renal and mesenteric vasodilation and natriuresis; reflex tachycardia, raised intraocular pressure, low potassium; contraindicated in angina, glaucoma and hypokalemia.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+<h2 class="unit-h" id="unit-biochemistry">Biochemistry</h2>
+
+<section class="sec" id="bio-lipids-chd" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 1</p>
+  <h3>Blood lipids and coronary heart disease</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cholesterol travels in blood packed in lipoproteins. LDL carries it to tissues and raises coronary risk; HDL is associated with lower risk. Lowering LDL by diet or drugs lowers risk.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Encourage diet control and expect a 10-20% fall; expect 30-40% with statins.</li><li>Read a high HDL as protective.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with high LDL asks whether diet alone is enough: it lowers LDL by about 10-20%.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Treating all cholesterol as bad: high HDL lowers risk.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>LDL = Lousy, HDL = Helpful.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Elevated <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">LDL</span></button> cholesterol increases the risk of CHD.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Total blood cholesterol comes from diet and endogenous synthesis and is carried by lipoproteins, especially LDL and HDL.</li><li>CHD risk rises with total and LDL cholesterol; high HDL-cholesterol is associated with decreased risk.</li><li>Diet control lowers TC and LDL-C by 10-20%; statins lower them by 30-40%.</li></ul></div>
+  <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
+</section>
+
+<section class="sec" id="bio-fats" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 2</p>
+  <h3>Types of dietary fat and their effects</h3>
+  <div class="block mech"><h4>How it works</h4><p>A fat's effect depends on its fatty acids: saturation, the number and position of double bonds, and cis or trans shape. Omega numbers count from the methyl end to the first double bond.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Advise limiting saturated and trans fats.</li><li>Suggest olive oil (MUFA) and fatty fish (omega-3).</li><li>Teach the label clue "partially hydrogenated".</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client switches butter for olive oil: LDL falls and HDL rises.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking omega-3 mainly lowers LDL; its main effect is on triacylglycerol, arrhythmia, thrombosis and inflammation.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>SMASH fish for omega-3: salmon, mackerel, anchovies, sardines, herring.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Trans fats should be under <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">1%</span></button> of energy (under 2.2 g per day on 2000 kcal).</li><li>EPA has <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">20</span></button> carbons and 5 double bonds; DHA has 22 carbons and 6.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Saturated fats (no double bonds; dairy, meat, coconut and palm oils) raise TC and LDL-C and CHD risk.</li><li>Monounsaturated fats (one double bond; olive oil, oleic acid, omega-9) lower TC and LDL-C and raise HDL-C when substituted for saturated fats.</li><li>Omega-6 fats (first double bond at carbon 6 from the methyl end; corn, sesame, cottonseed, sunflower oils) lower TC and LDL-C but also lower HDL-C and are proinflammatory.</li><li>Omega-3 fats suppress arrhythmia, reduce blood triacylglycerol, decrease thrombosis and inflammation, with little effect on LDL-C and HDL-C.</li><li>Trans fats are chemically unsaturated but behave like saturated fats: they raise LDL-C and lower HDL-C; formed by partial hydrogenation of vegetable oils (margarine).</li></ul></div>
+  <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
+</section>
+
+<section class="sec" id="bio-cholesterol-sterols" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 3</p>
+  <h3>Dietary cholesterol, plant sterols and cholesterol-lowering factors</h3>
+  <div class="block mech"><h4>How it works</h4><p>Dietary cholesterol matters less than the fat mix. Plant sterols compete with cholesterol in the gut, so less is absorbed and LDL falls.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Correct a client who focuses only on dietary cholesterol.</li><li>Suggest plant-sterol margarines, fiber and MUFA.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client says eaten cholesterol matters more than fat type: needs further teaching.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking plant foods contain cholesterol.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Cholesterol only comes with a face (animal products).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Plant sterols reduce LDL by inhibiting intestinal <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">absorption</span></button> of cholesterol.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Dietary cholesterol is found only in animal products; its effect on blood cholesterol is less important than the amount and type of fatty acids.</li><li>Plant sterols reduce LDL-cholesterol by inhibiting intestinal absorption of cholesterol.</li><li>Dietary factors that decrease blood cholesterol: omega-6 PUFA, MUFA, antioxidants (beta carotene, vitamins E and C), plant sterols, vegetable fiber, large-dose vitamin B3.</li></ul></div>
+  <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
+</section>
+
+<section class="sec" id="bio-ros" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 4</p>
+  <h3>Free radicals, ROS and RNS</h3>
+  <div class="block mech"><h4>How it works</h4><p>A free radical has an unpaired outer electron and steals one from the nearest molecule, starting chain damage to lipids, proteins and DNA. Non-radicals have no unpaired electron but are strong oxidants. Damage occurs when oxidants outrun antioxidants.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Classify each species as radical or non-radical.</li><li>Separate endogenous (metabolism, phagocytosis) from exogenous (drugs, radiation, smoke) sources.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A smoker has an exogenous source of free radicals in cigarette smoke.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling H2O2 a radical.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Radicals end with a dot: O2.-, OH., NO.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Peroxynitrite is a reactive nitrogen <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">non-radical</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Oxidative stress: an imbalance favoring oxidants and/or disfavoring antioxidants, potentially leading to damage.</li><li>A free radical is a molecule with an unpaired electron in an outer valence shell; it plucks an electron from the nearest molecule.</li><li>ROS radicals: superoxide, hydroxyl, peroxyl. ROS non-radicals: hydrogen peroxide, hypochlorous acid, ozone.</li><li>RNS radicals: nitric oxide, nitrogen dioxide. RNS non-radical: peroxynitrite.</li><li>Endogenous sources: electron leak from the respiratory chain, oxidases (xanthine oxidase), prostaglandin synthesis, NO from arginine, phagocytosis. Exogenous: drug metabolism (halothane, cytochrome P450), ionizing radiation, cigarette smoke.</li></ul></div>
+  <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
+</section>
+
+<section class="sec" id="bio-burst-no" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 5</p>
+  <h3>Respiratory burst, nitric oxide and antioxidants</h3>
+  <div class="block mech"><h4>How it works</h4><p>Reactive species are also tools. Neutrophils make superoxide, H2O2 and hypochlorous acid to kill bacteria. Endothelial NO dilates vessels. Antioxidant enzymes and nutrients keep the balance.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Link sepsis and inflammation to large iNOS output.</li><li>Explain nitroglycerin works by becoming NO.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's angina is relieved by nitroglycerin, which is metabolized to nitric oxide.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up constitutive eNOS (low, steady) with inducible iNOS (large, prolonged).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>i for inducible and inflammatory.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The enzyme that converts H2O2 and chloride into hypochlorous acid is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">myeloperoxidase</span></button>.</li><li>NO synthase uses <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">L-arginine</span></button> as its precursor.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Respiratory burst: NADPH oxidase converts O2 to superoxide; superoxide dismutase makes H2O2; myeloperoxidase converts H2O2 and chloride to hypochlorous acid, which kills bacteria.</li><li>NO is a free radical gas with a half-life of seconds, made from L-arginine by NO synthase.</li><li>eNOS and nNOS are constitutive and make low levels of NO; iNOS (macrophages, neutrophils; induced by bacterial toxins, TNF, cytokines) makes large amounts for hours or days.</li><li>eNOS-derived NO improves vascular dilation and perfusion; nitroglycerin is metabolized to NO and relieves coronary spasm in angina.</li><li>Enzymatic antioxidants: superoxide dismutase, catalase, glutathione peroxidase. Nutrient antioxidants: vitamins A, E, C, selenium. Metabolic: glutathione, ceruloplasmin, albumin, transferrin, ferritin, uric acid.</li></ul></div>
+  <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
+</section>
+
+<section class="sec" id="bio-oxldl" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 6</p>
+  <h3>Oxidized LDL and the stages of atherosclerosis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Oxidation turns LDL into a danger signal. Oxidized LDL in the intima activates endothelium to recruit monocytes; macrophages take it up by scavenger receptors and become foam cells. Smooth muscle cells build a cap, dead cells pile up into a necrotic core, and a vulnerable plaque can rupture.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Trace the stages in order from endothelial dysfunction to thrombosis.</li><li>Link impaired efferocytosis to the necrotic core.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's plaque ruptures and exposes thrombogenic material, causing an MI.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking VCAM-1 is on macrophages; it is on activated endothelial cells.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dysfunction, Oxidation, Recruitment, Foam, Cap, Core, Clot.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Monocytes are captured by <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">VCAM-1</span></button> and ICAM-1 on activated endothelium.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Free radicals oxidize LDL cholesterol; oxidized LDL triggers inflammation and plaque buildup.</li><li>Stages: endothelial dysfunction, LDL retention and oxidation in the intima, recruitment of monocytes and T cells by VCAM-1, ICAM-1 and MCP-1, foam cell formation (fatty streak), SMC migration and fibrous cap, necrotic core and calcification, rupture or erosion with thrombosis.</li><li>Macrophages engulf oxidized LDL via scavenger receptors and become lipid-laden foam cells.</li><li>Failure to clear dead macrophages and SMCs (impaired efferocytosis) enlarges an acellular necrotic core.</li></ul></div>
+  <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
+</section>
+<h2 class="unit-h" id="unit-microbiology">Microbiology</h2>
+
+<section class="sec" id="micro-ie-types" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 1</p>
+  <h3>Infective endocarditis: classification and organisms</h3>
+  <div class="block mech"><h4>How it works</h4><p>Infective endocarditis is classified by speed (acute vs subacute), by the valve (native, prosthetic, device) and by the route (IV drug use). Virulent organisms attack healthy valves fast; less virulent ones need a damaged valve and take weeks.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Match setting to organism: IV drug use = tricuspid, S. aureus; prosthetic valve = S. epidermidis or S. aureus; damaged valve after dental work = viridans.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client who injects drugs has tricuspid vegetations and Gram-positive cocci in clusters: S. aureus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Assuming subacute IE affects healthy valves.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Acute = Aureus, Aggressive; Subacute = Slow, Strep viridans.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Left-sided endocarditis accounts for more than <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">95%</span></button> of cases.</li><li>Early prosthetic valve endocarditis develops within <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">12</span></button> months of surgery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>IE: infection of the endocardium and its valves (native or prosthetic) with septic vegetations; left-sided in over 95% of cases.</li><li>Acute IE: rapid (hours to days), mostly healthy valves, severe symptoms; S. aureus, S. pyogenes; mitral and aortic valves.</li><li>Subacute IE: slow (weeks to months), preexisting valve disease, low-grade fever, weight loss; viridans streptococci, enterococci, HACEK.</li><li>Prosthetic valve IE: early (within 12 months, intraoperative contamination) or late; mostly S. epidermidis and S. aureus.</li><li>IV drug use IE: mainly the tricuspid valve; S. aureus, Pseudomonas aeruginosa, Candida.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-organisms" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 2</p>
+  <h3>Specific organisms and their associations</h3>
+  <div class="block mech"><h4>How it works</h4><p>Each organism hints at its source: skin and devices (staphylococci), mouth (viridans), bowel (S. bovis), urinary or GI tract (enterococci), pharynx (HACEK).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>After S. bovis endocarditis, expect evaluation of the colon.</li><li>Think HACEK when cultures stay negative without special media.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An elderly client gets endocarditis after a urinary procedure: Enterococcus faecalis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the K in HACEK is Klebsiella (it is Kingella).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>HACEK = Haemophilus, Aggregatibacter, Cardiobacterium, Eikenella, Kingella.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Streptococcus bovis is associated with <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">colorectal carcinoma</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>S. aureus: most common overall, IV drug users and healthcare-associated IE; acute, rapid valve destruction.</li><li>Streptococcus bovis is associated with colorectal carcinoma or GI lesions.</li><li>Enterococcus faecalis: elderly and hospital-acquired IE, after genitourinary or gastrointestinal procedures.</li><li>HACEK (Haemophilus, Aggregatibacter, Cardiobacterium hominis, Eikenella corrodens, Kingella): slow-growing fastidious Gram-negative bacilli of pharyngeal flora; subacute IE with negative cultures unless special media are used.</li><li>Cardiac device IE (pacemaker, ICD) usually comes from skin contamination at implantation; mostly staphylococci.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-patho" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 3</p>
+  <h3>Pathophysiology of infective endocarditis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Three things must meet: a damaged valve surface with a sterile platelet-fibrin clot, bacteria in the blood, and bacteria able to stick. Inside the vegetation bacteria hide from phagocytes and antibiotics, shed into the blood and break off as emboli.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Ask about recent dental, skin or invasive procedures (transient bacteremia).</li><li>Watch for embolic infarcts and abscesses in brain, kidney, spleen and lung.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with valve disease develops a vegetation after a dental procedure.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking antibiotics reach organisms in vegetations easily.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Injury, bacteremia, adherence, vegetation.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Viridans streptococci adhere using <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">dextran</span></button>.</li><li>Immune complex deposition can cause <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">glomerulonephritis</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>IE needs endothelial injury, bacteremia and microbial adherence leading to vegetation formation.</li><li>Damaged valvular endothelium collects platelets and fibrin, forming a sterile microthrombus (sterile vegetation).</li><li>Adherence factors: S. aureus clumping factor and fibronectin-binding protein; viridans streptococci dextran; E. faecalis teichoic acid; Gram-negatives pili.</li><li>Vegetations contain fibrin, platelets, bacteria and inflammatory cells; they are friable and embolize, and the bacteria are protected from phagocytes and antibiotics.</li><li>Consequences: valve destruction with regurgitation and heart failure, septic emboli with infarcts or abscesses, immune complex glomerulonephritis and vasculitis.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-signs" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 4</p>
+  <h3>Clinical features of infective endocarditis</h3>
+  <div class="block mech"><h4>How it works</h4><p>The extracardiac signs come from septic emboli and immune-mediated injury: small hemorrhages and lesions in nails, skin and retina.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Inspect nails, palms, soles, finger pads and retina in suspected IE.</li><li>Separate IE signs from rheumatic fever signs (erythema marginatum, extensor nodules, chorea).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client has painful nodules on the finger pads: Osler nodes.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up Janeway (painless) and Osler (painful).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Osler = Ouch; Janeway = painless palms.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Roth spots are <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">retinal hemorrhages</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Acute: high fever and sepsis. Subacute: mild fever, headache, myalgia, weight loss, night sweats. Cardiac: murmur, heart failure.</li><li>Splinter hemorrhages: petechial hemorrhages under the fingernails.</li><li>Janeway lesions: small, nontender, erythematous lesions on palms and soles. Osler nodes: painful nodules on the pads of fingers and toes.</li><li>Roth spots: retinal hemorrhages.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-dx-tx" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 5</p>
+  <h3>Diagnosis, treatment and prophylaxis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Organisms shed continuously from the vegetation, so blood cultures catch them, but only if taken before antibiotics. Empiric treatment starts right after cultures and is narrowed when results arrive. Prophylaxis protects high-risk valves before procedures.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Draw three sets of blood cultures from different sites before the first antibiotic.</li><li>Anticipate vancomycin + cefepime for native valves; add gentamicin + rifampin for prosthetic valves.</li><li>Give prophylaxis 30-60 minutes before the procedure; use azithromycin or doxycycline if penicillin-allergic.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a prosthetic valve and penicillin allergy gets azithromycin before a dental extraction.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the first antibiotic dose before cultures.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Culture first, cure second.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Fastidious organisms in culture-negative IE are confirmed by serology or <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">PCR</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Blood cultures are the gold standard: three sets from different venipuncture sites before treatment.</li><li>Culture-negative IE: prior antibiotics, fastidious bacteria (Coxiella burnetii, Bartonella, Brucella, HACEK; confirm by serology or PCR), fungal infection.</li><li>Empiric therapy once cultures are drawn: native valve vancomycin + cefepime; prosthetic valve vancomycin + cefepime + gentamicin + rifampin; then targeted therapy.</li><li>Prophylaxis before dental or invasive procedures in high-risk clients, 30-60 minutes before: amoxicillin, ampicillin or cefazolin; if penicillin-allergic, a macrolide (azithromycin) or doxycycline.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-lab-id" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 6</p>
+  <h3>Laboratory identification of IE organisms</h3>
+  <div class="block mech"><h4>How it works</h4><p>Shape and arrangement split staphylococci (clusters) from streptococci (chains). Then catalase, coagulase, hemolysis, optochin and bile solubility separate the species.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Coagulase positive = S. aureus; coagulase negative = S. epidermidis.</li><li>Alpha hemolytic: optochin sensitive and bile soluble = pneumococcus; resistant and insoluble = viridans.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A blood culture shows Gram-positive cocci in clusters that are coagulase positive: S. aureus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up viridans and pneumococcus, both alpha hemolytic.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Pneumococcus is Optochin-sensitive: O-P.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>S. aureus forms golden yellow colonies and ferments <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">mannitol</span></button>.</li><li>Haemophilus grows on <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">chocolate</span></button> agar.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.</li><li>S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.</li><li>Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.</li><li>S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.</li><li>S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+<h2 class="unit-h" id="unit-embryology">Embryology</h2>
+
+<section class="sec" id="emb-arches" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 1</p>
+  <h3>Formation and derivatives of the aortic arches</h3>
+  <div class="block mech"><h4>How it works</h4><p>In the 4th week, paired aortic arch vessels link the aortic sac to the dorsal aortae. Some disappear and others are remodeled into the adult great arteries; the recurrent laryngeal nerves hook around the 6th arches, so their adult course depends on which arch segments survive.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Memorize arch by arch: 1 maxillary, 2 stapedial, 3 carotids, 4 aortic arch (left) and right subclavian (right), 5 none, 6 pulmonary arteries and ductus.</li><li>Protect the left recurrent laryngeal nerve during ductus surgery.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>During PDA ligation, the left recurrent laryngeal nerve is at risk because it hooks around the ductus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up the 1st (maxillary) and 2nd (stapedial) arch remnants.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>1-2 small leftovers, 3 Carotid (C is the 3rd letter), 4 Systemic (aorta, subclavian), 5 gone, 6 Pulmonary.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The right recurrent laryngeal nerve hooks around the proximal part of the right <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">subclavian</span></button> artery.</li><li>The distal part of the left 6th arch forms the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">ductus arteriosus</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>At the 4th week two primitive aortae appear, each with a ventral aorta, a dorsal aorta and a connecting segment; the ventral aortae fuse into the aortic sac with right and left horns.</li><li>1st arch: disappears, remnant forms the maxillary arteries. 2nd arch: disappears, remnant forms the stapedial arteries. 5th arch: disappears completely.</li><li>3rd arch: proximal parts form the common carotid arteries; distal parts join the dorsal aorta to form the internal carotid arteries. The external carotid is a new bud from the junction.</li><li>Left 4th arch: part of the arch of the aorta between the left common carotid and left subclavian. Right 4th arch: proximal part of the right subclavian artery.</li><li>6th arch: left proximal forms the left pulmonary artery and left distal forms the ductus arteriosus; right proximal forms the right pulmonary artery and right distal degenerates.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+
+<section class="sec" id="emb-sac-dorsal" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 2</p>
+  <h3>Aortic sac, dorsal aorta and the origin of the great arteries</h3>
+  <div class="block mech"><h4>How it works</h4><p>The aortic sac, its horns and the dorsal aortae each contribute a segment to the adult vessels. Reading the arch of the aorta from proximal to distal walks through sac, left horn, left 4th arch and left dorsal aorta.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Answer origin questions by locating the segment first: brachiocephalic = right horn; left subclavian = 7th intersegmental artery; right subclavian = right 4th arch + right dorsal aorta at the 7th intersegmental.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A review sheet asks for the origin of the brachiocephalic artery: the right horn of the aortic sac.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the common carotid to the right horn.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Right horn = brachiocephalic; left horn = the bit of arch next to it.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The common dorsal aorta forms the abdominal aorta and the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">median sacral</span></button> artery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Aortic sac: arch of the aorta proximal to the brachiocephalic artery. Left horn: arch between the brachiocephalic and left common carotid. Right horn: brachiocephalic artery.</li><li>Right dorsal aorta: cranial to the 3rd arch forms the distal internal carotid; at the 7th intersegmental artery forms the distal right subclavian; the rest degenerates.</li><li>Left dorsal aorta: at the 7th intersegmental artery forms the subclavian; between the 4th and 6th arches forms the distal arch of the aorta; caudal to the 6th arch forms the descending thoracic and abdominal aorta.</li><li>Arch of the aorta from proximal to distal: aortic sac, left horn, left 4th arch, left dorsal aorta between the 4th and 6th arches.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+
+<section class="sec" id="emb-anomalies" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 3</p>
+  <h3>Anomalies of the aortic arches</h3>
+  <div class="block mech"><h4>How it works</h4><p>Each anomaly is a normal step that failed: the ductus did not close (PDA), the right side persisted instead of the left (right arch), both persisted (double arch, a ring), or a segment narrowed (coarctation).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Suspect a double arch in an infant with dyspnea and dysphagia.</li><li>Classify coarctation by where it sits relative to the ductus.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An infant with stridor and feeding difficulty has a vascular ring: double aortic arch.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up right arch (one arch on the wrong side) with double arch (two arches).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>PRE-ductal: before the duct, duct oPEN.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>A patent ductus connects the left pulmonary artery to the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">arch of the aorta</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Patent ductus arteriosus: a patent duct between the left pulmonary artery and the arch of the aorta; associated with aortic stenosis, pulmonary stenosis and Fallot's tetralogy.</li><li>Right arch of aorta: develops from the right dorsal aorta and right 4th arch.</li><li>Double arch of aorta: persistence of the distal right dorsal aorta; a vascular ring around the trachea (dyspnea) and esophagus (dysphagia).</li><li>Coarctation: constriction of the aorta distal to the left subclavian. Postductal: distal to the ductus, ductus usually closed. Preductal: proximal to the ductus, ductus open.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+
+<section class="sec" id="emb-veins" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 4</p>
+  <h3>Development of the veins</h3>
+  <div class="block mech"><h4>How it works</h4><p>At the 5th week three pairs of veins (umbilical, vitelline, cardinal) drain into the sinus venosus. Vitelline veins build the gut's venous drainage, umbilical veins become ligaments after birth, and the cardinal veins become the systemic veins.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Sort derivatives by vein: vitelline = portal and SMV; anterior cardinal = upper body; posterior cardinal = IVC and lower body veins.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A nurse traces the ligamentum teres back to the obliterated left umbilical vein.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the IVC to the vitelline veins.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Vitelline = Viscera; Anterior cardinal = Above; Posterior cardinal = below.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The cardinal veins are the main venous drainage of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fetus</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>At the 5th week each horn of the sinus venosus receives the umbilical, vitelline and common cardinal veins.</li><li>Vitelline veins form the portal and superior mesenteric veins. After birth the ductus venosus becomes the ligamentum venosum and the left umbilical vein the ligamentum teres.</li><li>Right common cardinal vein: SVC inside the pericardium. Left common cardinal vein: oblique vein of the left atrium.</li><li>Right anterior cardinal: SVC outside the pericardium, right brachiocephalic and right internal jugular veins. Left anterior cardinal: left superior intercostal, left brachiocephalic and left internal jugular veins.</li><li>Posterior cardinal veins: IVC, common iliac, suprarenal, testicular or ovarian, and renal veins.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

@@ -1,0 +1,159 @@
+"""Mastery Study Guide part: Anatomy.
+
+SECTIONS: one section per concept, in lecture order. "key" holds the Key ideas box;
+every fact on a linked concept card must appear in its section (build-guide checks).
+PROSE fills mechanism, priority actions, patient example, trap, memory trick and
+tap-to-reveal blanks ([[answer]])."""
+
+SECTIONS = [
+    {"id": "anat-coronary", "unit": "Anatomy", "title": "Coronary arteries: origin, course and territories", "source": "Anatomy L4 slides",
+     "key": [
+         "Right coronary artery: from the right (anterior) aortic sinus; left coronary artery: from the left (anterior) aortic sinus.",
+         "LAD runs in the anterior interventricular groove and supplies the sternocostal surface of both ventricles, the anterior 2/3 of the interventricular septum and the A-V bundle.",
+         "The posterior interventricular artery (PDA) runs in the posterior interventricular groove and supplies the diaphragmatic surface of both ventricles and the posterior 1/3 of the septum.",
+         "Artery to the SA node: RCA 65%, circumflex 35%. Artery to the AV node: RCA 80%, circumflex 20%.",
+     ]},
+    {"id": "anat-dominance", "unit": "Anatomy", "title": "Coronary dominance", "source": "Anatomy L4 slides",
+     "key": [
+         "Co-dominance (balanced) 70%: the right coronary has the posterior interventricular branch and the circumflex has a branch to the diaphragmatic surface of the left ventricle.",
+         "Right dominance (15%): the posterior interventricular artery is a large branch.",
+         "Left dominance (15%): the posterior interventricular artery is a large branch of the circumflex coronary.",
+     ]},
+    {"id": "anat-cardiac-veins", "unit": "Anatomy", "title": "Venous drainage of the heart", "source": "Anatomy L4 slides",
+     "key": [
+         "Coronary sinus: lies between the left atrium and the diaphragmatic surface and ends in the posterior wall of the right atrium.",
+         "Tributaries of the coronary sinus: great, middle and small cardiac veins, posterior vein of the left ventricle and oblique vein of the left atrium.",
+         "Anterior cardiac veins arise from the right ventricle and end in the anterior wall of the right atrium.",
+         "Venae cordis minimi drain directly into the cardiac chambers, especially on the right side.",
+         "The great cardiac vein runs with the LAD in the anterior interventricular groove; the middle cardiac vein runs with the posterior interventricular artery.",
+     ]},
+    {"id": "anat-surface", "unit": "Anatomy", "title": "Surface anatomy of the heart and valves", "source": "Anatomy L4 slides",
+     "key": [
+         "Point A: lower border of the left 2nd costal cartilage, 0.5 inch from the sternum; point B: upper border of the right 3rd costal cartilage, 0.5 inch from the sternum.",
+         "Point C: right 6th costal cartilage, 0.5 inch from the sternum; point D: left 5th intercostal space, 3.5 inches from the midline.",
+         "Borders: upper A-B, right B-C, lower C-D, left D-A.",
+         "Valves (PAMT): pulmonary behind the left 3rd costal cartilage; aortic opposite the left 3rd intercostal space; mitral opposite the left 4th costal cartilage; tricuspid opposite the left 4th intercostal space behind the midline of the sternum.",
+     ]},
+    {"id": "anat-pci", "unit": "Anatomy", "title": "Coronary angiography and PCI", "source": "Anatomy L4 slides",
+     "key": [
+         "A catheter is passed retrograde from the radial or femoral artery into the ascending aorta under local anesthesia.",
+         "Radiopaque contrast is injected into the orifice of each coronary artery to photograph all segments of each vessel.",
+         "A stent may be placed to open vessels narrowed by plaque buildup (atherosclerosis).",
+     ]},
+    {"id": "anat-carotid", "unit": "Anatomy", "title": "Common, external and internal carotid arteries", "source": "Anatomy L5 slides",
+     "key": [
+         "Right common carotid: from the brachiocephalic artery behind the sternoclavicular joint; left common carotid: from the arch of the aorta.",
+         "The common carotid ascends in the carotid sheath, related medially to the trachea and larynx and laterally to the IJV, and ends at the upper border of the thyroid cartilage (C3-4).",
+         "The external carotid ends in the parotid gland behind the neck of the mandible by dividing into the maxillary and superficial temporal arteries.",
+         "External carotid branches: superior thyroid, ascending pharyngeal, lingual, facial, occipital, posterior auricular, superficial temporal and maxillary.",
+         "The internal carotid has no branches in the neck; it enters the skull through the carotid canal.",
+     ]},
+    {"id": "anat-subclavian", "unit": "Anatomy", "title": "Subclavian artery", "source": "Anatomy L5 slides",
+     "key": [
+         "Right subclavian: from the brachiocephalic artery behind the right sternoclavicular joint; left subclavian: from the arch of the aorta.",
+         "It ends at the outer border of the 1st rib by becoming the axillary artery.",
+         "Scalenus anterior passes anterior to the artery and divides it into 3 parts: medial, behind and lateral to the muscle.",
+         "1st part: vertebral, internal thoracic and thyrocervical trunk (inferior thyroid, transverse cervical, suprascapular). 2nd part: costocervical trunk. 3rd part: dorsal scapular (66%).",
+     ]},
+    {"id": "anat-facial-veins", "unit": "Anatomy", "title": "Facial veins and the dangerous area of the face", "source": "Anatomy L5 slides",
+     "key": [
+         "Anterior facial vein: formed by the supraorbital and supratrochlear veins at the medial angle of the eye.",
+         "Retromandibular (posterior facial) vein: formed by the maxillary and superficial temporal veins inside the parotid gland; divides at the lower pole of the parotid.",
+         "Common facial vein: anterior facial vein + anterior division of the retromandibular vein; drains into the IJV.",
+         "The deep facial vein connects the anterior facial vein to the pterygoid plexus.",
+         "Dangerous area of the face (nose and upper lip): infection can reach the cavernous sinus through the connections of the anterior facial vein.",
+     ]},
+    {"id": "anat-neck-veins", "unit": "Anatomy", "title": "Jugular, subclavian and brachiocephalic veins", "source": "Anatomy L5 slides",
+     "key": [
+         "External jugular vein: formed by the posterior division of the retromandibular vein and the posterior auricular vein; descends superficial to sternomastoid; ends in the subclavian vein.",
+         "External jugular tributaries: transverse cervical, suprascapular and anterior jugular veins.",
+         "Internal jugular vein: begins as the continuation of the sigmoid sinus at the jugular foramen; joins the subclavian vein to form the brachiocephalic vein.",
+         "Internal jugular tributaries: pharyngeal, common facial, lingual, superior thyroid and middle thyroid veins.",
+         "Right and left brachiocephalic veins unite to form the SVC.",
+     ]},
+]
+PROSE = {
+"anat-coronary": dict(
+    mechanism="The two coronary arteries leave the ascending aorta from sinuses just above the aortic valve cusps. The <b>RCA</b> runs in the coronary groove between right atrium and right ventricle, then posteriorly, and ends as the posterior interventricular artery. The short <b>left main</b> runs between the pulmonary trunk and the left auricle and divides into the <b>circumflex</b> and the <b>LAD</b>. Which artery feeds which wall follows from which groove it runs in.",
+    actions=["Read the stenosed artery on the angiogram, then name the wall it feeds: LAD = front (sternocostal surface, anterior 2/3 of the septum, A-V bundle).",
+             "Occlusion of the RCA can threaten the SA node (65%) and the AV node (80%): watch the rhythm.",
+             "The septum is split: anterior 2/3 LAD, posterior 1/3 posterior interventricular artery."],
+    example="A 68-year-old with recurrent angina has a 90% LAD stenosis on angiography: the anterior two thirds of the septum is at risk.",
+    trap="Giving the AV node to the LAD. The LAD supplies the A-V <i>bundle</i>; the AV <i>node</i> artery comes from the RCA (80%) or circumflex (20%).",
+    trick="Anterior groove = Anterior descending = Anterior septum. RCA numbers: SA 65, AV 80.",
+    blanks=["The LAD runs in the [[anterior interventricular]] groove with the great cardiac vein.",
+            "The artery to the AV node arises from the RCA in [[80%]] of people."]),
+"anat-dominance": dict(
+    mechanism="Dominance is named after the artery that gives the posterior interventricular artery to the diaphragmatic surface. The slide gives three patterns with their frequencies.",
+    actions=["When a report says left dominant, expect the posterior interventricular artery from the circumflex.",
+             "Note the slide's frequencies (70 / 15 / 15) and check with your instructor: many textbooks give right dominance as the most common pattern."],
+    example="A client's report reads \"left dominant\": a circumflex occlusion could then threaten the posterior septum and diaphragmatic surface.",
+    trap="Mixing co-dominance (RCA gives the PDA AND the circumflex also reaches the diaphragmatic LV) with left dominance (PDA from the circumflex).",
+    trick="Dominance = who owns the PDA.",
+    blanks=["In left dominance the posterior interventricular artery is a branch of the [[circumflex]] artery."]),
+"anat-cardiac-veins": dict(
+    mechanism="Cardiac veins run with the arteries in the same grooves and drain three ways: most into the <b>coronary sinus</b>, which empties into the right atrium; some straight into the right atrium (anterior cardiac veins); and some straight into any chamber (venae cordis minimi).",
+    actions=["Pair each vein with its artery: great cardiac vein with the LAD, middle cardiac vein with the posterior interventricular artery.",
+             "Remember the coronary sinus ends in the posterior wall of the RIGHT atrium."],
+    example="During cannulation of the coronary sinus, the nurse expects the great, middle and small cardiac veins, the posterior vein of the left ventricle and the oblique vein of the left atrium to drain through it.",
+    trap="Sending the coronary sinus to the left atrium because it lies next to it. It lies between the left atrium and the diaphragmatic surface but ends in the right atrium.",
+    trick="Great goes with the Grand anterior artery (LAD); Middle goes with the middle of the back (PDA).",
+    blanks=["The anterior cardiac veins end in the [[anterior wall of the right atrium]].",
+            "Venae cordis minimi drain [[directly into the cardiac chambers]]."]),
+"anat-surface": dict(
+    mechanism="Four points 0.5 inch from the sternum (and the apex 3.5 inches from the midline) outline the heart on the chest wall; joining them in order gives the four borders. The valves lie in a diagonal line behind the sternum, PAMT from top left to bottom middle.",
+    actions=["Mark A (left 2nd costal cartilage, lower border), B (right 3rd costal cartilage, upper border), C (right 6th costal cartilage), D (left 5th intercostal space).",
+             "Join A-B (upper), B-C (right), C-D (lower), D-A (left).",
+             "Place the valves in order: pulmonary 3rd costal cartilage, aortic 3rd space, mitral 4th cartilage, tricuspid 4th space."],
+    example="Before an exam a nurse marks a client's apex at the left 5th intercostal space, 3.5 inches from the midline.",
+    trap="Confusing a costal cartilage with the intercostal space below it, e.g. putting the mitral valve at the 4th space (that is the tricuspid).",
+    trick="PAMT goes down half a level at a time: P 3rd cartilage, A 3rd space, M 4th cartilage, T 4th space.",
+    blanks=["The right border of the heart runs from point [[B]] to point [[C]].",
+            "The coronary groove is marked by a line from the left 3rd costal cartilage to point [[C]]."]),
+"anat-pci": dict(
+    mechanism="Coronary angiography and PCI reach the coronary orifices from the ascending aorta by passing a catheter backwards (retrograde) up the arterial tree from the wrist or groin.",
+    actions=["Expect local anesthesia, catheter entry through the radial or femoral artery, contrast injected into each coronary orifice, then a stent if a vessel is narrowed by plaque."],
+    example="A client with a narrowed coronary artery has a stent placed after contrast pictures show the stenosis.",
+    trap="Thinking the catheter is passed through a vein: it goes retrograde from the radial or femoral ARTERY.",
+    trick="In through the wrist or groin, up to the aorta, dye, picture, stent.",
+    blanks=["The catheter is passed [[retrograde]] from the radial or femoral artery into the ascending aorta."]),
+"anat-carotid": dict(
+    mechanism="The common carotid arteries start differently on each side, climb inside the carotid sheath and divide at the upper border of the thyroid cartilage. The external carotid gives the face and neck their branches and ends in the parotid gland; the internal carotid gives nothing in the neck and goes straight into the skull.",
+    actions=["Find the bifurcation at the upper border of the thyroid cartilage (C3-4).",
+             "Before a jugular puncture, remember the IJV lies lateral to the artery in the sheath.",
+             "Feel the superficial temporal pulse just in front of the tragus."],
+    example="An anesthesiologist at the head of the table checks the pulse in front of the tragus: the superficial temporal artery.",
+    trap="Looking for neck branches on the internal carotid. It has none; all named neck branches are from the external carotid or subclavian.",
+    trick="ECA branches in order: Some Anatomists Like Freaking Out Poor Medical Students (superior thyroid, ascending pharyngeal, lingual, facial, occipital, posterior auricular, maxillary, superficial temporal).",
+    blanks=["The external carotid ends in the [[parotid gland]] behind the neck of the mandible.",
+            "The right common carotid arises from the [[brachiocephalic artery]]."]),
+"anat-subclavian": dict(
+    mechanism="Scalenus anterior crosses in front of the subclavian artery and so divides it into three parts. Each part has its own branches, and the artery ends at the outer border of the 1st rib by becoming the axillary artery.",
+    actions=["Sort branches by part: 1st = vertebral, internal thoracic, thyrocervical trunk; 2nd = costocervical trunk; 3rd = dorsal scapular.",
+             "Remember the thyrocervical trunk gives the inferior thyroid, transverse cervical and suprascapular arteries."],
+    example="During thyroid surgery near the thyrocervical trunk, the inferior thyroid artery is at risk, not the superior thyroid (an external carotid branch).",
+    trap="Mixing the superior thyroid artery (external carotid) with the inferior thyroid artery (thyrocervical trunk).",
+    trick="1st part 3 branches, 2nd part 1 trunk, 3rd part 1 branch.",
+    blanks=["The subclavian artery becomes the axillary artery at the outer border of the [[1st rib]].",
+            "The costocervical trunk arises from the [[2nd]] part of the subclavian artery."]),
+"anat-facial-veins": dict(
+    mechanism="The facial veins join and divide around the parotid gland. The anterior facial vein links to the cavernous sinus inside the skull through the ophthalmic veins and through the deep facial vein and pterygoid plexus, which is why the nose and upper lip are the dangerous area.",
+    actions=["Teach clients not to squeeze lesions on the nose and upper lip: infection can reach the cavernous sinus.",
+             "Trace formation: supraorbital + supratrochlear = anterior facial; maxillary + superficial temporal = retromandibular; anterior facial + anterior division of retromandibular = common facial (to IJV)."],
+    example="A client squeezes an infected pimple on the upper lip; the nurse is concerned about spread to the cavernous sinus.",
+    trap="Thinking the route goes through the jugular veins. The dangerous route runs backwards from the anterior facial vein into the skull.",
+    trick="Dangerous triangle: nose and upper lip drain back to the brain.",
+    blanks=["The deep facial vein connects the anterior facial vein to the [[pterygoid plexus]].",
+            "The retromandibular vein is formed inside the [[parotid gland]]."]),
+"anat-neck-veins": dict(
+    mechanism="Blood from the head reaches the heart by two jugular veins. The external jugular is superficial and drains into the subclavian vein; the internal jugular is deep, begins at the jugular foramen and joins the subclavian to form the brachiocephalic vein. Both brachiocephalic veins form the SVC.",
+    actions=["Sort tributaries: EJV = transverse cervical, suprascapular, anterior jugular; IJV = pharyngeal, common facial, lingual, superior and middle thyroid.",
+             "Trace face to heart: anterior facial, common facial, IJV, brachiocephalic, SVC."],
+    example="A nurse sees a distended vein crossing sternomastoid: the external jugular vein, formed by the posterior division of the retromandibular vein and the posterior auricular vein.",
+    trap="Draining the external jugular into the internal jugular. It ends in the subclavian vein.",
+    trick="External ends External-ish (subclavian); Internal starts Inside the skull (sigmoid sinus).",
+    blanks=["The internal jugular vein begins as the continuation of the [[sigmoid sinus]].",
+            "The external jugular vein ends in the [[subclavian vein]]."]),
+}
+for _s in SECTIONS:
+    _s.update(PROSE[_s["id"]])
