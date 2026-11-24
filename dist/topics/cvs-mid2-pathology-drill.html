@@ -1,0 +1,1585 @@
+<title>CVS Mid 2 Pathology Drill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one working column (max 720px) under a sticky header; cards stack; every control is a large tap target. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #565c62; --line: #e2e4e7; --soft: #f4f5f6; --press: #e9ebee;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --right-soft: #9fd3b0;
+  --wrong: #b3261e; --wrong-bg: #fcecea;
+  --part: #8a5a00; --part-bg: #fff4dc;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a, label, select, input { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 720px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.brand { font: 700 17px/1.2 var(--serif); flex: 1 1 140px; min-width: 0; }
+.hbtns { display: flex; flex-wrap: wrap; gap: 6px; }
+.clock { font: 600 15px var(--sans); font-variant-numeric: tabular-nums; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.clock.low { color: var(--wrong); border-color: var(--wrong); }
+main { max-width: 720px; margin: 0 auto; padding-block: 16px 90px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font: 700 28px/1.2 var(--serif); margin: 4px 0 6px; text-wrap: balance; }
+h2 { font: 700 21px/1.25 var(--serif); margin: 0 0 6px; text-wrap: balance; }
+h3 { font: 700 17px/1.3 var(--serif); margin: 14px 0 6px; }
+.eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .02em; }
+p { margin: 6px 0; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.card { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+.card.strong { border: 1.5px solid var(--fg); }
+.badge { display: inline-block; font: 600 12px var(--sans); letter-spacing: .04em; text-transform: uppercase; border: 1.5px solid var(--fg); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1.5px solid var(--fg); background: var(--bg); border-radius: 10px; padding: 10px 16px; font-weight: 600; cursor: pointer; min-height: 44px; }
+.btn.primary { background: var(--fg); color: var(--bg); }
+.btn.small { padding: 6px 12px; min-height: 36px; font-size: 14px; border-width: 1px; }
+.btn.ghost { border-color: var(--line); font-weight: 500; }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn.danger { border-color: var(--wrong); color: var(--wrong); }
+.btn.danger.armed { background: var(--wrong); color: #fff; }
+.linkbtn { background: none; border: none; padding: 0; text-decoration: underline; cursor: pointer; font-weight: 500; }
+@media (hover: hover) {
+  .btn:hover:not(:disabled) { background: var(--soft); }
+  .btn.primary:hover:not(:disabled) { background: #333; }
+  .opt:hover:not(.locked) { border-color: var(--fg); }
+  .chip:hover { border-color: var(--fg); }
+}
+.btn:active:not(:disabled) { background: var(--press); }
+.btn.primary:active:not(:disabled) { background: #444; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; background: var(--bg); cursor: pointer; font-size: 15px; min-height: 40px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.chip:active { background: var(--press); }
+.chip.on:active { background: #333; }
+.check { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: #111; }
+.count { color: var(--muted); font-variant-numeric: tabular-nums; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0 16px; }
+.switch { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 0; }
+.switch input { width: 20px; height: 20px; accent-color: #111; }
+.desc { background: var(--soft); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+/* status bar */
+.sbar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: var(--soft); margin: 8px 0 6px; }
+.sbar i { display: block; height: 100%; }
+.s-solid { background: var(--right); } .s-once { background: var(--right-soft); } .s-shaky { background: var(--wrong); } .s-new { background: #d5d8dc; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+/* question */
+.qmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.tag { border: 1px solid var(--fg); color: var(--fg); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 600; }
+.stem { font-size: 18px; line-height: 1.5; margin: 6px 0 12px; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; gap: 12px; align-items: flex-start; text-align: left; border: 1.5px solid var(--line); background: var(--bg); border-radius: 10px; padding: 12px 14px; cursor: pointer; min-height: 48px; width: 100%; }
+.opt .let { flex: 0 0 auto; width: 26px; height: 26px; border: 1.5px solid var(--fg); border-radius: 50%; display: grid; place-items: center; font: 600 13px var(--sans); }
+.opt.multi .let { border-radius: 6px; }
+.opt.sel { border-color: var(--fg); background: var(--soft); }
+.opt.sel .let { background: var(--fg); color: var(--bg); }
+.opt:active:not(.locked) { background: var(--press); }
+.opt.locked { cursor: default; }
+.opt.is-right { border-color: var(--right); background: var(--right-bg); }
+.opt.is-wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+.opt .txt { flex: 1 1 auto; min-width: 0; }
+.think { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; }
+.think .bar { height: 6px; background: var(--soft); border-radius: 3px; overflow: hidden; margin: 10px 0 4px; }
+.think .bar i { display: block; height: 100%; background: var(--fg); width: 100%; transition: width 1s linear; }
+.fillblank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--fg); text-align: center; padding: 0 4px; }
+table.match { width: 100%; border-collapse: collapse; }
+table.match td { border-top: 1px solid var(--line); padding: 10px 6px; vertical-align: middle; }
+table.match td:first-child { width: 42%; font-weight: 500; }
+select { font: inherit; width: 100%; min-height: 44px; padding: 8px; border: 1.5px solid var(--fg); border-radius: 8px; background: var(--bg); color: var(--fg); }
+select.inline { width: auto; max-width: 100%; display: inline-block; min-height: 38px; padding: 4px 6px; margin: 2px 0; }
+select.r { border-color: var(--right); background: var(--right-bg); } select.w { border-color: var(--wrong); background: var(--wrong-bg); }
+.orderpick { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.orderpick .slot { border: 1.5px dashed var(--line); border-radius: 10px; padding: 10px 12px; min-height: 44px; display: flex; gap: 10px; align-items: center; cursor: pointer; text-align: left; background: var(--bg); width: 100%; }
+.orderpick .slot.filled { border-style: solid; border-color: var(--fg); }
+.orderpick .num { font-weight: 700; width: 22px; }
+.numin { display: flex; gap: 10px; align-items: center; }
+.numin input { font: 600 20px var(--sans); width: 160px; max-width: 60%; padding: 10px; border: 1.5px solid var(--fg); border-radius: 10px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 6px; }
+.verdict { border-radius: 12px; padding: 12px 14px; margin: 14px 0 8px; scroll-margin-top: 90px; }
+.verdict h2 { margin: 0; }
+.v-right { background: var(--right-bg); border: 1.5px solid var(--right); } .v-right h2 { color: var(--right); }
+.v-wrong { background: var(--wrong-bg); border: 1.5px solid var(--wrong); } .v-wrong h2 { color: var(--wrong); }
+.v-part { background: var(--part-bg); border: 1.5px solid var(--part); } .v-part h2 { color: var(--part); }
+.why { margin: 8px 0; }
+.why b { display: block; }
+.keyidea { border-left: 3px solid var(--fg); padding-left: 12px; margin: 12px 0; }
+.ccard { border: 1.5px solid var(--fg); border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+.ccard ul { margin: 4px 0; padding-left: 20px; }
+.ccard li { margin: 3px 0; }
+.ok { color: var(--right); font-weight: 600; } .no { color: var(--wrong); font-weight: 600; }
+.rv { border-top: 1px solid var(--line); padding: 14px 0; }
+.bars .b { display: grid; grid-template-columns: minmax(90px, 30%) 1fr 52px; gap: 8px; align-items: center; margin: 6px 0; font-size: 14px; }
+.bars .track { height: 10px; background: var(--soft); border-radius: 5px; overflow: hidden; }
+.bars .fill { height: 100%; background: var(--right); }
+.bars .fill.low { background: var(--wrong); }
+.bars .pct { text-align: right; font-variant-numeric: tabular-nums; }
+.big { font: 700 44px/1 var(--serif); font-variant-numeric: tabular-nums; }
+details.fold { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 12px 0; }
+details.fold summary { cursor: pointer; font-weight: 600; }
+table.rates { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.rates th, table.rates td { text-align: left; padding: 6px 4px; border-top: 1px solid var(--line); }
+table.rates td.n { text-align: right; }
+.tblwrap { overflow-x: auto; }
+.lvl { font-weight: 700; }
+.lvl.Strong { color: var(--right); } .lvl.Weak { color: var(--wrong); }
+.readme h2 { margin-top: 0; } .readme ol { padding-left: 22px; } .readme li { margin: 5px 0; }
+.syncline { font-size: 13px; color: var(--muted); margin-top: 18px; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .think .bar i { transition: none; } }
+@media (max-width: 480px) { h1 { font-size: 24px; } .stem { font-size: 17px; } .big { font-size: 38px; } }
+</style>
+
+<header class="top"><div class="top-in"><div class="brand" id="brand">CVS Mid 2 Pathology Drill</div><div class="hbtns" id="hbtns"></div></div></header>
+<main id="app" aria-live="polite"></main>
+<template id="readme-src"><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</template>
+
+<script>
+var DATA = {"cfg":{"title":"CVS Mid 2 Pathology Drill","eyebrow":"CVS block · Mid 2 · Pathology only · Sunday 29 November 2026","storage_key":"cvs-mid2-2026-11-29-pathology","units":["Pathology"],"high_roi_units":[],"last_pass_note":"The Pathology questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.","guide_url":"https://claude.ai/artifact/KKFgnAj17Sru2Nb1kssKtY","hub_url":"https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe","pretest_per_topic":10,"guide_title":"CVS Mid 2 Pathology Guide"},"items":[{"id":"q0","u":"Pathology","t":"mc","q":"A client with a deep vein thrombosis of the left leg has a swollen limb that is dusky reddish-blue. How should the nurse interpret this color change?","o":["Congestion from impaired venous outflow with deoxygenated blood","Hyperemia from active arteriolar dilation","Ischemia from deficient arterial supply","Infarction from arterial occlusion"],"c":0,"w":"Congestion is a passive process caused by impaired venous outflow, such as a DVT. Red cells stagnate and deoxygenated venous blood accumulates, so the tissue turns dusky reddish-blue (cyanosis). Hyperemia is the opposite: an active arteriolar dilation that fills tissue with oxygenated blood and makes it red. Sudden complete venous obstruction also causes rapid edema and hemorrhage. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"Hyperemia makes tissue red (erythema) from oxygenated blood, not reddish-blue.","2":"Ischemia is deficient ARTERIAL supply; DVT obstructs venous outflow.","3":"Infarction is ischemic necrosis; the color described is the stasis of congestion."},"m":{"1":"mixes up hyperemia and congestion","2":"mixes up arterial and venous obstruction"},"lp":false,"k":"path-congestion","src":"materials","kind":"Recognize and interpret"},{"id":"q1","u":"Pathology","t":"sata","q":"A nurse is teaching about increased local blood volume. Which situations are examples of hyperemia? Select all that apply.","o":["Acute inflammation","Skeletal muscle during exercise","The gut following a meal","Blushing of the face","Deep vein thrombosis of the leg","Twisting of an ovarian pedicle","Pulmonary veins in left ventricular failure"],"c":[0,1,2,3],"w":"Hyperemia is active: arterioles dilate and more blood flows in, as in acute inflammation, exercising skeletal muscle, the gut after a meal and blushing. Congestion is passive: venous outflow is impaired, as with DVT, a twisted ovarian pedicle or left ventricular failure backing up into the pulmonary veins. (Pathology L1 slides (hemodynamic disorders I))","x":{"4":"DVT causes acute localized congestion.","5":"A twisted pedicle obstructs venous outflow: acute localized congestion.","6":"This is chronic localized (pulmonary) congestion."},"m":{"4":"mixes up hyperemia and congestion","5":"mixes up hyperemia and congestion"},"lp":false,"k":"path-congestion","src":"materials","kind":"Teaching and statements"},{"id":"q2","u":"Pathology","t":"mc","q":"A client with chronic left ventricular failure has sputum containing macrophages filled with hemosiderin. What are these cells called?","o":["Heart failure cells","Anitschkow cells","Foam cells","Aschoff bodies"],"c":0,"w":"In chronic pulmonary congestion, from chronic left ventricular failure or mitral stenosis, the alveolar capillaries are engorged. Fluid leaks into the alveoli (pulmonary edema) and capillaries rupture so red cells enter the alveoli. Alveolar macrophages phagocytose and degrade the red cells, becoming hemosiderin-laden heart failure cells. Long-standing congestion adds interstitial fibrosis: brown induration of the lung. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"Anitschkow (caterpillar) cells are cardiac histiocytes inside Aschoff bodies of rheumatic fever.","2":"Foam cells are lipid-filled macrophages and smooth muscle cells in atherosclerotic lesions.","3":"Aschoff bodies are the pathognomonic lesions of acute rheumatic fever."},"m":{"1":"mixes up heart failure cells and Anitschkow cells","2":"mixes up heart failure cells and foam cells"},"lp":false,"k":"path-congestion","src":"materials","kind":"Apply a fact"},{"id":"q3","u":"Pathology","t":"order","q":"A client has long-standing mitral stenosis. Arrange the changes of chronic pulmonary congestion in the order they develop.","o":["Congestion of the alveolar capillaries","Transudation of fluid and passage of red cells into the alveoli","Phagocytosis and degradation of the red cells by macrophages","Hemosiderin-laden macrophages (heart failure cells) appear","Fibrosis of the interstitium and alveolar septa (brown induration)"],"c":[0,1,2,3,4],"w":"Chronic left ventricular failure or mitral stenosis backs blood up into the alveolar capillaries. Fluid transudes into the alveoli and ruptured capillaries let red cells through; macrophages engulf and degrade the red cells and become hemosiderin-laden heart failure cells. With long-standing congestion, the interstitium and alveolar septa become fibrotic, giving brown induration of the lung. (Pathology L1 slides (hemodynamic disorders I))","x":{},"m":{},"lp":false,"k":"path-congestion","src":"materials","kind":"Apply a fact"},{"id":"q4","u":"Pathology","t":"mc","q":"A client with chronic right-sided heart failure has dyspnea, generalized edema and congestion of several organs. Which type of congestion is this?","o":["Chronic generalized venous congestion","Acute generalized congestion","Chronic localized congestion","Acute localized congestion"],"c":0,"w":"Chronic generalized venous congestion is gradual congestion of the whole venous system, caused by chronic right-sided heart failure. Its effects are dyspnea (from pulmonary congestion), chronic venous congestion in different organs and generalized cardiac edema. Acute heart failure instead gives rapid congestion in all viscera. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"Acute generalized congestion follows ACUTE heart failure.","2":"Localized congestion affects one region, from compression of a vein or left failure in the lung.","3":"Acute localized congestion follows a sudden complete venous obstruction such as a DVT."},"m":{"1":"mixes up acute and chronic generalized congestion"},"lp":false,"k":"path-congestion","src":"materials","kind":"Apply a fact"},{"id":"q5","u":"Pathology","t":"cloze","q":"A nurse cares for several clients with edema. Match each cause to the mechanism that produces the edema.","o":{"rows":["Hypoproteinemia","Histamine release in acute inflammation","Venous congestion","Filariasis"],"choices":["Decreased plasma colloid osmotic pressure","Increased capillary permeability","Increased capillary hydrostatic pressure","Lymphatic obstruction","Increased plasma colloid osmotic pressure"]},"c":[0,1,2,3],"w":"Edema has four mechanisms. Venous congestion or sodium and water retention raise capillary hydrostatic pressure; hypoproteinemia lowers plasma colloid osmotic pressure; toxins, hypoxia and chemicals such as histamine increase capillary permeability; and lymphangitis, filariasis, tumors, irradiation fibrosis or lymph node removal obstruct lymphatics. (Pathology L1 slides (hemodynamic disorders I))","x":{"4":"A rise in colloid osmotic pressure would hold fluid in vessels; edema follows a DECREASE."},"m":{"4":"reverses the oncotic effect"},"lp":false,"k":"path-edema","src":"materials","rs":{"0":"A malnourished client with hypoproteinemia develops edema. Which mechanism should the nurse identify?","1":"A client's inflamed ankle swells as histamine is released. Which mechanism causes this edema?","2":"A client with venous congestion develops leg edema. Which mechanism causes it?","3":"A client with filariasis develops massive leg swelling. Which mechanism causes the edema?"},"kind":"Apply a fact"},{"id":"q6","u":"Pathology","t":"fill","q":"A malnourished client's labs are reviewed for nutritional edema. Edema from hypoproteinemia occurs when serum albumin falls below ____.","o":["1.5 gm%","2.5 gm%","3.5 gm%"],"c":0,"w":"Decreased plasma colloid osmotic pressure causes edema when the plasma proteins that hold fluid in the vessels fall too low. Hypoproteinemia is defined as total plasma proteins below 2.5 gm% or serum albumin below 1.5 gm%; the resulting generalized edema is called nutritional edema. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"2.5 gm% is the threshold for TOTAL plasma proteins, not albumin.","2":"3.5 gm% is not the threshold given; the albumin threshold is 1.5 gm%."},"m":{"1":"mixes up albumin and total protein thresholds"},"lp":false,"k":"path-edema","src":"materials","kind":"Apply a fact"},{"id":"q7","u":"Pathology","t":"sata","q":"A nurse assesses several clients for pitting. Which clients would the nurse expect to have non-pitting edema? Select all that apply.","o":["A client with a cellulitis-related inflammatory edema","A client with lymphatic edema after lymph node removal","A client with cardiac edema from heart failure","A client with nutritional edema from hypoproteinemia","A client with obstructive venous edema"],"c":[0,1],"w":"Edema is classified by consistency. Pitting edema is seen in generalized edema (cardiac, renal and nutritional) and in obstructive venous edema. Non-pitting edema is seen in inflammatory edema and lymphatic edema. (Pathology L1 slides (hemodynamic disorders I))","x":{"2":"Cardiac edema is generalized, and generalized edema is pitting.","3":"Nutritional edema is generalized and pitting.","4":"Obstructive venous edema is pitting."},"m":{"2":"thinks generalized edema is non-pitting","4":"thinks venous edema is non-pitting"},"lp":false,"k":"path-edema","src":"materials","kind":"Recognize and interpret"},{"id":"q8","u":"Pathology","t":"tf","q":"A nurse states that lymphatic edema, such as that caused by filariasis, is typically pitting.","o":["True","False"],"c":1,"w":"False. Lymphatic edema (and inflammatory edema) is NON-pitting. Pitting edema is seen in generalized edema and obstructive venous edema. (Pathology L1 slides (hemodynamic disorders I))","x":{"0":"Lymphatic edema is non-pitting."},"m":{"0":"thinks lymphatic edema pits"},"lp":false,"k":"path-edema","src":"materials","kind":"Apply a fact"},{"id":"q9","u":"Pathology","t":"tf","q":"A nurse explains that sudden occlusion of an artery in an organ with good collateral circulation may produce no effect.","o":["True","False"],"c":0,"w":"True. In acute ischemia, organs with good collateral circulation show no effect, while organs with poor collateral circulation undergo infarction. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"This statement is true: good collaterals can prevent damage."},"m":{},"lp":false,"k":"path-ischemia-infarct","src":"materials","kind":"Teaching and statements"},{"id":"q10","u":"Pathology","t":"mc","q":"A client develops a pulmonary infarct after a pulmonary embolism. Which appearance should the nurse expect the infarct to have?","o":["A red (hemorrhagic) infarct","A white (anemic) infarct","A septic infarct","No infarct, because arterial occlusion never causes infarction in the lung"],"c":0,"w":"Infarcts are red when blood can seep into the necrotic area: with venous occlusion, in loose tissues like the lung, in tissues with a dual circulation (lung, liver, small intestine) and after reperfusion. White infarcts occur where arterial occlusion hits a dense solid organ with end-arterial circulation, which limits seepage of blood. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"White infarcts occur in solid organs with end-arterial circulation such as heart, spleen and kidney.","2":"A septic infarct is classified by infection, not color; nothing here suggests infection.","3":"Pulmonary infarction does occur, e.g. medium emboli in a congested lung."},"m":{"1":"thinks lung infarcts are white"},"lp":false,"k":"path-ischemia-infarct","src":"materials","kind":"Recognize and interpret"},{"id":"q11","u":"Pathology","t":"sata","q":"A nurse reviews infarct types. Which situations typically produce a red (hemorrhagic) infarct? Select all that apply.","o":["Venous occlusion of the ovary","Infarction of the lung","Infarction of the small intestine","Reperfusion after angioplasty of an occluded artery","Arterial occlusion in the kidney","Arterial occlusion in the spleen","Coronary arterial occlusion in the heart"],"c":[0,1,2,3],"w":"Red infarcts form where blood can enter the dead tissue: venous occlusion (ovary, testis), loose tissue (lung), dual blood supply (lung, liver, small intestine) and restored flow to a previously occluded site after angioplasty. Heart, spleen and kidney are dense end-arterial organs that give white infarcts. (Pathology L1 slides (hemodynamic disorders I))","x":{"4":"The kidney is a solid organ with end-arterial circulation: white infarct.","5":"The spleen gives a white (anemic) infarct.","6":"The heart gives a white (anemic) infarct."},"m":{"4":"thinks solid-organ infarcts are red","5":"thinks solid-organ infarcts are red"},"lp":false,"k":"path-ischemia-infarct","src":"materials","kind":"Apply a fact"},{"id":"q12","u":"Pathology","t":"mc","q":"A client has an infarct of the testis. Which cause should the nurse recognize as most likely for an infarct in this organ?","o":["Venous thrombosis, because the testis has a single venous outflow","Arterial occlusion in an organ with a dual blood supply","Chronic ischemia from gradual atherosclerosis with good collaterals","Septic embolism from a lung abscess"],"c":0,"w":"Almost all infarcts (99%) come from thrombosis or embolism, usually arterial. Venous thrombosis causes infarcts mainly in organs with a single venous outflow, such as the testis and ovary, because there is no alternative drainage route once that vein is blocked. (Pathology L1 slides (hemodynamic disorders I))","x":{"1":"Dual circulation describes the lung, liver and small intestine, not the testis.","2":"Good collaterals prevent damage; this would not produce an infarct.","3":"Nothing suggests infection; infection defines a septic infarct, not the usual testicular infarct."},"m":{},"lp":false,"k":"path-ischemia-infarct","src":"materials","kind":"Recognize and interpret"},{"id":"q13","u":"Pathology","t":"tf","q":"A nurse states that white (anemic) infarcts typically occur in the lung because of its dual circulation.","o":["True","False"],"c":1,"w":"False. The lung, with its loose tissue and dual circulation, gives RED (hemorrhagic) infarcts. White infarcts occur with arterial occlusion in solid organs with end-arterial circulation: heart, spleen and kidney. (Pathology L1 slides (hemodynamic disorders I))","x":{"0":"The lung gives red infarcts; white infarcts are heart, spleen and kidney."},"m":{"0":"thinks lung infarcts are white"},"lp":false,"k":"path-ischemia-infarct","src":"materials","kind":"Apply a fact"},{"id":"q14","u":"Pathology","t":"sata","q":"A nurse is assessing a postoperative client for thrombosis risk. Which factors make up Virchow's triad? Select all that apply.","o":["Endothelial injury or dysfunction","Stasis or turbulence of blood flow","Hypercoagulability of blood","Increased capillary permeability","Lymphatic obstruction","Active arteriolar dilation"],"c":[0,1,2],"w":"Thrombosis is inappropriate activation of normal hemostasis, which is regulated by the vessel wall, platelets and coagulation factors. Virchow's triad names the three primary causes: endothelial injury or dysfunction, alterations in normal blood flow (stasis or turbulence) and hypercoagulability of the blood. (Pathology L2 slides (hemodynamic disorders II))","x":{"3":"Increased capillary permeability is a mechanism of edema.","4":"Lymphatic obstruction is a mechanism of edema.","5":"Arteriolar dilation is hyperemia."},"m":{"3":"mixes up edema and thrombosis mechanisms","4":"mixes up edema and thrombosis mechanisms"},"lp":false,"k":"path-virchow","src":"materials","kind":"Apply a fact"},{"id":"q15","u":"Pathology","t":"sata","q":"A nurse reviews a client's history for ACQUIRED causes of hypercoagulability. Which findings apply? Select all that apply.","o":["Prolonged bed rest","Oral contraceptive use","Disseminated cancer","Recent surgery","Smoking","Factor V gene mutation","Antithrombin III deficiency since birth"],"c":[0,1,2,3,4],"w":"Hypercoagulability means more coagulation proteins or fewer natural anticoagulants. Hereditary causes include mutations of the factor V and prothrombin genes and antithrombin III deficiency. Acquired causes include prolonged bed rest or immobilization, tissue damage (surgery, burns), hyperestrogenic states (pregnancy, oral contraceptives), disseminated cancer, smoking and DIC. (Pathology L2 slides (hemodynamic disorders II))","x":{"5":"A factor V gene mutation is a HEREDITARY cause.","6":"Inherited antithrombin III deficiency is a HEREDITARY cause."},"m":{"5":"mixes up hereditary and acquired hypercoagulability","6":"mixes up hereditary and acquired hypercoagulability"},"lp":false,"k":"path-virchow","src":"materials","kind":"Recognize and interpret"},{"id":"q16","u":"Pathology","t":"mc","q":"A client with long-standing hypertension has endothelial dysfunction. Which change in the endothelium favors thrombosis?","o":["Decreased production of thrombomodulin and nitric oxide","Increased production of antithrombin III","Decreased production of von Willebrand factor","Increased production of plasminogen activator"],"c":0,"w":"Hemodynamic stress such as hypertension, trauma, inflammation, atherosclerosis or hyperlipidemia makes the endothelium dysfunctional. A dysfunctional endothelium produces more procoagulants (thromboplastin, vWF, PAI) and fewer anticoagulants (thrombomodulin, antithrombin III, NO, PA). If the endothelium is lost, exposed matrix lets vWF bind platelets and activates the coagulation cascade. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Antithrombin III is an anticoagulant; dysfunction DECREASES it.","2":"vWF is a procoagulant; dysfunction INCREASES it.","3":"Plasminogen activator (PA) is anticoagulant; dysfunction DECREASES it."},"m":{"1":"reverses the endothelial effect","2":"reverses the endothelial effect","3":"reverses the endothelial effect"},"lp":false,"k":"path-virchow","src":"materials","kind":"Apply a fact"},{"id":"q17","u":"Pathology","t":"mc","q":"A client with varicose veins asks why sluggish blood flow causes clots. Which explanation by the nurse is accurate?","o":["Slow flow reduces the inflow of fresh blood carrying natural anticoagulants and delays removal of platelet clumps.","Slow flow mechanically tears the endothelium.","Slow flow increases plasma colloid osmotic pressure.","Slow flow lowers the concentration of coagulation proteins."],"c":0,"w":"Stasis, mainly in veins with obstruction such as varicose veins, reduces the inflow of fresh blood that carries natural anticoagulants and retards the removal of small platelet aggregates. Turbulence (aneurysms, mitral stenosis, atrial fibrillation) instead injures endothelial cells. Both stasis and turbulence activate procoagulant secretion and bring platelets and leukocytes into contact with the endothelium. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Mechanical injury to endothelium is the effect of TURBULENCE, not stasis.","2":"Colloid osmotic pressure relates to edema, not to how stasis causes thrombosis.","3":"Lower coagulation proteins would reduce, not increase, clotting."},"m":{"1":"mixes up stasis and turbulence effects"},"lp":false,"k":"path-virchow","src":"materials","kind":"Teaching and statements"},{"id":"q18","u":"Pathology","t":"tf","q":"A nurse states that arterial thrombosis is more common than venous thrombosis because arterial blood flows rapidly.","o":["True","False"],"c":1,"w":"False. Venous thrombi are the MOST common type. Arterial thrombosis is LESS common precisely because of the rapid blood flow and the thick elastic arterial wall that resists injury. (Pathology L2 slides (hemodynamic disorders II), slide exercise)","x":{"0":"Venous thrombi are most common; rapid arterial flow protects arteries."},"m":{"0":"thinks arterial thrombi are most common"},"lp":true,"k":"path-thrombus-types","src":"materials","kind":"Apply a fact"},{"id":"q19","u":"Pathology","t":"mc","q":"A client is recovering from hip surgery and has a deep vein thrombosis in the femoral vein. Which complication should the nurse monitor for most closely?","o":["Embolization to the lungs causing pulmonary infarction","Embolization to the brain causing a stroke","Fat embolism syndrome","Cholesterol emboli to the kidney"],"c":0,"w":"Deep vein thrombi form in the popliteal, femoral and iliac veins, mainly through stasis and hypercoagulability after surgery or immobility. Their important complication is embolization to the lungs: about 95% of pulmonary emboli come from DVT, causing pulmonary infarction, hemorrhage or sudden death depending on size. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Systemic emboli to the brain come from the left heart or arteries; venous emboli reach the lungs unless there is a septal defect.","2":"Fat embolism follows long bone fracture, not venous thrombosis.","3":"Cholesterol emboli come from ruptured atheromatous plaques."},"m":{"1":"sends venous emboli to the systemic circulation"},"lp":false,"k":"path-thrombus-types","src":"materials","kind":"Priority / first action"},{"id":"q20","u":"Pathology","t":"cloze","q":"A nurse reviews clients with cardiac thrombi. Match each type of cardiac thrombus to its usual setting.","o":{"rows":["Auricular thrombus","Mural thrombus","Vegetations"],"choices":["Left atrial appendage in mitral stenosis","Left ventricular wall over a myocardial infarct","Heart valves in rheumatic fever, SLE or bacterial endocarditis","Popliteal vein after surgery"]},"c":[0,1,2],"w":"Cardiac thrombi form in chambers and on valves. In mitral stenosis, stasis in the dilated left atrium produces an auricular thrombus over the appendage. Over a myocardial infarct, the damaged left ventricular endocardium carries a mural thrombus. On valves, thrombi appear as vegetations in rheumatic fever, systemic lupus erythematosus and bacterial endocarditis. (Pathology L2 slides (hemodynamic disorders II))","x":{"3":"The popliteal vein is a site of deep vein thrombosis, not a cardiac thrombus."},"m":{"3":"confuses venous and cardiac thrombi"},"lp":false,"k":"path-thrombus-types","src":"materials","rs":{"0":"A client with mitral stenosis has an auricular thrombus. Where should the nurse expect it to form?","1":"A client recovering from a myocardial infarction develops a mural thrombus. Where does it form?","2":"A client's echocardiogram shows vegetations. Where are these thrombi located?"},"kind":"Apply a fact"},{"id":"q21","u":"Pathology","t":"mc","q":"A client's old thrombus is examined and shows ingrowth of endothelial cells, smooth muscle cells and fibroblasts with new capillary channels. Which fate of a thrombus is this?","o":["Organization and recanalization","Dissolution","Propagation","Embolization"],"c":0,"w":"Thrombi have four fates. Recent thrombi can dissolve by fibrinolysis. They can propagate, adding platelets and fibrin and forming a tail that is liable to detach. They can embolize. Older thrombi become organized by ingrowth of endothelial cells, smooth muscle cells and fibroblasts, and capillary channels form that re-establish the lumen (recanalization). (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Dissolution is rapid shrinkage and disappearance of a RECENT thrombus by fibrinolysis.","2":"Propagation is growth of the thrombus by adding platelets and fibrin, forming a tail.","3":"Embolization is detachment of the thrombus from the vessel wall."},"m":{"1":"mixes up dissolution and organization"},"lp":false,"k":"path-thrombus-types","src":"materials","kind":"Apply a fact"},{"id":"q22","u":"Pathology","t":"mc","q":"A nurse explains why a growing thrombus with a long tail is dangerous. What happens during propagation?","o":["The thrombus adds platelets and fibrin, forming a tail that is more liable to detach and embolize.","Fibrinolysis shrinks the thrombus until it disappears.","Fibroblasts grow in and form new channels through it.","The thrombus becomes infected and produces pyemia."],"c":0,"w":"Propagation means the thrombus keeps accumulating platelets and fibrin. The tail that forms is more liable to detach, so propagation sets up embolization. Infected venous thrombi (thrombophlebitis) are the source of septic emboli that produce pyemia. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"That is dissolution.","2":"That is organization and recanalization.","3":"Septic thrombi produce pyemia when they embolize; that is not propagation."},"m":{"1":"mixes up propagation and dissolution"},"lp":false,"k":"path-thrombus-types","src":"materials","kind":"Teaching and statements"},{"id":"q23","u":"Pathology","t":"mc","q":"A client on bed rest after surgery suddenly develops dyspnea, and pulmonary embolism is suspected. Which is the most likely source of the embolus?","o":["A thrombus in the deep veins of the legs","A mural thrombus in the left ventricle","An ulcerated atheromatous plaque in the aorta","Vegetations on the mitral valve"],"c":0,"w":"A pulmonary embolus starts in a systemic vein and lodges in the pulmonary arteries. In 95% of cases it originates from deep vein thrombi of the legs, and it is seen in up to 25-30% of patients with DVT. Emboli from the left heart or arteries travel instead to systemic organs. (Pathology L2 slides (hemodynamic disorders II), slide note (why venous thrombi are most common))","x":{"1":"Left heart thrombi enter the systemic circulation, giving systemic emboli.","2":"Aortic plaques give systemic or cholesterol emboli, not pulmonary emboli.","3":"Mitral vegetations embolize into the systemic arterial circulation."},"m":{"1":"sends left-heart emboli to the lungs"},"lp":true,"k":"path-embolism","src":"materials","kind":"Recognize and interpret"},{"id":"q24","u":"Pathology","t":"tf","q":"A nurse teaching about deep vein thrombosis states that about 95% of pulmonary emboli originate from thrombi in the deep veins of the legs.","o":["True","False"],"c":0,"w":"True. In 95% of cases pulmonary emboli originate from deep vein thrombi of the legs, and pulmonary embolism is observed in up to 25-30% of patients with DVT. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"This statement is true: 95% of pulmonary emboli come from leg DVT."},"m":{},"lp":false,"k":"path-embolism","src":"materials","kind":"Teaching and statements"},{"id":"q25","u":"Pathology","t":"cloze","q":"A nurse reviews the outcomes of pulmonary embolism by embolus size. Match each embolus to its usual outcome.","o":{"rows":["Large saddle embolus at the pulmonary bifurcation","Medium embolus in a normal lung","Medium embolus in a congested lung","Small repeated emboli over time"],"choices":["Sudden death from acute right-sided failure","Pulmonary hemorrhage only","Pulmonary infarction","Pulmonary hypertension and cor pulmonale","Clinically silent with no effect ever"]},"c":[0,1,2,3],"w":"The effect of a pulmonary embolus depends on its size and on the lung. 60-80% are small and clinically silent. A large saddle embolus at the bifurcation or in a main pulmonary artery causes sudden death from acute right-sided failure. A medium embolus causes only hemorrhage in a normal lung, but infarction in a congested lung. Small repeated emboli cause pulmonary hypertension and right-sided failure (cor pulmonale). (Pathology L2 slides (hemodynamic disorders II))","x":{"4":"60-80% of emboli are small and silent, but none of these listed emboli is silent."},"m":{},"lp":false,"k":"path-embolism","src":"materials","rs":{"0":"A client collapses from a saddle embolus at the pulmonary bifurcation. Which outcome should the nurse anticipate?","1":"A client with healthy lungs has a medium-sized pulmonary embolus. Which outcome is expected?","2":"A client with heart failure and lung congestion has a medium pulmonary embolus. Which outcome is expected?","3":"A client has had small pulmonary emboli repeatedly for years. Which long-term outcome should the nurse anticipate?"},"kind":"Apply a fact"},{"id":"q26","u":"Pathology","t":"mc","q":"A client recovering from a large anterior myocardial infarction develops a cold, pulseless leg. Which source of the arterial embolus is most likely?","o":["An intracardiac thrombus over the infarcted left ventricular wall","A deep vein thrombus of the leg","A fat embolus from bone marrow","An amniotic fluid embolus"],"c":0,"w":"Systemic emboli travel in the arterial circulation. About 80% arise from intracardiac thrombi, two thirds of which are associated with left ventricular wall infarcts. Others come from aortic aneurysms, ulcerated atheromatous plaques or paradoxical emboli. About 75% lodge in the lower extremities and 10% in the brain. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Leg vein thrombi travel to the lungs unless they pass through a septal defect.","2":"Fat emboli follow long bone fractures.","3":"Amniotic fluid embolism occurs during delivery."},"m":{"1":"sends venous emboli to the systemic circulation"},"lp":false,"k":"path-systemic-emboli","src":"materials","kind":"Apply a fact"},{"id":"q27","u":"Pathology","t":"mc","q":"A client with an interatrial septal defect and a known leg DVT suddenly develops stroke symptoms. Which type of embolism best explains this?","o":["Paradoxical embolism","Pulmonary thromboembolism","Fat embolism","Atheroembolism"],"c":0,"w":"A paradoxical embolus begins as a venous embolus, but instead of reaching the lungs it crosses an interatrial or interventricular defect into the systemic circulation. A leg vein thrombus can therefore reach the brain in a client with a septal defect. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"A pulmonary embolus lodges in the lung, not the brain.","2":"Fat embolism follows long bone fracture or soft tissue trauma.","3":"Atheroembolism discharges debris from a ruptured arterial plaque."},"m":{"1":"sends a crossed embolus to the lungs"},"lp":false,"k":"path-systemic-emboli","src":"materials","kind":"Teaching and statements"},{"id":"q28","u":"Pathology","t":"mc","q":"Two days after a femoral shaft fracture, a client becomes tachypneic, dyspneic, tachycardic and confused, and labs show thrombocytopenia and anemia. Which condition should the nurse suspect?","o":["Fat embolism syndrome","Air embolism","Amniotic fluid embolism","Cholesterol embolism"],"c":0,"w":"Fat embolism occurs in about 90% of people with severe skeletal injuries, most commonly long bone fractures, but fewer than 10% develop clinical findings. The syndrome begins 1-3 days after injury with tachypnea, dyspnea and tachycardia, neurologic symptoms, and thrombocytopenia and anemia. Fat globules obstruct vessels mechanically and free fatty acids injure endothelium and activate platelets; it is fatal in 5-15%. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Air embolism follows entry of more than 100 cc of air, as in neck vein or chest wall injury.","2":"Amniotic fluid embolism occurs during delivery.","3":"Cholesterol emboli come from atheromatous plaques."},"m":{"1":"mixes up fat and air emboli"},"lp":false,"k":"path-systemic-emboli","src":"materials","kind":"Recognize and interpret"},{"id":"q29","u":"Pathology","t":"sata","q":"A nurse reviews situations that carry a risk of air embolism. Which situations apply? Select all that apply.","o":["Injury to large neck veins","Chest wall injury","Laparoscopic procedures","Air trapped in a coronary artery during bypass surgery","Decompression sickness","Fracture of a long bone","Tear in the placental membranes","Rupture of an atheromatous plaque"],"c":[0,1,2,3,4],"w":"Gas bubbles in the circulation coalesce into frothy masses that obstruct flow and cause distal ischemia. Causes include injury to large neck veins, chest wall injury, obstetric or laparoscopic procedures, air trapped in a coronary artery during bypass surgery, and decompression sickness (Caisson disease). (Pathology L2 slides (hemodynamic disorders II), slide exercise (decompression sickness))","x":{"5":"Long bone fracture is the most common cause of FAT embolism.","6":"This lets amniotic fluid enter the maternal circulation: amniotic fluid embolism.","7":"Plaque rupture discharges cholesterol debris: atheroembolism."},"m":{"5":"mixes up fat and air emboli"},"lp":true,"k":"path-systemic-emboli","src":"materials","kind":"Apply a fact"},{"id":"q30","u":"Pathology","t":"tf","q":"A nurse states that more than 100 cc of air is required to have a clinical effect in the pulmonary circulation.","o":["True","False"],"c":0,"w":"True. Air embolism needs more than 100 cc of air to produce a clinical effect in the pulmonary circulation. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"This statement is true: more than 100 cc of air is needed."},"m":{},"lp":false,"k":"path-systemic-emboli","src":"materials","kind":"Apply a fact"},{"id":"q31","u":"Pathology","t":"mc","q":"During delivery, a client suddenly develops severe dyspnea, cyanosis, shock and a seizure, followed by bleeding from IV sites. Which condition should the nurse suspect?","o":["Amniotic fluid embolism","Fat embolism syndrome","Pulmonary thromboembolism from a DVT","Air embolism from a neck vein injury"],"c":0,"w":"Amniotic fluid or fetal tissue can enter the maternal circulation through a tear in the placental membranes or ruptured uterine veins. It causes sudden severe dyspnea, cyanosis and shock, neurologic impairment (headache, seizures, coma), pulmonary edema and DIC. It is rare (1 in 40,000 deliveries) but has 80% mortality, and 85% of survivors keep a neurologic deficit. (Pathology L2 slides (hemodynamic disorders II))","x":{"1":"Fat embolism begins 1-3 days after a long bone fracture.","2":"PE from DVT does not explain the seizure and DIC at delivery.","3":"There is no neck vein injury; air embolism needs over 100 cc of air."},"m":{"1":"mixes up amniotic and fat emboli"},"lp":false,"k":"path-systemic-emboli","src":"materials","kind":"Recognize and interpret"},{"id":"q32","u":"Pathology","t":"mc","q":"A 14-year-old girl is brought to the physician because of a 1-week history of malaise and chest pain. Three weeks ago, she had a sore throat that resolved without treatment. Her temperature is 38.7°C (101.7°F). Examination shows several subcutaneous nodules on her elbows and wrist bilaterally and a new-onset early systolic murmur best heard at the apex in the left lateral position. An endomyocardial biopsy is most likely to show which of the following?","o":["Fibrinoid necrosis with histiocytic infiltrate","Coagulative necrosis with neutrophilic infiltrate","Deposits of misfolded protein aggregates","Myocardial infiltration with eosinophilic proteins","Fibrosis with myofibrillar disarray"],"c":0,"w":"A sore throat 3 weeks earlier, fever, subcutaneous nodules and a new apical murmur fit acute rheumatic fever. Its pathognomonic microscopic lesion is the Aschoff body, found in all layers of the heart: foci of necrosis with T lymphocytes and Anitschkow cells, which are activated macrophages (cardiac histiocytes). The valve vegetations overlie foci of fibrinoid necrosis. A biopsy therefore shows fibrinoid necrosis with a histiocytic infiltrate. (The slide's word \"endomysial\" is corrected here to endomyocardial.) (Pathology L3 slides (rheumatic fever), in-class case)","x":{"1":"This pattern is not the lesion of rheumatic carditis, which is the Aschoff body (focal necrosis, T lymphocytes and Anitschkow histiocytes).","2":"Misfolded protein deposits are not part of the rheumatic lesion described in ARF.","3":"Eosinophilic protein infiltration is not part of the rheumatic lesion described in ARF.","4":"Fibrosis follows healing in chronic disease; myofibrillar disarray is not part of the ARF lesion."},"m":{"1":"expects infarct-type necrosis in ARF"},"lp":true,"k":"path-arf","src":"materials","kind":"Apply a fact"},{"id":"q33","u":"Pathology","t":"mc","q":"A 9-year-old boy from Eritrea is admitted to the hospital for lethargy and increased work of breathing. He has had recurrent episodes of fever, shortness of breath, and fatigue over the past 3 years. His pulse is 132/min and blood pressure is 90/66 mm Hg. Pulse oximetry on room air shows an oxygen saturation of 82%. Auscultation of the chest shows coarse crackles in both lungs and a diastolic murmur at the cardiac apex. Despite appropriate lifesaving measures, he dies. A photomicrograph of a section of myocardium obtained at autopsy is shown. Which of the following is the most likely underlying cause of this patient's cardiac disease?","o":["Type II hypersensitivity reaction","Amastigote infiltration","Exotoxin-mediated myonecrosis","Caseating granulomatous inflammation"],"c":0,"w":"Recurrent febrile episodes, pulmonary congestion and an apical diastolic murmur (mitral stenosis) in a child from an endemic area point to rheumatic heart disease, and the autopsy section shows Aschoff bodies. The disease is immunologically mediated: antibodies and CD4+ T cells raised against streptococcal M proteins cross-react with self antigens in the heart. Antibodies binding tissue antigens activate complement and recruit macrophages, which is a type II (antibody-mediated) hypersensitivity reaction; the slide states the antibody cross-reaction but not the term \"type II\". (Pathology L3 slides (rheumatic fever), in-class case)","x":{"1":"Amastigote infiltration means direct parasitic invasion of the myocardium, not the antibody cross-reaction of rheumatic heart disease.","2":"Rheumatic carditis is not caused by a toxin; it is caused by antibodies and T cells cross-reacting with heart antigens.","3":"Caseating granulomas are not the lesion of rheumatic heart disease; the Aschoff body is."},"m":{"2":"thinks strep toxin damages the heart directly"},"lp":true,"k":"path-arf","src":"materials","kind":"Apply a fact"},{"id":"q34","u":"Pathology","t":"mc","q":"A group of epidemiologists is studying the rates of cardiac surgeries performed in several Southeast Asian countries compared to the United States. Results show a significant increase in the number of mitral valve replacements performed in Vietnam in adults aged 30–50 years compared to the same age group in the United States. Which of the following public health interventions is most likely to decrease this number?","o":["Prompt antibiotic treatment for bacterial pharyngitis","Improved access to drug rehabilitation centers","Genetic screening program for FBN1 gene mutation","Childhood vaccination against Corynebacterium diphtheriae","Screening echocardiography for prolapsed anterior mitral valve leaflets"],"c":0,"w":"Mitral valve replacement in young adults in a developing country points to chronic rheumatic heart disease, which follows group A streptococcal pharyngitis by decades. The incidence and mortality of rheumatic fever fell over the past century because of better socioeconomic conditions and rapid diagnosis and treatment of strep pharyngitis. Prompt antibiotic treatment prevents the immune reaction and therefore the valve scarring. (Pathology L3 slides (rheumatic fever), in-class case)","x":{"1":"Drug rehabilitation addresses IV drug use endocarditis, which mainly affects the tricuspid valve.","2":"FBN1 mutation screening is unrelated to rheumatic valve disease, the cause described here.","3":"Diphtheria vaccination does not prevent group A streptococcal pharyngitis.","4":"Screening finds valve disease; it does not prevent rheumatic scarring."},"m":{"1":"links mitral disease to IV drug use"},"lp":true,"k":"path-arf","src":"materials","kind":"Apply a fact"},{"id":"q35","u":"Pathology","t":"mc","q":"A nurse takes the history of a child with suspected acute rheumatic fever. Which history is most consistent with the diagnosis?","o":["An 8-year-old with a sore throat caused by group A streptococci 3 weeks ago","A 40-year-old with a sore throat 3 weeks ago","An 8-year-old with a sore throat 2 days ago","An 8-year-old with a group A streptococcal skin infection 6 months ago"],"c":0,"w":"Acute rheumatic fever appears 10 days to 6 weeks after group A beta-hemolytic streptococcal pharyngitis, develops in about 3% of infected patients and is most common in children aged 5-15. The delay reflects the time needed for antibodies and T cells against streptococcal M proteins to form and cross-react with heart antigens. (Pathology L3 slides (rheumatic fever))","x":{"1":"ARF occurs most often in children aged 5-15.","2":"ARF appears 10 days to 6 weeks after the pharyngitis, not within 2 days.","3":"ARF follows streptococcal PHARYNGITIS by 10 days to 6 weeks."},"m":{"1":"ignores the age pattern","2":"ignores the latent period"},"lp":false,"k":"path-arf","src":"materials","kind":"Recognize and interpret"},{"id":"q36","u":"Pathology","t":"mc","q":"A pathology report on a child's heart describes macrophages with abundant cytoplasm and a central nucleus whose chromatin forms a slender wavy ribbon. What are these cells?","o":["Anitschkow cells","Heart failure cells","Foam cells","T lymphocytes"],"c":0,"w":"Anitschkow cells (caterpillar cells) are cardiac histiocytes: macrophages with abundant cytoplasm and central round to oval nuclei whose chromatin condenses into a slender wavy ribbon. Together with focal necrosis and T lymphocytes they form the Aschoff body, the pathognomonic lesion of acute rheumatic fever found in all layers of the heart. (Pathology L3 slides (rheumatic fever))","x":{"1":"Heart failure cells are hemosiderin-laden alveolar macrophages in chronic pulmonary congestion.","2":"Foam cells are lipid-filled cells in atherosclerotic lesions.","3":"T lymphocytes are also in the Aschoff body, but they lack the caterpillar chromatin pattern."},"m":{"1":"mixes up heart failure cells and Anitschkow cells","2":"mixes up foam cells and Anitschkow cells"},"lp":false,"k":"path-arf","src":"materials","kind":"Apply a fact"},{"id":"q37","u":"Pathology","t":"mc","q":"A nurse auscultates a pericardial friction rub in a child with acute rheumatic fever. Which pericardial lesion is expected?","o":["Fibrinous \"bread and butter\" pericarditis","Vegetations along the lines of valve closure","Brown induration","A mural thrombus"],"c":0,"w":"Acute rheumatic fever causes a pancarditis with Aschoff bodies in all layers. In the pericardium it causes fibrinous inflammation, the \"bread and butter\" pericarditis that produces a friction rub. The myocardium shows myocarditis and the valves show small vegetations along the lines of closure. (Pathology L3 slides (rheumatic fever))","x":{"1":"Vegetations are the lesion of rheumatic ENDOcarditis, on the valves.","2":"Brown induration is fibrosis of the lung in chronic congestion.","3":"A mural thrombus forms in the left ventricle over an infarct."},"m":{"1":"puts valve lesions in the pericardium"},"lp":false,"k":"path-arf","src":"materials","kind":"Recognize and interpret"},{"id":"q38","u":"Pathology","t":"mc","q":"A child's echocardiogram during acute rheumatic fever shows small vegetations along the lines of valve closure. Which valve is most commonly affected?","o":["Mitral valve","Aortic valve","Tricuspid valve","Pulmonary valve"],"c":0,"w":"Rheumatic vegetations are small, lie along the lines of closure and overlie foci of fibrinoid necrosis. They favor the high-pressure valves: mitral (65%) and aortic (25%). Chronic rheumatic heart disease follows the same pattern, with the mitral valve most affected. (Pathology L3 slides (rheumatic fever))","x":{"1":"The aortic valve is second (25%).","2":"The tricuspid valve is typical of IV drug use endocarditis, not rheumatic fever.","3":"The pulmonary valve is not among the most common sites."},"m":{"1":"ranks aortic first","2":"confuses RHD with IVDU endocarditis"},"lp":false,"k":"path-arf","src":"materials","kind":"Apply a fact"},{"id":"q39","u":"Pathology","t":"sata","q":"A nurse reviews a child's findings using the Jones criteria. Which findings are MAJOR criteria? Select all that apply.","o":["Carditis","Migratory polyarthritis","Sydenham chorea","Erythema marginatum","Subcutaneous nodules","Fever","Arthralgia","Prolonged PR interval"],"c":[0,1,2,3,4],"w":"The Jones major criteria are carditis, migratory polyarthritis, Sydenham chorea, erythema marginatum and subcutaneous nodules. The minor criteria are fever, arthralgia, previous rheumatic fever, laboratory evidence of inflammation (ESR, CRP, leukocytosis) and ECG changes (prolonged PR interval). (Pathology L3 slides (rheumatic fever))","x":{"5":"Fever is a minor criterion.","6":"Arthralgia (joint pain without arthritis) is a minor criterion.","7":"A prolonged PR interval is a minor criterion."},"m":{"5":"mixes up major and minor Jones criteria","6":"mixes up arthritis and arthralgia","7":"mixes up major and minor Jones criteria"},"lp":false,"k":"path-jones","src":"materials","kind":"Recognize and interpret"},{"id":"q40","u":"Pathology","t":"mc","q":"A child has Sydenham chorea, fever and a raised ESR, and the streptococcal antibody titer is elevated. How should the nurse interpret these findings using the Jones criteria?","o":["The criteria are met: 1 major and 2 minor criteria with evidence of preceding strep infection.","The criteria are not met because 2 major criteria are always required.","The criteria are not met because chorea is a minor criterion.","The criteria are met even without evidence of streptococcal infection."],"c":0,"w":"Acute rheumatic fever is diagnosed with 2 major criteria, or 1 major and 2 minor criteria, supported by evidence of a preceding group A streptococcal infection (positive throat culture or rapid antigen test, or a raised or rising antibody titer). Chorea is major; fever and a raised ESR are minor; the elevated titer is the supporting evidence. (Pathology L3 slides (rheumatic fever))","x":{"1":"Diagnosis needs 2 major OR 1 major plus 2 minor criteria.","2":"Sydenham chorea is a MAJOR criterion.","3":"The criteria must be supported by evidence of preceding group A strep infection; here the titer supplies it."},"m":{"1":"forgets the 1 major + 2 minor rule","2":"mixes up major and minor Jones criteria"},"lp":false,"k":"path-jones","src":"materials","kind":"Recognize and interpret"},{"id":"q41","u":"Pathology","t":"tf","q":"A nurse tells a family that the migratory polyarthritis of acute rheumatic fever typically leaves chronic joint deformities.","o":["True","False"],"c":1,"w":"False. Migratory (\"fleeting\") polyarthritis of the large joints is self-limited and leaves NO chronic deformities. The lasting damage of rheumatic fever is to the heart valves. (Pathology L3 slides (rheumatic fever))","x":{"0":"The arthritis is self-limited with no chronic deformities."},"m":{"0":"thinks rheumatic arthritis deforms joints"},"lp":false,"k":"path-jones","src":"materials","kind":"Apply a fact"},{"id":"q42","u":"Pathology","t":"sata","q":"A client has long-standing rheumatic mitral stenosis. Which consequences should the nurse anticipate? Select all that apply.","o":["Left atrial dilatation with possible thrombi","Chronic venous congestion of the lungs","Pulmonary hypertension","Chronic right-sided heart failure","Atrial fibrillation","Marked left ventricular dilatation"],"c":[0,1,2,3,4],"w":"A fibrotic \"fish mouth\" mitral valve obstructs flow from the left atrium, which dilates and may harbor thrombi that embolize. Back pressure causes chronic pulmonary venous congestion, lung fibrosis, pulmonary hypertension and eventually chronic right-sided failure. Atrial fibrillation, thromboembolism and infective endocarditis complicate it. The left ventricle, upstream of nothing that is blocked, is largely unaffected. (Pathology L3 slides (rheumatic fever))","x":{"5":"The left ventricle is largely unaffected by isolated pure mitral stenosis."},"m":{"5":"thinks mitral stenosis enlarges the LV"},"lp":false,"k":"path-rhd","src":"materials","kind":"Recognize and interpret"},{"id":"q43","u":"Pathology","t":"tf","q":"A nurse explains that chronic rheumatic heart disease usually becomes clinically manifest decades after the episode of acute rheumatic fever.","o":["True","False"],"c":0,"w":"True. ARF endocarditis heals by fibrosis, repeated infections reactivate it, and the chronic valve scarring usually becomes clinically manifest after decades. (Pathology L3 slides (rheumatic fever))","x":{"1":"This statement is true: RHD usually appears decades later."},"m":{},"lp":false,"k":"path-rhd","src":"materials","kind":"Teaching and statements"},{"id":"q44","u":"Pathology","t":"cloze","q":"A nurse reviews vessel biopsy reports. Match each pattern of arteriosclerosis to its description.","o":{"rows":["Atherosclerosis","Mönckeberg medial sclerosis","Hyaline arteriolosclerosis","Hyperplastic arteriolosclerosis"],"choices":["Intimal atheromas that protrude into the lumen","Calcific deposits in muscular arteries after age 50","Arteriolar wall thickened by amorphous proteinaceous material","\"Onion-skinning\" of the arteriolar wall","Fatty spots of foam cells under 1 mm"]},"c":[0,1,2,3],"w":"Arteriosclerosis means thickening and loss of elasticity of arterial walls, in three patterns. Atherosclerosis, the most frequent and important, forms intimal atheromas. Mönckeberg medial sclerosis lays down calcific deposits in muscular arteries of people over 50. Arteriolosclerosis affects small arteries and arterioles in hypertension and diabetes: the hyaline type deposits amorphous protein in the wall, and the hyperplastic type shows onion-skinning that narrows the lumen. (Pathology L4 slides (atherosclerosis))","x":{"4":"Fatty spots are the earliest lesion OF atherosclerosis, not a separate pattern."},"m":{},"lp":false,"k":"path-arteriosclerosis","src":"materials","rs":{"0":"A biopsy shows intimal atheromas protruding into an artery's lumen. Which pattern of arteriosclerosis is this?","1":"A 70-year-old client's report describes calcific deposits in the media of muscular arteries. Which pattern is this?","2":"A diabetic client's renal biopsy shows arterioles thickened by amorphous proteinaceous material. Which pattern is this?","3":"A biopsy from a client with severe hypertension shows onion-skinning of arterioles. Which pattern is this?"},"kind":"Apply a fact"},{"id":"q45","u":"Pathology","t":"tf","q":"A nurse explains that Mönckeberg medial sclerosis mainly affects arterioles in clients with hypertension.","o":["True","False"],"c":1,"w":"False. Mönckeberg medial sclerosis is calcific deposits in MUSCULAR ARTERIES in people older than 50. The pattern that affects small arteries and arterioles in hypertension and diabetes is arteriolosclerosis. (Pathology L4 slides (atherosclerosis))","x":{"0":"Mönckeberg affects muscular arteries; arteriolosclerosis affects arterioles."},"m":{"0":"mixes up Mönckeberg and arteriolosclerosis"},"lp":false,"k":"path-arteriosclerosis","src":"materials","kind":"Teaching and statements"},{"id":"q46","u":"Pathology","t":"sata","q":"A nurse counsels a client about atherosclerosis risk. Which risk factors can the client modify? Select all that apply.","o":["Hypercholesterolemia","Hypertension","Cigarette smoking","Diabetes mellitus","Increasing age","Male gender","Family history"],"c":[0,1,2,3],"w":"Atherosclerosis risk factors are split into non-modifiable (increasing age, male gender, genetic abnormalities and family history) and modifiable (hyperlipidemia, especially hypercholesterolemia with high LDL, hypertension, cigarette smoking and diabetes mellitus). Counseling targets the modifiable ones. (Pathology L4 slides (atherosclerosis))","x":{"4":"Age is a non-modifiable risk factor.","5":"Male gender is a non-modifiable risk factor.","6":"Genetic abnormalities and family history are non-modifiable."},"m":{"4":"thinks non-modifiable factors are modifiable","5":"thinks non-modifiable factors are modifiable","6":"thinks non-modifiable factors are modifiable"},"lp":false,"k":"path-athero","src":"materials","kind":"Apply a fact"},{"id":"q47","u":"Pathology","t":"order","q":"A nurse explains how an atheroma develops according to the response-to-injury hypothesis. Arrange the steps in order.","o":["Chronic endothelial injury (hyperlipidemia, hypertension, smoking)","Endothelial dysfunction with monocyte adhesion and emigration","Smooth muscle recruitment to the intima and macrophage activation","Macrophages and smooth muscle cells engulf lipid to form foam cells (fatty streak)","Smooth muscle proliferation with collagen and ECM deposition (fibrofatty atheroma)"],"c":[0,1,2,3,4],"w":"The response-to-injury hypothesis sees atherosclerosis as a chronic inflammatory response to endothelial injury. Injury from hyperlipidemia, hypertension, smoking, homocysteine, toxins, viruses or immune reactions makes the endothelium leaky and sticky, so monocytes adhere and migrate in. Smooth muscle cells are recruited into the intima and macrophages activate; both engulf lipid as foam cells, forming a fatty streak. Smooth muscle proliferation and collagen deposition then build the fibrofatty atheroma. (Pathology L4 slides (atherosclerosis))","x":{},"m":{},"lp":false,"k":"path-athero","src":"materials","kind":"Teaching and statements"},{"id":"q48","u":"Pathology","t":"mc","q":"A biopsy of a young client's aorta shows flat yellow lesions about 1 cm long made of foam cells that do not narrow the lumen. Which lesion is this?","o":["Fatty streak","Fatty spot","Atheromatous plaque","Mönckeberg medial sclerosis"],"c":0,"w":"Atherosclerotic lesions progress from fatty spots (multiple yellow spots under 1 mm made of foam cells) to fatty streaks, where spots coalesce into elongated streaks 1 cm or longer. Streaks contain foam cells and a little extracellular lipid, are not significantly raised and do not disturb blood flow. Atheromas come later. (Pathology L4 slides (atherosclerosis))","x":{"1":"Fatty spots are smaller (less than 1 mm) and are the earliest lesion.","2":"An atheroma is a RAISED patch with a lipid core under a fibrous cap.","3":"Mönckeberg sclerosis is calcification of the media of muscular arteries."},"m":{"1":"mixes up spots and streaks","2":"calls any fatty lesion a plaque"},"lp":false,"k":"path-athero","src":"materials","kind":"Apply a fact"},{"id":"q49","u":"Pathology","t":"mc","q":"A nurse reviews the gross description of a coronary atheroma. Which description is accurate?","o":["A raised intimal patch with a soft yellow lipid core covered by a firm white fibrous cap","A flat yellow streak that does not disturb blood flow","Calcific deposits in the media of a muscular artery","A thickened arteriolar wall with onion-skinning"],"c":0,"w":"An atheroma is a raised patch within the intima with a soft, yellow core of lipid covered by a firm, white fibrous cap. Microscopically it has cells (smooth muscle cells, macrophages, other leukocytes), extracellular matrix (collagen, elastic fibers, proteoglycans) and intracellular and extracellular lipid. (Pathology L4 slides (atherosclerosis))","x":{"1":"That describes a fatty streak.","2":"That describes Mönckeberg medial sclerosis.","3":"That describes hyperplastic arteriolosclerosis."},"m":{"1":"mixes up streaks and plaques"},"lp":false,"k":"path-athero","src":"materials","kind":"Apply a fact"},{"id":"q50","u":"Pathology","t":"tf","q":"A nurse states that fatty streaks are not significantly raised and do not disturb blood flow.","o":["True","False"],"c":0,"w":"True. Fatty streaks are elongated streaks 1 cm or longer that are not significantly raised and do not cause any disturbance in blood flow. (Pathology L4 slides (atherosclerosis))","x":{"1":"This statement is true: fatty streaks are flat and do not disturb flow."},"m":{},"lp":false,"k":"path-athero","src":"materials","kind":"Apply a fact"},{"id":"q51","u":"Pathology","t":"sata","q":"A nurse reviews where atherosclerosis most often develops. Which sites are common? Select all that apply.","o":["Lower abdominal aorta","Coronary arteries","Popliteal arteries","Internal carotid arteries","Vessels of the circle of Willis","Arterioles of the kidney","Deep veins of the leg"],"c":[0,1,2,3,4],"w":"Atheromas form in large and medium arteries. The common sites listed are the lower abdominal aorta, coronary arteries, popliteal arteries, internal carotid arteries and the vessels of the circle of Willis, which explains the main consequences: ischemic heart disease, stroke, aortic aneurysm and peripheral vascular disease. (Pathology L4 slides (atherosclerosis))","x":{"5":"Arterioles are affected by arteriolosclerosis, not atherosclerosis.","6":"Leg veins are a site of deep vein thrombosis, not atherosclerosis."},"m":{"5":"mixes up atherosclerosis and arteriolosclerosis sites"},"lp":false,"k":"path-athero-complications","src":"materials","kind":"Apply a fact"},{"id":"q52","u":"Pathology","t":"mc","q":"A client with known coronary atherosclerosis suddenly develops an acute myocardial infarction. Which plaque change most likely triggered the event?","o":["Rupture or erosion of the plaque surface, which induces thrombosis","Calcification of the atheroma","Formation of a new fatty streak","Mönckeberg medial sclerosis of the artery"],"c":0,"w":"Acute plaque changes are rupture, ulceration or erosion of the luminal surface, which induces thrombosis, and fissure with hemorrhage into the plaque, which can expand or rupture it. Plaque rupture can also discharge debris (atheroembolism). Thrombosis on a ruptured coronary plaque is what turns chronic ischemic disease into infarction. (Pathology L4 slides (atherosclerosis))","x":{"1":"Calcification is a chronic change of atheromas, not the acute trigger of thrombosis.","2":"Fatty streaks are flat early lesions that do not disturb flow.","3":"Mönckeberg sclerosis is medial calcification, a separate pattern."},"m":{"1":"thinks calcification causes acute events"},"lp":false,"k":"path-athero-complications","src":"materials","kind":"Apply a fact"},{"id":"q53","u":"Pathology","t":"cloze","q":"A nurse explains the clinical consequences of atherosclerosis at different sites. Match each site to its major consequence.","o":{"rows":["Coronary arteries","Cerebral arteries","Aorta","Arteries of the lower extremity"],"choices":["Ischemic heart disease","Cerebral infarction (stroke)","Aortic aneurysm","Peripheral vascular disease with gangrene of the legs","Pulmonary infarction"]},"c":[0,1,2,3],"w":"Where an atheroma narrows or thromboses an artery decides the disease. Coronary atherosclerosis causes ischemic heart disease, cerebral atherosclerosis causes stroke, aortic atherosclerosis weakens the media and causes aneurysms, and atherosclerosis of the limb arteries causes peripheral vascular disease and gangrene. (Pathology L4 slides (atherosclerosis))","x":{"4":"Pulmonary infarction follows pulmonary embolism, usually from DVT, not atherosclerosis."},"m":{"4":"links PE to atherosclerosis"},"lp":false,"k":"path-athero-complications","src":"materials","rs":{"0":"A client has severe coronary atherosclerosis. Which clinical consequence should the nurse anticipate?","1":"A client has atherosclerosis of the cerebral arteries. Which consequence is the nurse watching for?","2":"A client has advanced aortic atherosclerosis. Which consequence should the nurse anticipate?","3":"A client has atherosclerosis of the leg arteries. Which consequence should the nurse anticipate?"},"kind":"Teaching and statements"}],"concepts":{"path-congestion":{"title":"Hyperemia and congestion","unit":"Pathology","points":["Hyperemia: an active process in which arteriolar dilation increases blood flow; tissue turns red (erythema) from oxygenated blood.","Congestion: a passive process from impaired venous outflow; tissue is dusky reddish-blue (cyanosis) from deoxygenated blood.","Acute localized congestion: sudden complete venous obstruction (DVT, ligature, twisted pedicle of an ovary) causing rapid edema and hemorrhage.","Chronic generalized venous congestion is caused by chronic right-sided heart failure; acute generalized congestion by acute heart failure."],"source":"Pathology L1 slides (hemodynamic disorders I)","items":["q0","q1","q2","q3","q4"],"sec":[{"id":"path-congestion","title":"Hyperemia and congestion","key":["Hyperemia: an active process in which arteriolar dilation increases blood flow; tissue turns red (erythema) from oxygenated blood.","Congestion: a passive process from impaired venous outflow; tissue is dusky reddish-blue (cyanosis) from deoxygenated blood.","Acute localized congestion: sudden complete venous obstruction (DVT, ligature, twisted pedicle of an ovary) causing rapid edema and hemorrhage.","Chronic generalized venous congestion is caused by chronic right-sided heart failure; acute generalized congestion by acute heart failure."]}]},"path-edema":{"title":"Edema: causes and classification","unit":"Pathology","points":["Edema: an abnormal increase in interstitial fluid within tissues; fluid may be transudate, exudate or lymph.","Causes: increased capillary hydrostatic pressure, decreased plasma colloid osmotic pressure, increased capillary permeability, lymphatic obstruction.","Hypoproteinemia: total plasma proteins below 2.5 gm% or serum albumin below 1.5 gm%.","Pitting edema: generalized edema and obstructive venous edema. Non-pitting: inflammatory and lymphatic edema."],"source":"Pathology L1 slides (hemodynamic disorders I)","items":["q5","q6","q7","q8"],"sec":[{"id":"path-edema","title":"Edema: causes and classification","key":["Edema: an abnormal increase in interstitial fluid within tissues; fluid may be transudate, exudate or lymph.","Causes: increased capillary hydrostatic pressure, decreased plasma colloid osmotic pressure, increased capillary permeability, lymphatic obstruction.","Hypoproteinemia: total plasma proteins below 2.5 gm% or serum albumin below 1.5 gm%.","Pitting edema: generalized edema and obstructive venous edema. Non-pitting: inflammatory and lymphatic edema."]}]},"path-ischemia-infarct":{"title":"Ischemia and infarction","unit":"Pathology","points":["Ischemia: deficient arterial blood supply due to partial or complete occlusion of the artery; acute (sudden complete) or chronic (gradual partial).","Organs with good collateral circulation show no effect; poor collateral circulation leads to infarction (acute) or chronic ischemic changes.","Infarct: an area of ischemic necrosis from occlusion of the arterial supply or venous drainage; 99% from thrombosis or embolism.","Red infarct: venous occlusion (ovary), loose tissue (lung), dual circulation (lung, liver, small intestine), reperfusion after angioplasty.","White infarct: arterial occlusion in solid organs with end-arterial circulation (heart, spleen, kidney); tissue density limits seepage of blood."],"source":"Pathology L1 slides (hemodynamic disorders I)","items":["q9","q10","q11","q12","q13"],"sec":[{"id":"path-ischemia-infarct","title":"Ischemia and infarction","key":["Ischemia: deficient arterial blood supply due to partial or complete occlusion of the artery; acute (sudden complete) or chronic (gradual partial).","Organs with good collateral circulation show no effect; poor collateral circulation leads to infarction (acute) or chronic ischemic changes.","Infarct: an area of ischemic necrosis from occlusion of the arterial supply or venous drainage; 99% from thrombosis or embolism.","Red infarct: venous occlusion (ovary), loose tissue (lung), dual circulation (lung, liver, small intestine), reperfusion after angioplasty.","White infarct: arterial occlusion in solid organs with end-arterial circulation (heart, spleen, kidney); tissue density limits seepage of blood."]}]},"path-virchow":{"title":"Thrombosis and Virchow's triad","unit":"Pathology","points":["Thrombosis: formation of a compact mass of circulating blood elements inside the cardiovascular system during life.","Virchow's triad: endothelial injury/dysfunction, alterations in blood flow (stasis or turbulence), hypercoagulability.","Endothelial dysfunction increases procoagulants (thromboplastin, vWF, PAI) and decreases anticoagulants (thrombomodulin, antithrombin III, NO, PA).","Stasis reduces inflow of fresh blood containing natural anticoagulants and retards removal of small platelet aggregates.","Acquired hypercoagulability: prolonged bed rest, surgery, burns, pregnancy, oral contraceptives, disseminated cancer, smoking, DIC. Hereditary: factor V and prothrombin gene mutations, antithrombin III deficiency."],"source":"Pathology L2 slides (hemodynamic disorders II)","items":["q14","q15","q16","q17"],"sec":[{"id":"path-virchow","title":"Thrombosis and Virchow's triad","key":["Thrombosis: formation of a compact mass of circulating blood elements inside the cardiovascular system during life.","Virchow's triad: endothelial injury/dysfunction, alterations in blood flow (stasis or turbulence), hypercoagulability.","Endothelial dysfunction increases procoagulants (thromboplastin, vWF, PAI) and decreases anticoagulants (thrombomodulin, antithrombin III, NO, PA).","Stasis reduces inflow of fresh blood containing natural anticoagulants and retards removal of small platelet aggregates.","Acquired hypercoagulability: prolonged bed rest, surgery, burns, pregnancy, oral contraceptives, disseminated cancer, smoking, DIC. Hereditary: factor V and prothrombin gene mutations, antithrombin III deficiency."]}]},"path-thrombus-types":{"title":"Sites, types and fate of thrombi","unit":"Pathology","points":["Venous thrombi (phlebothrombosis, red thrombi) are the most common type, associated with stasis and hypercoagulability.","DVT sites: popliteal, femoral and iliac veins; complication: embolism to the lungs (pulmonary infarction).","Arterial thrombosis is less common because of rapid flow and the thick elastic arterial wall; most common cause is atherosclerosis (coronary, cerebral, femoral).","Cardiac thrombi: auricular thrombus in the left atrium in mitral stenosis; mural thrombus in the left ventricle over an infarct; vegetations on valves.","Fate: dissolution, propagation (a tail liable to detach), embolization, organization and recanalization."],"source":"Pathology L2 slides (hemodynamic disorders II)","items":["q18","q19","q20","q21","q22"],"sec":[{"id":"path-thrombus-types","title":"Sites, types and fate of thrombi","key":["Venous thrombi (phlebothrombosis, red thrombi) are the most common type, associated with stasis and hypercoagulability.","DVT sites: popliteal, femoral and iliac veins; complication: embolism to the lungs (pulmonary infarction).","Arterial thrombosis is less common because of rapid flow and the thick elastic arterial wall; most common cause is atherosclerosis (coronary, cerebral, femoral).","Cardiac thrombi: auricular thrombus in the left atrium in mitral stenosis; mural thrombus in the left ventricle over an infarct; vegetations on valves.","Fate: dissolution, propagation (a tail liable to detach), embolization, organization and recanalization."]}]},"path-embolism":{"title":"Embolism and pulmonary embolism","unit":"Pathology","points":["An embolus is a detached intravascular solid, liquid or gaseous mass carried by the blood to a site distant from its origin.","Thromboemboli are the most common type (99%); others: fat, parasitic, air or nitrogen, amniotic fluid, tumor, cholesterol and foreign body emboli.","Pulmonary emboli: 95% originate from deep vein thrombi of the legs; seen in up to 25-30% of DVT patients; 60-80% are small and silent.","Saddle embolus causes sudden death (acute right failure); medium emboli give hemorrhage in a normal lung or infarction in a congested lung; small repeated emboli give pulmonary hypertension and cor pulmonale."],"source":"Pathology L2 slides (hemodynamic disorders II)","items":["q23","q24","q25"],"sec":[{"id":"path-embolism","title":"Embolism and pulmonary embolism","key":["An embolus is a detached intravascular solid, liquid or gaseous mass carried by the blood to a site distant from its origin.","Thromboemboli are the most common type (99%); others: fat, parasitic, air or nitrogen, amniotic fluid, tumor, cholesterol and foreign body emboli.","Pulmonary emboli: 95% originate from deep vein thrombi of the legs; seen in up to 25-30% of DVT patients; 60-80% are small and silent.","Saddle embolus causes sudden death (acute right failure); medium emboli give hemorrhage in a normal lung or infarction in a congested lung; small repeated emboli give pulmonary hypertension and cor pulmonale."]}]},"path-systemic-emboli":{"title":"Systemic, fat, air and amniotic fluid emboli","unit":"Pathology","points":["Systemic emboli: 80% from intracardiac thrombi (2/3 left ventricular wall infarcts, 1/3 dilated left atria or vegetations); also aortic aneurysm, ulcerated plaques, paradoxical emboli.","Paradoxical emboli start as venous emboli but pass through an interatrial or interventricular defect into the systemic circulation.","Site of arrest: 75% lower extremities, 10% brain.","Fat embolism: long bone fracture is the most common cause; the syndrome begins 1-3 days after injury with tachypnea, dyspnea, tachycardia, neurologic symptoms, thrombocytopenia and anemia.","Air embolism needs more than 100 cc of air for a pulmonary effect; causes include neck vein injury, chest wall injury, obstetric or laparoscopic procedures, bypass surgery and decompression sickness.","Amniotic fluid embolism: 1 in 40,000 deliveries, mortality 80%; sudden dyspnea, cyanosis, shock, seizures, pulmonary edema and DIC."],"source":"Pathology L2 slides (hemodynamic disorders II)","items":["q26","q27","q28","q29","q30","q31"],"sec":[{"id":"path-systemic-emboli","title":"Systemic, fat, air and amniotic fluid emboli","key":["Systemic emboli: 80% from intracardiac thrombi (2/3 left ventricular wall infarcts, 1/3 dilated left atria or vegetations); also aortic aneurysm, ulcerated plaques, paradoxical emboli.","Paradoxical emboli start as venous emboli but pass through an interatrial or interventricular defect into the systemic circulation.","Site of arrest: 75% lower extremities, 10% brain.","Fat embolism: long bone fracture is the most common cause; the syndrome begins 1-3 days after injury with tachypnea, dyspnea, tachycardia, neurologic symptoms, thrombocytopenia and anemia.","Air embolism needs more than 100 cc of air for a pulmonary effect; causes include neck vein injury, chest wall injury, obstetric or laparoscopic procedures, bypass surgery and decompression sickness.","Amniotic fluid embolism: 1 in 40,000 deliveries, mortality 80%; sudden dyspnea, cyanosis, shock, seizures, pulmonary edema and DIC."]}]},"path-arf":{"title":"Acute rheumatic fever: pathogenesis and lesions","unit":"Pathology","points":["ARF is an acute, immunologically mediated, multisystem inflammatory disease a few weeks after group A streptococcal pharyngitis.","It appears 10 days to 6 weeks after pharyngitis, in about 3% of infected patients, most often in children aged 5-15.","Antibodies and CD4+ T cells against streptococcal M proteins cross-react with self antigens in the heart.","Aschoff bodies are pathognomonic: focal necrosis, T lymphocytes and Anitschkow (caterpillar) cells with a slender wavy ribbon of chromatin.","Pancarditis: fibrinous \"bread and butter\" pericarditis, myocarditis, and small vegetations along the lines of closure over fibrinoid necrosis (mitral 65%, aortic 25%)."],"source":"Pathology L3 slides (rheumatic fever)","items":["q32","q33","q34","q35","q36","q37","q38"],"sec":[{"id":"path-arf","title":"Acute rheumatic fever: pathogenesis and lesions","key":["ARF is an acute, immunologically mediated, multisystem inflammatory disease a few weeks after group A streptococcal pharyngitis.","It appears 10 days to 6 weeks after pharyngitis, in about 3% of infected patients, most often in children aged 5-15.","Antibodies and CD4+ T cells against streptococcal M proteins cross-react with self antigens in the heart.","Aschoff bodies are pathognomonic: focal necrosis, T lymphocytes and Anitschkow (caterpillar) cells with a slender wavy ribbon of chromatin.","Pancarditis: fibrinous \"bread and butter\" pericarditis, myocarditis, and small vegetations along the lines of closure over fibrinoid necrosis (mitral 65%, aortic 25%)."]}]},"path-jones":{"title":"Jones criteria","unit":"Pathology","points":["Major: carditis, migratory polyarthritis, Sydenham chorea, erythema marginatum, subcutaneous nodules.","Minor: fever, arthralgia, previous rheumatic fever, raised ESR, CRP or leukocytosis, prolonged PR interval.","Evidence of preceding group A strep: positive throat culture or rapid antigen test, or raised or rising streptococcal antibody titer.","Diagnosis: 2 major, or 1 major and 2 minor, supported by evidence of preceding group A streptococcal infection.","Migratory polyarthritis of large joints is self-limited with no chronic deformities."],"source":"Pathology L3 slides (rheumatic fever)","items":["q39","q40","q41"],"sec":[{"id":"path-jones","title":"Jones criteria","key":["Major: carditis, migratory polyarthritis, Sydenham chorea, erythema marginatum, subcutaneous nodules.","Minor: fever, arthralgia, previous rheumatic fever, raised ESR, CRP or leukocytosis, prolonged PR interval.","Evidence of preceding group A strep: positive throat culture or rapid antigen test, or raised or rising streptococcal antibody titer.","Diagnosis: 2 major, or 1 major and 2 minor, supported by evidence of preceding group A streptococcal infection.","Migratory polyarthritis of large joints is self-limited with no chronic deformities."]}]},"path-rhd":{"title":"Chronic rheumatic heart disease and mitral stenosis","unit":"Pathology","points":["Endocarditis of ARF heals by fibrosis; repeated pharyngeal infections reactivate the disease and scar the valves.","Mitral valve most commonly affected, then aortic; fibrosis of the leaflets leads to stenosis (\"fish mouth\" or \"buttonhole\").","Usually becomes clinically manifest decades after ARF.","Mitral stenosis: left atrial dilatation (with thrombi), chronic pulmonary venous congestion, lung fibrosis, pulmonary hypertension, chronic right-sided failure; the left ventricle is largely unaffected.","Other complications: arrhythmias (especially atrial fibrillation), thromboembolism, infective endocarditis."],"source":"Pathology L3 slides (rheumatic fever)","items":["q42","q43"],"sec":[{"id":"path-rhd","title":"Chronic rheumatic heart disease and mitral stenosis","key":["Endocarditis of ARF heals by fibrosis; repeated pharyngeal infections reactivate the disease and scar the valves.","Mitral valve most commonly affected, then aortic; fibrosis of the leaflets leads to stenosis (\"fish mouth\" or \"buttonhole\").","Usually becomes clinically manifest decades after ARF.","Mitral stenosis: left atrial dilatation (with thrombi), chronic pulmonary venous congestion, lung fibrosis, pulmonary hypertension, chronic right-sided failure; the left ventricle is largely unaffected.","Other complications: arrhythmias (especially atrial fibrillation), thromboembolism, infective endocarditis."]}]},"path-arteriosclerosis":{"title":"Arteriosclerosis patterns","unit":"Pathology","points":["Arteriosclerosis: thickening and loss of elasticity of arterial walls (\"hardening of the arteries\").","Atherosclerosis: the most frequent and important pattern.","Mönckeberg medial sclerosis: calcific deposits in muscular arteries in people older than 50.","Arteriolosclerosis: small arteries and arterioles, with hypertension and diabetes; hyaline (amorphous proteinaceous wall) and hyperplastic (\"onion-skinning\")."],"source":"Pathology L4 slides (atherosclerosis)","items":["q44","q45"],"sec":[{"id":"path-arteriosclerosis","title":"Arteriosclerosis patterns","key":["Arteriosclerosis: thickening and loss of elasticity of arterial walls (\"hardening of the arteries\").","Atherosclerosis: the most frequent and important pattern.","Mönckeberg medial sclerosis: calcific deposits in muscular arteries in people older than 50.","Arteriolosclerosis: small arteries and arterioles, with hypertension and diabetes; hyaline (amorphous proteinaceous wall) and hyperplastic (\"onion-skinning\")."]}]},"path-athero":{"title":"Atherosclerosis: risk factors, pathogenesis and plaque","unit":"Pathology","points":["Atherosclerosis: a chronic inflammatory disease of the arterial wall with intimal atheromas that protrude into the lumen and weaken the media.","Non-modifiable risk factors: increasing age, male gender, family history. Modifiable: hyperlipidemia (LDL), hypertension, cigarette smoking, diabetes mellitus.","Response to injury: chronic endothelial injury, endothelial dysfunction with monocyte adhesion, smooth muscle recruitment and macrophage activation, foam cells, then smooth muscle proliferation and collagen deposition.","Fatty spots (\u003c1 mm, foam cells) are the earliest lesion; fatty streaks (1 cm or longer) are not significantly raised and do not disturb blood flow.","Atheroma: raised intimal patch with a soft yellow lipid core under a firm white fibrous cap; cells, ECM and lipid."],"source":"Pathology L4 slides (atherosclerosis)","items":["q46","q47","q48","q49","q50"],"sec":[{"id":"path-athero","title":"Atherosclerosis: risk factors, pathogenesis and plaque","key":["Atherosclerosis: a chronic inflammatory disease of the arterial wall with intimal atheromas that protrude into the lumen and weaken the media.","Non-modifiable risk factors: increasing age, male gender, family history. Modifiable: hyperlipidemia (LDL), hypertension, cigarette smoking, diabetes mellitus.","Response to injury: chronic endothelial injury, endothelial dysfunction with monocyte adhesion, smooth muscle recruitment and macrophage activation, foam cells, then smooth muscle proliferation and collagen deposition.","Fatty spots (\u003c1 mm, foam cells) are the earliest lesion; fatty streaks (1 cm or longer) are not significantly raised and do not disturb blood flow.","Atheroma: raised intimal patch with a soft yellow lipid core under a firm white fibrous cap; cells, ECM and lipid."]}]},"path-athero-complications":{"title":"Complications and sites of atherosclerosis","unit":"Pathology","points":["Common sites: lower abdominal aorta, coronary, popliteal and internal carotid arteries, and the circle of Willis.","Acute plaque changes: rupture, ulceration or erosion (induces thrombosis), and fissure with hemorrhage into the plaque.","Other complications: atheroembolism, aneurysm from weakened media, calcification.","Consequences: ischemic heart disease (coronary), stroke (cerebral), aortic aneurysm (aorta), peripheral vascular disease with gangrene (leg arteries)."],"source":"Pathology L4 slides (atherosclerosis)","items":["q51","q52","q53"],"sec":[{"id":"path-athero-complications","title":"Complications and sites of atherosclerosis","key":["Common sites: lower abdominal aorta, coronary, popliteal and internal carotid arteries, and the circle of Willis.","Acute plaque changes: rupture, ulceration or erosion (induces thrombosis), and fissure with hemorrhage into the plaque.","Other complications: atheroembolism, aneurysm from weakened media, calcification.","Consequences: ischemic heart disease (coronary), stroke (cerebral), aortic aneurysm (aorta), peripheral vascular disease with gangrene (leg arteries)."]}]}}};
+</script>
+<script>
+/* drill-core.js — pure drill logic (no DOM). Inlined into the drill page by
+ * build-drill.py and loaded by simulate.js, so the simulations test the exact
+ * code the page runs.
+ *
+ * Progress state S (saved in localStorage and synced to the account):
+ *   seq        global answer counter (rest periods are counted in answers)
+ *   p[id]      {h: recent results, ls: seq at last answer, lt: time, sid: session,
+ *               t: last change, n: answers, sc: last full-question score 0..1,
+ *               lp: last answer position (string)}
+ *              h characters: R right, W wrong, P partly right, G right but guessed,
+ *              r / w single-row practice right / wrong (r never counts toward solid)
+ *   stars[id]  {on: 0|1, t}
+ *   miss[]     {q, lab, t}  every wrong pick (misconception label when one exists)
+ *   lastSid    id of the most recent session started
+ */
+(function (root) {
+  'use strict';
+  var H18 = 18 * 3600 * 1000;
+
+  function rng(seed) {
+    var a = (seed >>> 0) || 1;
+    return function () {
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  function shuffle(a, r) {
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function range(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+
+  function newState() {
+    return { v: 1, seq: 0, p: {}, stars: {}, miss: [], pre: { last: null }, tsec: { s: 0, n: 0 },
+             lc: {}, ll: -1, lastSid: null, sidN: 0, t: 0 };
+  }
+
+  /* ------------------------------------------------------------ data context */
+  function makeCtx(DATA) {
+    var D = { cfg: DATA.cfg, items: DATA.items, concepts: DATA.concepts || {}, byId: {}, hiUnits: {} };
+    DATA.items.forEach(function (it) { D.byId[it.id] = it; });
+    (DATA.cfg.high_roi_units || []).forEach(function (u) { D.hiUnits[u] = 1; });
+    return D;
+  }
+  // a question id is "q12" or a single-row variant "q12r3"
+  function parseId(qid) {
+    var m = /^(q\d+)(?:r(\d+))?$/.exec(qid);
+    return m ? { base: m[1], row: m[2] === undefined ? -1 : +m[2] } : { base: qid, row: -1 };
+  }
+  function itemOf(D, qid) {
+    var p = parseId(qid), it = D.byId[p.base];
+    if (!it || p.row < 0) return it;
+    return { id: qid, base: it.id, row: p.row, u: it.u, t: 'row', k: it.k, lp: it.lp, src: it.src, kind: it.kind,
+             q: it.rs[p.row], o: it.o.choices, c: it.c[p.row], w: it.w, x: it.x, m: it.m, parent: it };
+  }
+
+  /* ------------------------------------------------------------ status */
+  function eff(h) { return (h || '').replace(/r/g, '').replace(/w/g, 'W'); }
+  function status(it, rec) {
+    if (!rec) return 'new';
+    var e = eff(rec.h);
+    if (!e) return 'new';
+    var last = e.charAt(e.length - 1);
+    if (last !== 'R') return 'shaky';
+    var need = it.t === 'tf' ? 3 : 2;
+    return e.slice(-need) === new Array(need + 1).join('R') ? 'solid' : 'once';
+  }
+  function trailingMiss(rec) {
+    var e = eff(rec && rec.h), n = 0;
+    for (var i = e.length - 1; i >= 0 && (e[i] === 'W' || e[i] === 'P'); i--) n++;
+    return n;
+  }
+  function lastIsMiss(rec) { var e = eff(rec && rec.h); var c = e.charAt(e.length - 1); return c === 'W' || c === 'P' || c === 'G'; }
+  function isStar(S, id) { var s = S.stars[id]; return !!(s && s.on); }
+  function isHi(D, S, it) { return isStar(S, it.id) || !!it.lp || !!D.hiUnits[it.u]; }
+
+  function restLen(D, S, it, rec, n) {
+    var e = eff(rec.h), last = e.charAt(e.length - 1);
+    if (last === 'W' || last === 'P') {
+      return trailingMiss(rec) >= 2 ? clamp(Math.round(0.10 * n), 6, 25) : clamp(Math.round(0.25 * n), 10, 60);
+    }
+    if (last === 'G') return clamp(Math.round(0.25 * n), 10, 60);
+    var b = clamp(Math.round(0.7 * n), 12, 300);
+    if (status(it, rec) === 'solid') b = Math.round(b * 1.5);
+    if (isHi(D, S, it)) b = clamp(Math.round(0.4 * b), 8, 120);
+    return b;
+  }
+  function isRested(D, S, it, n, now) {
+    var rec = S.p[it.id];
+    if (!rec || !eff(rec.h)) return true;
+    if (now - rec.lt >= H18) return true;
+    return (S.seq - rec.ls) >= restLen(D, S, it, rec, n);
+  }
+  // answered in the previous session and not allowed back yet
+  function prevBlocked(D, S, it) {
+    var rec = S.p[it.id], blk = S._block !== undefined ? S._block : S.lastSid;
+    if (!rec || !blk || rec.sid !== blk) return false;
+    return !(isHi(D, S, it) || trailingMiss(rec) >= 2);
+  }
+
+  /* ------------------------------------------------------------ pools */
+  function unitItems(D, units) {
+    var set = {}; units.forEach(function (u) { set[u] = 1; });
+    return D.items.filter(function (it) { return set[it.u]; });
+  }
+  var FILTERS = {
+    missed: function (D, S, it) { return status(it, S.p[it.id]) === 'shaky'; },
+    starred: function (D, S, it) { return isStar(S, it.id); },
+    lp: function (D, S, it) { return !!it.lp; },
+    never: function (D, S, it) { return status(it, S.p[it.id]) === 'new'; }
+  };
+  function pool(D, S, units, filters, overlap) {
+    var base = unitItems(D, units), act = Object.keys(FILTERS).filter(function (f) { return filters && filters[f]; });
+    if (!act.length) return base.map(function (it) { return it.id; });
+    return base.filter(function (it) {
+      var hits = act.map(function (f) { return FILTERS[f](D, S, it); });
+      return overlap ? hits.every(Boolean) : hits.some(Boolean);
+    }).map(function (it) { return it.id; });
+  }
+  function filterCounts(D, S, units) {
+    var base = unitItems(D, units), out = {};
+    Object.keys(FILTERS).forEach(function (f) { out[f] = base.filter(function (it) { return FILTERS[f](D, S, it); }).length; });
+    return out;
+  }
+
+  /* ------------------------------------------------------------ sequencing */
+  function tfTruth(it) { return it.t === 'tf' ? (it.c === 0) : null; }
+  function tfOK(it, tfh) {
+    if (it.t !== 'tf') return true;
+    var v = tfTruth(it), n = tfh.length;
+    return !(n >= 2 && tfh[n - 1] === v && tfh[n - 2] === v);
+  }
+  // Order a list so the same topic never comes twice in a row when that is
+  // possible, the same format is avoided, and no 3 identical true/false answers
+  // run together (three true/false questions back to back with the same answer;
+  // any other question in between breaks the run). prev = {u, t, tfh} carries
+  // the state across a session; tfh holds true/false/null for the last questions.
+  function arrangeSeq(D, ids, r, prev) {
+    prev = prev || {};
+    var groups = {}, order = [], total = ids.length;
+    ids.forEach(function (id) { var it = itemOf(D, id); (groups[it.u] = groups[it.u] || []).push(id); });
+    Object.keys(groups).forEach(function (u) { shuffle(groups[u], r); });
+    var lastU = prev.u, lastT = prev.t, tfh = (prev.tfh || []).slice(), out = [];
+    while (total > 0) {
+      var units = Object.keys(groups).filter(function (u) { return groups[u].length; });
+      var cand = units.filter(function (u) { return u !== lastU; });
+      if (!cand.length) cand = units;
+      var maxU = cand[0];
+      cand.forEach(function (u) { if (groups[u].length > groups[maxU].length) maxU = u; });
+      var pick;
+      if (groups[maxU].length * 2 >= total) pick = maxU;
+      else {
+        var sum = 0; cand.forEach(function (u) { sum += groups[u].length; });
+        var x = r() * sum; pick = cand[cand.length - 1];
+        for (var i = 0; i < cand.length; i++) { x -= groups[cand[i]].length; if (x < 0) { pick = cand[i]; break; } }
+      }
+      var hasOK = function (u) { return groups[u].some(function (q) { return tfOK(itemOf(D, q), tfh); }); };
+      if (!hasOK(pick)) {
+        var alt = cand.filter(hasOK);
+        if (!alt.length) alt = units.filter(function (u) { return u !== lastU && hasOK(u); });
+        if (alt.length && !(groups[pick].length * 2 > total + 1)) pick = alt[Math.floor(r() * alt.length)];
+      }
+      var g = groups[pick], j = -1;
+      for (var k = 0; k < g.length && j < 0; k++) { var a = itemOf(D, g[k]); if (a.t !== lastT && tfOK(a, tfh)) j = k; }
+      for (k = 0; k < g.length && j < 0; k++) { if (tfOK(itemOf(D, g[k]), tfh)) j = k; }
+      if (j < 0) j = 0;
+      var id = g.splice(j, 1)[0], it = itemOf(D, id);
+      out.push(id); total--; lastU = it.u; lastT = it.t;
+      tfh.push(tfTruth(it));
+    }
+    return repairTF(D, out, prev);
+  }
+  // Moves a true/false item that would make 3 identical answers in a row to the
+  // earliest place where it breaks no rule (true/false runs, topic adjacency).
+  function tfBad(D, seq, tfh0) {
+    var tfh = tfh0.slice();
+    for (var i = 0; i < seq.length; i++) {
+      var z = itemOf(D, seq[i]);
+      if (!tfOK(z, tfh)) return i;
+      tfh.push(tfTruth(z));
+    }
+    return -1;
+  }
+  function adj(D, seq, prevU) {
+    var n = 0, last = prevU;
+    seq.forEach(function (q) { var u = itemOf(D, q).u; if (u === last) n++; last = u; });
+    return n;
+  }
+  function repairTF(D, seq, prev) {
+    var tfh0 = (prev && prev.tfh) || [], guard = 0, i;
+    while ((i = tfBad(D, seq, tfh0)) >= 0 && guard++ < 50) {
+      var base = adj(D, seq, prev && prev.u), done = false;
+      for (var slack = 0; slack <= 2 && !done; slack++) {
+        for (var k = 0; k < seq.length && !done; k++) {
+          if (k === i) continue;
+          var t = seq.slice(), x = t.splice(i, 1)[0];
+          t.splice(k, 0, x);
+          var b = tfBad(D, t, tfh0);
+          if ((b < 0 || b > i) && adj(D, t, prev && prev.u) <= base + slack) { seq = t; done = true; }
+        }
+      }
+      if (!done) break;
+    }
+    return seq;
+  }
+
+  function info(D, S, it, n, now) {
+    var rec = S.p[it.id], st = status(it, rec);
+    return { id: it.id, it: it, rec: rec, st: st, hi: isHi(D, S, it), rested: isRested(D, S, it, n, now),
+             blocked: prevBlocked(D, S, it), miss: !!rec && st === 'shaky', cons: trailingMiss(rec) >= 2,
+             lt: rec ? rec.lt : 0 };
+  }
+
+  /* limited session: up to 1/4 rested misses, up to 1/5 rested review checks,
+     then never answered (high ROI first-ish), then more rested, then recent. */
+  function buildLimited(D, S, ids, N, nTopic, r, now) {
+    var all = ids.map(function (id) { return info(D, S, D.byId[id], nTopic, now); });
+    var elig = all.filter(function (x) { return !x.blocked; });
+    var taken = {}, pick = [], counts = { miss: 0, review: 0, fresh: 0, more: 0, recent: 0, prev: 0 };
+    function take(list, max, key) {
+      for (var i = 0; i < list.length && max > 0 && pick.length < N; i++) {
+        var x = list[i]; if (taken[x.id]) continue;
+        taken[x.id] = 1; pick.push(x.id); counts[key]++; max--;
+      }
+    }
+    var misses = elig.filter(function (x) { return x.miss && x.rested; })
+      .sort(function (a, b) { return (b.cons - a.cons) || (a.lt - b.lt); });
+    var rights = elig.filter(function (x) { return x.rec && !x.miss && x.st !== 'new' && x.rested; })
+      .sort(function (a, b) { return (b.hi - a.hi) || (a.lt - b.lt); });
+    var fresh = shuffle(elig.filter(function (x) { return x.st === 'new'; }), r)
+      .map(function (x) { return { x: x, k: r() - (x.hi ? 0.5 : 0) }; })
+      .sort(function (a, b) { return a.k - b.k; }).map(function (o) { return o.x; });
+    take(misses, Math.floor(N / 4), 'miss');
+    take(rights, Math.floor(N / 5), 'review');
+    take(fresh, N, 'fresh');
+    take(misses.concat(rights).sort(function (a, b) { return a.lt - b.lt; }), N, 'more');
+    var note = null;
+    if (pick.length < N) {
+      var recent = elig.filter(function (x) { return !taken[x.id]; }).sort(function (a, b) { return a.lt - b.lt; });
+      if (recent.length) { take(recent, N, 'recent'); note = 'recent'; }
+    }
+    if (pick.length < N) {
+      var blocked = all.filter(function (x) { return x.blocked && !taken[x.id]; }).sort(function (a, b) { return a.lt - b.lt; });
+      if (blocked.length) { take(blocked, N, 'prev'); note = 'prev'; }
+    }
+    return { ids: arrangeSeq(D, pick, r, { tfh: S.tfh || [] }), counts: counts, note: note };
+  }
+
+  function nextEndless(D, S, ids, nTopic, r, now, recent, prev) {
+    prev = prev || {};
+    var rec5 = {}; (recent || []).slice(-5).forEach(function (q) { rec5[parseId(q).base] = 1; });
+    var all = ids.map(function (id) { return info(D, S, D.byId[id], nTopic, now); })
+      .filter(function (x) { return !rec5[x.id]; });
+    var cand = all.filter(function (x) { return x.rested && !x.blocked; });
+    if (!cand.length) cand = all.slice().sort(function (a, b) { return a.lt - b.lt; }).slice(0, 10);
+    if (!cand.length) return null;
+    var tfh = prev.tfh || [], ws = cand.map(function (x) {
+      var w = (x.miss ? 3 : 1) * (x.hi ? 1.5 : 1);
+      if (x.it.u === prev.u) w *= 0.15;
+      if (x.it.t === prev.t) w *= 0.4;
+      if (!tfOK(x.it, tfh)) w *= 0.02;
+      return w;
+    });
+    var sum = ws.reduce(function (a, b) { return a + b; }, 0), y = r() * sum;
+    for (var i = 0; i < cand.length; i++) { y -= ws[i]; if (y < 0) return cand[i].id; }
+    return cand[cand.length - 1].id;
+  }
+
+  var ST_RANK = { shaky: 0, 'new': 1, once: 2, solid: 3 };
+  function buildLastPass(D, S, only20, r) {
+    var lp = D.items.filter(function (it) { return it.lp; });
+    var groups = [[], [], [], []];
+    lp.forEach(function (it) { groups[ST_RANK[status(it, S.p[it.id])]].push(it.id); });
+    var out = [], prev = { tfh: S.tfh || [] };
+    groups.forEach(function (g) {
+      var s = arrangeSeq(D, g, r, prev);
+      out = out.concat(s);
+      var tfh = prev.tfh.slice();
+      s.forEach(function (q) { tfh.push(tfTruth(itemOf(D, q))); });
+      if (s.length) { var it = itemOf(D, s[s.length - 1]); prev = { u: it.u, t: it.t, tfh: tfh }; }
+    });
+    return only20 ? out.slice(0, 20) : out;
+  }
+  function statusCounts(D, S, ids) {
+    var c = { solid: 0, once: 0, shaky: 0, 'new': 0 };
+    ids.forEach(function (id) { var it = D.byId[id]; c[status(it, S.p[id])]++; });
+    return c;
+  }
+
+  /* ------------------------------------------------------------ levels and pre-test */
+  function lastScore(rec) {
+    var e = eff(rec && rec.h); if (!e) return null;
+    var c = e.charAt(e.length - 1);
+    if (c === 'R' || c === 'G') return 1;
+    if (c === 'P') return typeof rec.sc === 'number' ? rec.sc : 0.5;
+    return 0;
+  }
+  function topicLevels(D, S) {
+    var out = {};
+    D.cfg.units.forEach(function (u) {
+      var sc = [];
+      D.items.forEach(function (it) { if (it.u === u) { var s = lastScore(S.p[it.id]); if (s !== null) sc.push(s); } });
+      if (!sc.length) { out[u] = { pct: null, n: 0, level: null }; return; }
+      var pct = Math.round(100 * sc.reduce(function (a, b) { return a + b; }, 0) / sc.length);
+      out[u] = { pct: pct, n: sc.length, level: pct >= 80 ? 'Strong' : pct >= 60 ? 'Okay' : 'Weak' };
+    });
+    return out;
+  }
+  function buildPretest(D, S, r) {
+    var units = D.cfg.units.slice(), k = D.cfg.pretest_per_topic || (units.length > 10 ? 2 : 3);
+    var hasStar = {}; D.items.forEach(function (it) { if (isStar(S, it.id)) hasStar[it.u] = 1; });
+    units.sort(function (a, b) {
+      return ((D.hiUnits[b] ? 2 : 0) + (hasStar[b] ? 1 : 0)) - ((D.hiUnits[a] ? 2 : 0) + (hasStar[a] ? 1 : 0))
+        || D.cfg.units.indexOf(a) - D.cfg.units.indexOf(b);
+    });
+    var picks = {};
+    units.forEach(function (u) {
+      var cand = shuffle(D.items.filter(function (it) { return it.u === u && !it.lp; }), r)
+        .sort(function (a, b) {
+          return (isStar(S, b.id) - isStar(S, a.id)) ||
+                 ((status(a, S.p[a.id]) === 'new' ? 0 : 1) - (status(b, S.p[b.id]) === 'new' ? 0 : 1));
+        });
+      var chosen = [], types = {};
+      var cons = {};
+      cand.forEach(function (it) { if (chosen.length < k && !types[it.t] && !cons[it.k]) { chosen.push(it.id); types[it.t] = 1; cons[it.k] = 1; } });
+      cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0 && !cons[it.k]) { chosen.push(it.id); cons[it.k] = 1; } });
+      cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0) chosen.push(it.id); });
+      picks[u] = chosen;
+    });
+    var out = [];
+    for (var i = 0; i < k; i++) units.forEach(function (u) { if (picks[u][i]) out.push(picks[u][i]); });
+    var tfh = (S.tfh || []).slice(), bad = false;
+    out.forEach(function (q) { var z = D.byId[q]; if (!tfOK(z, tfh)) bad = true; tfh.push(tfTruth(z)); });
+    return bad ? arrangeSeq(D, out, r, { tfh: S.tfh || [] }) : out;
+  }
+
+  /* ------------------------------------------------------------ timed mixed plan */
+  function avgSec(S) { return S.tsec && S.tsec.n >= 3 ? S.tsec.s / S.tsec.n : 45; }
+  function buildTimed(D, S, units, minutes, r, now) {
+    var avg = avgSec(S), count = Math.max(5, Math.floor(minutes * 60 / avg));
+    var items = unitItems(D, units), nTopic = items.length;
+    var inf = items.map(function (it) { return info(D, S, it, nTopic, now); }).filter(function (x) { return !x.blocked; });
+    count = Math.min(count, inf.length);
+    var lv = topicLevels(D, S), shaky = {}, tot = {};
+    inf.forEach(function (x) { tot[x.it.u] = (tot[x.it.u] || 0) + 1; if (x.miss) shaky[x.it.u] = (shaky[x.it.u] || 0) + 1; });
+    function weakScore(u) {
+      var p = lv[u] && lv[u].pct !== null ? lv[u].pct : 70;
+      return p - 40 * ((shaky[u] || 0) / (tot[u] || 1));
+    }
+    var ranked = units.filter(function (u) { return tot[u]; }).sort(function (a, b) { return weakScore(a) - weakScore(b); });
+    var weak = ranked.filter(function (u) { return (lv[u] && lv[u].level && lv[u].level !== 'Strong') || shaky[u]; }).slice(0, 3);
+    if (weak.length < Math.min(2, ranked.length)) weak = ranked.slice(0, Math.min(2, ranked.length));
+    var cap = units.length > 1 ? Math.ceil(count / 2) : count, perU = {}, taken = {}, pick = [], mix = { weak: 0, review: 0, fresh: 0, fill: 0 };
+    function ok(x) { return !taken[x.id] && (perU[x.it.u] || 0) < cap; }
+    function add(x, key) { taken[x.id] = 1; perU[x.it.u] = (perU[x.it.u] || 0) + 1; pick.push(x.id); mix[key]++; }
+    var nW = Math.round(0.5 * count), nR = Math.round(0.3 * count), nN = count - nW - nR;
+    // weak topics: shaky first, then never answered, then right once, then the rest; spread round-robin
+    var wl = {};
+    weak.forEach(function (u) {
+      wl[u] = shuffle(inf.filter(function (x) { return x.it.u === u; }), r).sort(function (a, b) {
+        function rank(x) { return x.miss ? (x.rested ? 0 : 1) : x.st === 'new' ? 2 : x.st === 'once' ? 3 : x.rested ? 4 : 5; }
+        return rank(a) - rank(b);
+      });
+    });
+    var guard = 0;
+    while (mix.weak < nW && guard++ < 5000) {
+      var moved = false;
+      weak.forEach(function (u) {
+        if (mix.weak >= nW) return;
+        while (wl[u].length && !ok(wl[u][0])) wl[u].shift();
+        if (wl[u].length) { add(wl[u].shift(), 'weak'); moved = true; }
+      });
+      if (!moved) break;
+    }
+    var review = inf.filter(function (x) { return x.rested && x.rec && x.st !== 'new'; })
+      .sort(function (a, b) { return (b.miss - a.miss) || (b.cons - a.cons) || (b.hi - a.hi) || (a.lt - b.lt); });
+    review.forEach(function (x) { if (mix.review < nR && ok(x)) add(x, 'review'); });
+    var fresh = shuffle(inf.filter(function (x) { return x.st === 'new' || x.st === 'once'; }), r)
+      .sort(function (a, b) { return (a.st === 'new' ? 0 : 1) - (b.st === 'new' ? 0 : 1); });
+    fresh.forEach(function (x) { if (mix.fresh < nN && ok(x)) add(x, 'fresh'); });
+    if (pick.length < count) {
+      var rest = inf.filter(function (x) { return !taken[x.id]; }).sort(function (a, b) { return (b.rested - a.rested) || (a.lt - b.lt); });
+      rest.forEach(function (x) { if (pick.length < count && ok(x)) add(x, 'fill'); });
+    }
+    return { ids: arrangeSeq(D, pick, r, { tfh: S.tfh || [] }), mix: mix, weak: weak, avg: avg, count: pick.length };
+  }
+
+  /* ------------------------------------------------------------ fix my misses */
+  function conceptMembers(D, cid) {
+    var c = D.concepts[cid]; if (!c) return [];
+    var out = c.items.slice();
+    c.items.forEach(function (id) { var it = D.byId[id]; if (it.t === 'cloze' && it.rs) Object.keys(it.rs).forEach(function (k) { out.push(id + 'r' + k); }); });
+    return out;
+  }
+  function followUp(D, S, missedId, used, r) {
+    var it = itemOf(D, missedId), cid = it && it.k; if (!cid) return null;
+    var base = parseId(missedId).base, usedB = {};
+    Object.keys(used).forEach(function (q) { usedB[q] = 1; usedB[parseId(q).base] = 1; });
+    var cand = conceptMembers(D, cid).filter(function (q) { var b = parseId(q).base; return b !== base && !usedB[q] && !usedB[b]; });
+    if (!cand.length) return null;
+    var full = cand.filter(function (q) { return parseId(q).row < 0; });
+    var list = full.length ? full : cand;
+    return list[Math.floor(r() * list.length)];
+  }
+
+  /* ------------------------------------------------------------ option arrangement */
+  function nOpts(it) { return it.t === 'tf' ? 2 : it.o.length; }
+  function arrange(D, S, qid, r) {
+    var it = itemOf(D, qid), rec = S.p[parseId(qid).base] || {}, t = it.t;
+    if (t === 'tf') return { perm: [0, 1] };
+    if (it.num) return { perm: null };
+    if (t === 'mc' || t === 'fill' || t === 'row') {
+      var n = it.o.length, key = 'n' + n, lc = S.lc[key] = S.lc[key] || range(n).map(function () { return 0; });
+      var allowed = range(n).filter(function (k) { return k !== S.ll && String(k) !== String(rec.lp); });
+      if (!allowed.length) allowed = range(n).filter(function (k) { return k !== S.ll; });
+      var min = Math.min.apply(null, allowed.map(function (k) { return lc[k]; }));
+      var best = allowed.filter(function (k) { return lc[k] === min; });
+      var target = best[Math.floor(r() * best.length)];
+      var others = shuffle(range(n).filter(function (k) { return k !== it.c; }), r), perm = [];
+      for (var i = 0, j = 0; i < n; i++) perm.push(i === target ? it.c : others[j++]);
+      lc[target]++; S.ll = target;
+      return { perm: perm, pos: String(target) };
+    }
+    if (t === 'sata') {
+      var p, sig, tries = 0;
+      do { p = shuffle(range(it.o.length), r); sig = p.map(function (o, i) { return it.c.indexOf(o) >= 0 ? i : -1; }).filter(function (x) { return x >= 0; }).join(','); }
+      while (sig === rec.lp && tries++ < 12);
+      return { perm: p, pos: sig };
+    }
+    if (t === 'order') {
+      var q, tries2 = 0;
+      do { q = shuffle(range(it.o.length), r); } while ((q.join() === range(it.o.length).join() || q.join() === rec.lp) && tries2++ < 20);
+      return { perm: q, pos: q.join() };
+    }
+    if (t === 'cloze') {
+      var ch = it.o.choices.length, cp, tries3 = 0, posSig;
+      do {
+        cp = shuffle(range(ch), r);
+        var pos = it.c.map(function (c) { return cp.indexOf(c); });
+        posSig = pos.join(',');
+        var allSame = pos.every(function (x) { return x === pos[0]; });
+      } while ((allSame || posSig === rec.lp) && tries3++ < 20);
+      return { perm: cp, pos: posSig };
+    }
+    if (t === 'blanks') {
+      var bp, tries4 = 0, bs;
+      do {
+        bp = it.o.map(function (opts) { return shuffle(range(opts.length), r); });
+        var bpos = bp.map(function (pp, b) { return pp.indexOf(it.c[b]); });
+        bs = bpos.join(',');
+        var same = bpos.length > 1 && bpos.every(function (x) { return x === bpos[0]; });
+      } while ((same || bs === rec.lp) && tries4++ < 30);
+      return { perm: bp, pos: bs };
+    }
+    return { perm: null };
+  }
+
+  /* ------------------------------------------------------------ grading */
+  function parseNum(s) {
+    s = String(s || '').trim().replace(/,/g, '').replace(/[a-z%/]+\s*$/i, function (m) { return /\d\/\d/.test(m) ? m : ''; }).trim();
+    var m;
+    if ((m = /^(-?\d+)\s+(\d+)\/(\d+)$/.exec(s))) return +m[1] + (+m[2]) / (+m[3]);
+    if ((m = /^(-?\d+)\/(\d+)$/.exec(s))) return (+m[1]) / (+m[2]);
+    if (/^-?(\d+\.?\d*|\.\d+)$/.test(s)) return parseFloat(s);
+    return NaN;
+  }
+  function grade(D, qid, perm, pick) {
+    var it = itemOf(D, qid), t = it.t;
+    if (it.num) {
+      var raw = String(pick || '').trim(), v = parseNum(raw), ans = it.num.answer;
+      var okv = !isNaN(v) && Math.abs(v - ans) <= 1e-6 * Math.max(1, Math.abs(ans));
+      var notes = [];
+      if (/^\.\d/.test(raw)) notes.push('Leading zero missing: write 0' + raw + ', never ' + raw + '.');
+      if (/\.\d*0$/.test(raw) && /\./.test(raw)) notes.push('Trailing zero: write ' + String(parseFloat(raw)) + ', not ' + raw + '.');
+      var near = null;
+      if (!okv && it.num.near) Object.keys(it.num.near).forEach(function (k) { if (!isNaN(v) && Math.abs(parseNum(k) - v) <= 1e-6 * Math.max(1, Math.abs(v))) near = it.num.near[k]; });
+      var acc = null; if (okv && it.num.accept && it.num.accept[raw]) acc = it.num.accept[raw];
+      return { sc: okv ? 1 : 0, full: okv, max: 1, right: okv ? 1 : 0, wrong: okv ? 0 : 1, notes: notes, near: near, accept: acc, value: v };
+    }
+    if (t === 'mc' || t === 'fill' || t === 'row' || t === 'tf') {
+      var o = pick === null || pick === undefined || pick < 0 ? -1 : perm[pick];
+      var f = o === it.c;
+      return { sc: f ? 1 : 0, full: f, max: 1, right: f ? 1 : 0, wrong: f ? 0 : 1, orig: o };
+    }
+    if (t === 'sata') {
+      var origs = (pick || []).map(function (d) { return perm[d]; });
+      var right = origs.filter(function (o) { return it.c.indexOf(o) >= 0; }).length, wrong = origs.length - right;
+      var score = Math.max(0, right - wrong);
+      return { sc: score / it.c.length, full: right === it.c.length && wrong === 0, max: it.c.length, right: right, wrong: wrong, score: score, origs: origs };
+    }
+    if (t === 'order') {
+      var seq = pick || [], fo = seq.length === it.o.length && seq.every(function (x, i) { return x === i; });
+      var inPlace = seq.filter(function (x, i) { return x === i; }).length;
+      return { sc: fo ? 1 : 0, full: fo, max: 1, right: fo ? 1 : 0, wrong: fo ? 0 : 1, inPlace: inPlace };
+    }
+    if (t === 'cloze' || t === 'blanks') {
+      var rows = it.c.length, okr = 0, origs2 = [];
+      for (var i = 0; i < rows; i++) {
+        var d = pick && pick[i] !== undefined ? pick[i] : -1;
+        var oo = d < 0 ? -1 : (t === 'cloze' ? perm[d] : perm[i][d]);
+        origs2.push(oo); if (oo === it.c[i]) okr++;
+      }
+      return { sc: okr / rows, full: okr === rows, max: rows, right: okr, wrong: rows - okr, score: okr, origs: origs2 };
+    }
+    return { sc: 0, full: false, max: 1, right: 0, wrong: 1 };
+  }
+  function missLabels(D, qid, res) {
+    var it = itemOf(D, qid), m = it.m || {}, out = [];
+    if (it.num) return out;
+    if (it.t === 'mc' || it.t === 'fill' || it.t === 'tf' || it.t === 'row') { if (m[res.orig]) out.push(m[res.orig]); }
+    else if (it.t === 'sata') (res.origs || []).forEach(function (o) { if (it.c.indexOf(o) < 0 && m[o]) out.push(m[o]); });
+    else if (it.t === 'cloze') (res.origs || []).forEach(function (o, i) { if (o >= 0 && o !== it.c[i] && m[o]) out.push(m[o]); });
+    else if (it.t === 'blanks') (res.origs || []).forEach(function (o, i) { var k = i + ':' + o; if (o >= 0 && o !== it.c[i] && m[k]) out.push(m[k]); });
+    return out;
+  }
+
+  /* ------------------------------------------------------------ recording */
+  function record(D, S, qid, res, sid, now, secs, pos) {
+    var p = parseId(qid), rec = S.p[p.base] = S.p[p.base] || { h: '', ls: 0, lt: 0, sid: null, t: 0, n: 0 };
+    var ch = p.row >= 0 ? (res.full ? 'r' : 'w') : (res.full ? 'R' : (res.sc > 0 ? 'P' : 'W'));
+    rec.h = (rec.h + ch).slice(-12);
+    S.seq++; rec.ls = S.seq; rec.lt = now; rec.sid = sid; rec.t = now; rec.n = (rec.n || 0) + 1;
+    if (p.row < 0) rec.sc = Math.round(res.sc * 100) / 100;
+    var itm = itemOf(D, qid);
+    if (itm) S.tfh = (S.tfh || []).concat([tfTruth(itm)]).slice(-2);
+    if (pos !== undefined && pos !== null) rec.lp = pos;
+    if (secs > 1 && secs < 600) { S.tsec.s += secs; S.tsec.n++; }
+    if (!res.full) {
+      var labs = missLabels(D, qid, res);
+      S.miss.push({ q: qid, lab: labs.join('; '), t: now });
+      if (S.miss.length > 400) S.miss = S.miss.slice(-400);
+    }
+    S.t = now;
+    return rec;
+  }
+  function markGuessed(S, qid, now) {
+    var rec = S.p[parseId(qid).base];
+    if (rec && /R$/.test(rec.h)) { rec.h = rec.h.slice(0, -1) + 'G'; rec.t = now; }
+  }
+
+  /* ------------------------------------------------------------ merge (sync) */
+  function merge(A, B) {
+    if (!B) return A;
+    var out = JSON.parse(JSON.stringify(A));
+    Object.keys(B.p || {}).forEach(function (id) {
+      var a = out.p[id], b = B.p[id];
+      if (!a || (b.lt || 0) > (a.lt || 0) || ((b.lt || 0) === (a.lt || 0) && (b.t || 0) > (a.t || 0))) out.p[id] = b;
+    });
+    Object.keys(B.stars || {}).forEach(function (id) {
+      var a = out.stars[id], b = B.stars[id];
+      if (!a || (b.t || 0) > (a.t || 0)) out.stars[id] = b;
+    });
+    var seen = {}, mm = [];
+    (out.miss || []).concat(B.miss || []).forEach(function (m) { var k = m.q + '@' + m.t; if (!seen[k]) { seen[k] = 1; mm.push(m); } });
+    out.miss = mm.sort(function (a, b) { return a.t - b.t; }).slice(-400);
+    if (B.pre && B.pre.last && (!out.pre.last || B.pre.last.t > out.pre.last.t)) out.pre.last = B.pre.last;
+    out.seq = Math.max(out.seq || 0, B.seq || 0);
+    if (B.tsec && B.tsec.n > (out.tsec.n || 0)) out.tsec = B.tsec;
+    if ((B.sidN || 0) > (out.sidN || 0)) { out.sidN = B.sidN; }
+    if ((B.t || 0) > (out.t || 0)) { out.lastSid = B.lastSid || out.lastSid; out.t = B.t; }
+    return out;
+  }
+
+  var Core = { rng: rng, shuffle: shuffle, clamp: clamp, newState: newState, makeCtx: makeCtx, parseId: parseId, itemOf: itemOf,
+    eff: eff, status: status, trailingMiss: trailingMiss, lastIsMiss: lastIsMiss, isHi: isHi, isStar: isStar, restLen: restLen,
+    isRested: isRested, prevBlocked: prevBlocked, unitItems: unitItems, pool: pool, filterCounts: filterCounts,
+    arrangeSeq: arrangeSeq, buildLimited: buildLimited, nextEndless: nextEndless, buildLastPass: buildLastPass,
+    statusCounts: statusCounts, topicLevels: topicLevels, buildPretest: buildPretest, buildTimed: buildTimed, avgSec: avgSec,
+    conceptMembers: conceptMembers, followUp: followUp, arrange: arrange, parseNum: parseNum, grade: grade,
+    missLabels: missLabels, record: record, markGuessed: markGuessed, merge: merge, tfOK: tfOK, H18: H18 };
+  if (typeof module !== 'undefined' && module.exports) module.exports = Core; else root.Core = Core;
+})(this);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var D = Core.makeCtx(DATA), CFG = DATA.cfg, KEY = CFG.storage_key, UNITS = CFG.units;
+  var LET = 'ABCDEF';
+  var app = document.getElementById('app'), hb = document.getElementById('hbtns');
+  var R = Core.rng((Date.now() ^ (Math.random() * 1e9)) >>> 0);
+
+  /* ------------------------------------------------------------ storage */
+  function lsGet(k) { try { var v = localStorage.getItem(KEY + ':' + k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function lsSet(k, v) { try { if (v === null) localStorage.removeItem(KEY + ':' + k); else localStorage.setItem(KEY + ':' + k, JSON.stringify(v)); } catch (e) {} }
+  var S = lsGet('p') || Core.newState();
+  ['p', 'stars', 'tsec', 'lc', 'pre'].forEach(function (k) { if (!S[k]) S[k] = Core.newState()[k]; });
+  if (!S.miss) S.miss = [];
+  var SESS = lsGet('s');
+  var UI = lsGet('ui') || {};
+  if (!UI.units) UI.units = UNITS.slice();
+  UI.units = UI.units.filter(function (u) { return UNITS.indexOf(u) >= 0; });
+  if (!UI.filters) UI.filters = {};
+  if (!UI.len) UI.len = '20';
+  if (UI.think === undefined) UI.think = true;
+  if (!UI.custom) UI.custom = 25;
+  if (!UI.seed) UI.seed = (Math.random() * 1e9) >>> 0;
+  var DEV = lsGet('dev') || ('d' + Math.random().toString(36).slice(2, 10)); lsSet('dev', DEV);
+  var LASTRES = lsGet('lastres');
+  var dirty = {}, dirtyMiss = false, dirtyStars = {};
+
+  function saveLocal() { var c = Object.assign({}, S); delete c._block; lsSet('p', c); lsSet('s', SESS); lsSet('ui', UI); }
+  function now() { return Date.now(); }
+
+  /* ------------------------------------------------------------ helpers */
+  function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function it(q) { return Core.itemOf(D, q); }
+  function unitsOn() { return UI.units.length ? UI.units : UNITS.slice(); }
+  function plural(n, a, b) { return n + ' ' + (n === 1 ? a : (b || a + 's')); }
+  function listText(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  function nTopic(units) { return Core.unitItems(D, units).length; }
+  function fmtDate(t) { try { return new Date(t).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); } catch (e) { return ''; } }
+  function topOfPage() { window.scrollTo(0, 0); }
+  function scrollUnderHeader(el) {
+    var hh = document.querySelector('header.top').offsetHeight;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - hh - 8;
+    window.scrollTo(0, Math.max(0, y));
+  }
+  function statusBar(c) {
+    var t = c.solid + c.once + c.shaky + c['new'] || 1;
+    function seg(k, cls) { return c[k] ? '<i class="' + cls + '" style="width:' + (100 * c[k] / t) + '%"></i>' : ''; }
+    return '<div class="sbar" role="img" aria-label="status">' + seg('solid', 's-solid') + seg('once', 's-once') + seg('shaky', 's-shaky') + seg('new', 's-new') + '</div>' +
+      '<div class="legend"><span style="--c:var(--right)">solid ' + c.solid + '</span><span style="--c:var(--right-soft)">right once ' + c.once +
+      '</span><span style="--c:var(--wrong)">shaky ' + c.shaky + '</span><span style="--c:#d5d8dc">not answered yet ' + c['new'] + '</span></div>';
+  }
+  function header(opts) {
+    opts = opts || {};
+    var b = '';
+    if (opts.clock) b += '<span class="clock" id="clock"></span>';
+    if (!opts.main) b += '<button class="btn small" data-act="home">Main screen</button>';
+    if (opts.main) b += '<button class="btn small ghost" data-act="fix">Fix my misses</button>';
+    b += '<button class="btn small ghost" data-act="readme">Read me</button>';
+    hb.innerHTML = b;
+  }
+
+  /* ------------------------------------------------------------ account sync (claude.ai db + user) */
+  var SY = { ref: null, busy: false, again: false, wv: 0, state: 'local' };
+  function sessStr() { return SESS ? JSON.stringify(SESS) : ''; }
+  function meta() { return { seq: S.seq, tsec: S.tsec, lastSid: S.lastSid || null, sidN: S.sidN || 0, t: S.t || 0 }; }
+  function fullDoc() {
+    return { p: S.p, stars: S.stars, miss: S.miss, pre: S.pre, meta: meta(), sess: sessStr(), sessT: SESS ? (SESS.t || 0) : now(), dev: DEV, wv: ++SY.wv };
+  }
+  function push(full) {
+    if (!SY.ref) return;
+    if (SY.busy) { SY.again = SY.again || (full ? 'full' : true); return; }
+    SY.busy = true;
+    var doc;
+    if (full) doc = fullDoc();
+    else {
+      var p = {}, st = {};
+      Object.keys(dirty).forEach(function (id) { if (S.p[id]) p[id] = S.p[id]; });
+      Object.keys(dirtyStars).forEach(function (id) { if (S.stars[id]) st[id] = S.stars[id]; });
+      doc = { meta: meta(), sess: sessStr(), sessT: SESS ? (SESS.t || 0) : now(), dev: DEV, wv: ++SY.wv };
+      if (Object.keys(p).length) doc.p = p;
+      if (Object.keys(st).length) doc.stars = st;
+      if (dirtyMiss) doc.miss = S.miss;
+      doc.pre = S.pre;
+    }
+    dirty = {}; dirtyStars = {}; dirtyMiss = false;
+    var pr = full ? SY.ref.set(doc) : SY.ref.update(doc);
+    pr.then(function () { SY.state = 'synced'; syncLine(); })
+      .catch(function () { SY.state = 'error'; syncLine(); })
+      .then(function () { SY.busy = false; if (SY.again) { var f = SY.again === 'full'; SY.again = false; push(f); } });
+  }
+  function mergeRemote(d) {
+    if (!d) return;
+    var m = d.meta || {};
+    var Rm = { p: d.p || {}, stars: d.stars || {}, miss: d.miss || [], pre: d.pre || { last: null }, seq: m.seq || 0,
+               tsec: m.tsec || { s: 0, n: 0 }, lastSid: m.lastSid || null, sidN: m.sidN || 0, t: m.t || 0 };
+    var keep = { lc: S.lc, ll: S.ll };
+    S = Core.merge(S, Rm); S.lc = keep.lc; S.ll = keep.ll;
+    var lt = SESS ? (SESS.t || 0) : 0;
+    if ((d.sessT || 0) > lt) {
+      if (d.sess) { try { SESS = JSON.parse(d.sess); } catch (e) {} }
+      else if (SESS) SESS = null;
+    }
+    saveLocal();
+  }
+  function syncLine() {
+    var el = document.getElementById('syncline'); if (!el) return;
+    el.textContent = SY.state === 'synced' ? 'Progress, stars and misses sync to your account.' :
+      SY.state === 'error' ? 'Could not reach your account just now; progress is saved on this device.' :
+      'Progress is saved on this device.';
+  }
+  function initSync() {
+    if (!window.claude || typeof window.claude.use !== 'function') return;
+    Promise.all([window.claude.use('db'), window.claude.use('user')]).then(function (r) {
+      var db = r[0], user = r[1];
+      if (!db || !user) return null;
+      return user.id().then(function (uid) {
+        if (!uid) return null;
+        SY.ref = db.doc('data/users/' + uid + '/' + KEY);
+        var timer = setTimeout(function () { SY.state = 'error'; syncLine(); }, 10000);
+        return SY.ref.get().then(function (snap) {
+          clearTimeout(timer);
+          if (snap.exists) mergeRemote(snap.data());
+          push(true);
+          SY.ref.onSnapshot(function (s) {
+            if (!s.exists || s.metadata.hasPendingWrites) return;
+            var d = s.data();
+            if (d.dev === DEV) return;
+            mergeRemote(d);
+            if (screen === 'main' || screen === 'fix') render();
+          }, function () {});
+          if (screen === 'main') render();
+        });
+      });
+    }).catch(function () { SY.state = 'error'; syncLine(); });
+  }
+  function syncSoon() { saveLocal(); push(false); }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') syncSoon(); });
+  window.addEventListener('pagehide', syncSoon);
+
+  /* ------------------------------------------------------------ screens */
+  var screen = 'main', thinkTimer = null, clockTimer = null;
+  function render() {
+    clearInterval(thinkTimer);
+    if (screen === 'main') return renderMain();
+    if (screen === 'q') return renderQuestion();
+    if (screen === 'review') return renderReview();
+    if (screen === 'submit') return renderSubmit();
+    if (screen === 'results') return renderResults();
+    if (screen === 'fix') return renderFix();
+    if (screen === 'readme') return renderReadme();
+  }
+  function go(s) { screen = s; render(); topOfPage(); }
+
+  /* ---------------- main */
+  function lenValue() { return UI.len === 'custom' ? Math.max(5, Math.min(500, +UI.custom || 25)) : UI.len; }
+  function previewLimited(N) {
+    var units = unitsOn(), ids = Core.pool(D, S, units, UI.filters, UI.overlap);
+    return { plan: Core.buildLimited(D, S, ids, Math.min(N, ids.length), nTopic(units), Core.rng(UI.seed), now()), poolN: ids.length, units: units };
+  }
+  function describe() {
+    var units = unitsOn(), L = lenValue(), uTxt = units.length === UNITS.length && UNITS.length > 1 ? 'all topics' : listText(units);
+    var act = Object.keys(UI.filters).filter(function (k) { return UI.filters[k]; });
+    var fTxt = act.length ? ' (' + (act.length > 1 ? (UI.overlap ? 'only the overlap of ' : 'mixed: ') : '') +
+      act.map(function (k) { return { missed: 'missed', starred: 'starred', lp: 'last pass', never: 'never practiced' }[k]; }).join(act.length > 1 && UI.overlap ? ' and ' : ' + ') + ')' : '';
+    if (L === 'endless') return 'Endless: rested questions from ' + uTxt + fTxt + ', weighted toward your misses, with high-ROI questions 1.5 times as likely. Stop whenever you like.';
+    if (L === '30m' || L === '45m') {
+      var mins = L === '30m' ? 30 : 45, t = Core.buildTimed(D, S, units, mins, Core.rng(UI.seed), now());
+      var per = {}; t.ids.forEach(function (q) { var u = it(q).u; if (t.weak.indexOf(u) >= 0) per[u] = (per[u] || 0) + 1; });
+      return 'Timed mixed plan: about ' + t.count + ' questions in ' + mins + ' min (' + Math.round(t.avg) + ' s each' + (S.tsec.n >= 3 ? ', from your history' : ' until there is history') + '). ' +
+        t.mix.weak + ' from your weakest topics (' + t.weak.map(function (u) { return u + ' ' + (per[u] || 0); }).join(', ') + '), ' +
+        t.mix.review + ' rested misses and review checks, ' + t.mix.fresh + ' never practiced or right once' + (t.mix.fill ? ', ' + t.mix.fill + ' others to fill' : '') +
+        '. Topics alternate; when time is up you finish the question on screen.';
+    }
+    var pv = previewLimited(+L), c = pv.plan.counts, n = pv.plan.ids.length;
+    if (!n) return 'No questions match these topics and filters. Untick a filter or add a topic.';
+    var parts = [];
+    if (c.miss) parts.push(plural(c.miss, 'rested miss', 'rested misses'));
+    if (c.review) parts.push(plural(c.review, 'review check'));
+    if (c.fresh) parts.push(c.fresh + ' never answered');
+    if (c.more) parts.push(c.more + ' more rested');
+    if (c.recent) parts.push(c.recent + ' recently answered');
+    if (c.prev) parts.push(c.prev + ' from your previous session');
+    var s = 'This session: ' + plural(n, 'question') + ' from ' + uTxt + fTxt + ', each asked once: ' + parts.join(', ') + '.';
+    if (pv.poolN < +L) s += ' Only ' + pv.poolN + ' questions match, so the session is shorter.';
+    if (pv.plan.note === 'recent') s += ' These topics have run out of rested questions, so ' + c.recent + ' recently answered ones are included, longest ago first.';
+    if (pv.plan.note === 'prev') s += ' There were not enough other questions, so ' + c.prev + ' from your previous session are included.';
+    return s;
+  }
+  function renderMain() {
+    header({ main: true });
+    var all = D.items.map(function (x) { return x.id; }), tot = Core.statusCounts(D, S, all);
+    var lpIds = D.items.filter(function (x) { return x.lp; }).map(function (x) { return x.id; }), lpc = Core.statusCounts(D, S, lpIds);
+    var any = Object.keys(S.p).length > 0, h = '';
+    h += '<p class="eyebrow">' + esc(CFG.eyebrow) + '</p><h1>' + esc(CFG.title) + '</h1>';
+    if (SESS) {
+      var done = SESS.ans.length, isPre = SESS.mode === 'pretest';
+      h += '<div class="card strong"><h2>' + (isPre ? 'Pre-test in progress' : 'A session was interrupted') + '</h2><p class="muted">' +
+        done + ' answered' + (SESS.mode !== 'endless' ? ' of ' + SESS.queue.filter(function (q) { return q.indexOf('card:') !== 0; }).length : '') + '.</p>' +
+        '<div class="row"><button class="btn primary" data-act="resume">Resume where I left off</button><button class="btn" data-act="fresh">Start fresh instead</button></div></div>';
+    }
+    // pre-test card
+    var preN = Core.buildPretest(D, S, Core.rng(1)).length;
+    h += '<div class="card' + (!any ? ' strong' : '') + '"><h2>Pre-test - ' + preN + ' questions' + (!any ? '<span class="badge">Start here</span>' : '') + '</h2>' +
+      '<p class="muted small">A level check: ' + (UNITS.length > 1 ? Math.round(preN / UNITS.length) + ' questions from every topic' : preN + ' questions across the concepts of this topic') + ', mixed formats, never a last-pass question. Each topic gets a level: Strong 80%+, Okay 60-79%, Weak under 60%.</p>';
+    if (SESS && SESS.mode === 'pretest') h += '<button class="btn primary" data-act="resume">Resume pre-test - ' + SESS.ans.length + ' of ' + SESS.queue.length + ' done</button>';
+    else if (S.pre.last) h += '<p>Last pre-test: ' + esc(fmtDate(S.pre.last.t)) + ', ' + S.pre.last.pct + '%. <button class="linkbtn" data-act="pretest">Retake pre-test</button></p>';
+    else h += '<button class="btn primary" data-act="pretest">Start pre-test</button>';
+    h += '</div>';
+    // last pass card
+    h += '<div class="card"><h2>Last pass - ' + lpIds.length + ' questions</h2><p class="muted small">' + esc(CFG.last_pass_note) + '</p>' + statusBar(lpc) +
+      '<div class="row" style="margin-top:10px"><button class="btn primary" data-act="lp">Start last pass - all ' + lpIds.length + '</button><button class="btn" data-act="lp20">Just the 20 weakest</button></div></div>';
+    // topics
+    h += '<div class="card"><h2>Topics</h2><div class="row small"><button class="linkbtn" data-act="uall">Tick all</button><button class="linkbtn" data-act="unone">Untick all</button></div><div class="grid2">';
+    UNITS.forEach(function (u) {
+      var n = D.items.filter(function (x) { return x.u === u; }).length;
+      h += '<label class="check"><input type="checkbox" data-unit="' + esc(u) + '"' + (UI.units.indexOf(u) >= 0 ? ' checked' : '') + '> ' + esc(u) + ' <span class="count">' + n + '</span></label>';
+    });
+    h += '</div>';
+    var fc = Core.filterCounts(D, S, unitsOn());
+    h += '<h3>Filters</h3><div class="grid2">' +
+      [['missed', 'Only what I\'ve missed'], ['starred', 'Only starred'], ['lp', 'Last pass only'], ['never', 'Only never practiced']].map(function (f) {
+        return '<label class="check"><input type="checkbox" data-filter="' + f[0] + '"' + (UI.filters[f[0]] ? ' checked' : '') + '> ' + f[1] + ' <span class="count">' + fc[f[0]] + '</span></label>';
+      }).join('') + '</div>';
+    var nf = Object.keys(UI.filters).filter(function (k) { return UI.filters[k]; }).length;
+    if (nf > 1) h += '<label class="switch"><input type="checkbox" data-act="overlap"' + (UI.overlap ? ' checked' : '') + '> Only the overlap (questions that match every ticked filter)</label>';
+    h += '</div>';
+    // length
+    h += '<div class="card"><h2>Session length</h2><div class="row">' +
+      [['5', '5'], ['10', '10'], ['20', '20'], ['40', '40'], ['endless', 'Endless'], ['30m', '30 min'], ['45m', '45 min'], ['custom', 'Custom']].map(function (o) {
+        return '<button class="chip' + (UI.len === o[0] ? ' on' : '') + '" data-len="' + o[0] + '">' + o[1] + '</button>';
+      }).join('') + '</div>';
+    if (UI.len === 'custom') h += '<p><label>Number of questions (5-500): <input id="custom" type="number" min="5" max="500" inputmode="numeric" value="' + esc(UI.custom) + '" style="width:90px;font:inherit;padding:6px;border:1.5px solid #111;border-radius:8px"></label></p>';
+    h += '<div class="desc" id="desc">' + esc(describe()) + '</div>' +
+      '<label class="switch"><input type="checkbox" data-act="think"' + (UI.think ? ' checked' : '') + '> Think first: hide the choices for 10-15 s so you recall before you recognise</label>' +
+      '<div class="actions"><button class="btn primary" data-act="start">Start</button></div></div>';
+    h += '<p class="small"><b>Totals:</b> ' + all.length + ' questions · ' + tot.solid + ' solid · ' + tot.once + ' right once · ' + tot.shaky + ' shaky · ' + tot['new'] + ' not answered yet</p>' + statusBar(tot);
+    h += '<div class="row" style="margin-top:14px">' + (CFG.hub_url ? '<a class="btn small ghost" href="' + esc(CFG.hub_url) + '" target="_blank" rel="noopener">All topics</a>' : '') + (CFG.guide_url ? '<a class="btn small ghost" href="' + esc(CFG.guide_url) + '" target="_blank" rel="noopener">Open the Mastery Guide</a>' : '') +
+      '<button class="btn small danger" id="reset" data-act="reset">Reset all progress</button></div>' +
+      '<p class="syncline" id="syncline"></p>';
+    app.innerHTML = h; syncLine();
+  }
+
+  /* ---------------- sessions */
+  function newSid() { return 's' + now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function startSession(mode, queue, extra) {
+    var sid = newSid();
+    var prevSid = S.lastSid || null;
+    S.lastSid = sid; S.sidN = (S.sidN || 0) + 1; S.t = now();
+    SESS = Object.assign({ sid: sid, prevSid: prevSid, mode: mode, queue: queue, pos: 0, planned: queue.length, fu: 0, ans: [], cur: null,
+      started: now(), t: now(), units: unitsOn(), nTopic: nTopic(unitsOn()), tfh: [], lastU: null, lastT: null, recent: [] }, extra || {});
+    UI.seed = (Math.random() * 1e9) >>> 0;
+    saveLocal(); push(false);
+    go('q');
+  }
+  function startFromSetup() {
+    var units = unitsOn(), L = lenValue();
+    if (L === 'endless') {
+      var ids = Core.pool(D, S, units, UI.filters, UI.overlap);
+      if (!ids.length) return;
+      return startSession('endless', [], { pool: ids });
+    }
+    if (L === '30m' || L === '45m') {
+      var mins = L === '30m' ? 30 : 45, t = Core.buildTimed(D, S, units, mins, Core.rng(UI.seed), now());
+      if (!t.ids.length) return;
+      return startSession('timed', t.ids, { deadline: now() + mins * 60000, minutes: mins, mix: t.mix });
+    }
+    var pv = previewLimited(+L);
+    if (!pv.plan.ids.length) return;
+    startSession('limited', pv.plan.ids);
+  }
+  function startLastPass(only20) { startSession(only20 ? 'lp20' : 'lastpass', Core.buildLastPass(D, S, only20, R), { units: UNITS.slice() }); }
+  function startPretest() { startSession('pretest', Core.buildPretest(D, S, R), { units: UNITS.slice(), nTopic: D.items.length }); }
+  function startFix(cids) {
+    var q = [];
+    cids.forEach(function (cid) {
+      var c = D.concepts[cid]; if (!c) return;
+      var members = c.items.slice(), shaky = members.filter(function (id) { return Core.status(D.byId[id], S.p[id]) === 'shaky'; });
+      var other = members.filter(function (id) { return shaky.indexOf(id) < 0 && q.indexOf(id) < 0; });
+      var pick = other.length ? other[Math.floor(R() * other.length)] : shaky[Math.floor(R() * shaky.length)];
+      if (!pick) return;
+      q.push('card:' + cid); q.push(pick);
+    });
+    if (q.length) startSession('fix', q, { units: UNITS.slice(), nTopic: D.items.length });
+  }
+
+  function curQid() { return SESS && SESS.queue[SESS.pos]; }
+  function ensureCur() {
+    if (SESS.mode === 'endless' && SESS.pos >= SESS.queue.length) {
+      S._block = SESS.prevSid;
+      var nx = Core.nextEndless(D, S, SESS.pool, SESS.nTopic, R, now(), SESS.recent, { u: SESS.lastU, t: SESS.lastT, tfh: S.tfh || [] });
+      delete S._block;
+      if (!nx) return false;
+      SESS.queue.push(nx);
+    }
+    var q = curQid();
+    if (!q) return false;
+    if (!SESS.cur || SESS.cur.q !== q) {
+      if (q.indexOf('card:') === 0) { SESS.cur = { q: q, card: true }; return true; }
+      var a = Core.arrange(D, S, q, R), x = it(q);
+      var init = x.t === 'sata' || x.t === 'order' ? [] : x.t === 'cloze' || x.t === 'blanks' ? x.c.map(function () { return -1; }) : x.num ? '' : -1;
+      var wait = 0;
+      if (UI.think && !x.num) wait = (x.t === 'tf' || (x.q.length < 170 && (x.t === 'mc' || x.t === 'fill' || x.t === 'row'))) ? 10 : 15;
+      SESS.cur = { q: q, perm: a.perm, pos: a.pos, pick: init, checked: false, shownAt: now(), wait: wait, revealed: wait === 0 };
+      saveLocal();
+    }
+    return true;
+  }
+
+  /* ---------------- question screen */
+  function sessCount() { return SESS.queue.filter(function (q) { return q.indexOf('card:') !== 0; }).length; }
+  function renderQuestion() {
+    if (!SESS) return go('main');
+    if (SESS.mode === 'timed' && SESS.timeUp && (!SESS.cur || SESS.cur.checked === 'done')) return finish();
+    if (!ensureCur()) return finish();
+    header({ clock: SESS.mode === 'timed' });
+    startClock();
+    var cur = SESS.cur;
+    if (cur.card) return renderCardStep(cur.q.slice(5));
+    var x = it(cur.q), h = '', num = SESS.ans.length + (cur.checked ? 0 : 1);
+    var star = Core.isStar(S, Core.parseId(cur.q).base);
+    var label = SESS.mode === 'endless' ? 'Question ' + num : SESS.mode === 'timed' ? 'Question ' + num + ' of about ' + sessCount() : 'Question ' + num + ' of ' + sessCount();
+    if (SESS.mode === 'pretest') label = 'Pre-test · ' + label;
+    h += '<div class="qmeta"><span>' + esc(label) + '</span><span>' + esc(x.u) + '</span>' + (x.lp ? '<span class="tag">Last pass</span>' : '') +
+      (x.t === 'row' ? '<span class="tag">Practice row</span>' : '') + '</div>';
+    h += renderStem(x, cur);
+    h += '<div id="answer">' + renderAnswerArea(x, cur) + '</div>';
+    h += '<div id="fb"></div>';
+    h += '<div class="actions" id="acts"></div>';
+    h += '<div class="row small" style="margin-top:8px">' +
+      '<button class="btn small ghost" data-act="star" aria-pressed="' + star + '">' + (star ? '★ Starred' : '☆ Star') + '</button>' +
+      '<button class="btn small ghost" data-act="timer">Timer: ' + (UI.think ? 'on' : 'off') + '</button>' +
+      (SESS.ans.length ? '<button class="btn small ghost" data-act="sofar">Check my answers so far</button>' : '') +
+      '<button class="btn small ghost" data-act="submit">' + (SESS.mode === 'pretest' ? 'Stop pre-test' : 'Submit session') + '</button></div>';
+    app.innerHTML = h;
+    drawActions();
+    if (cur.checked) drawFeedback(false);
+    else if (!cur.revealed) runThink();
+  }
+  function renderStem(x, cur) {
+    var q = esc(x.q);
+    if (x.t === 'fill') {
+      var w = cur.pick >= 0 && cur.revealed ? esc(x.o[cur.perm[cur.pick]]) : '&nbsp;';
+      q = q.replace(/_{3,}/, '<span class="fillblank">' + w + '</span>');
+    }
+    if (x.t === 'blanks') {
+      q = q.replace(/\{(\d)\}/g, function (m, d) {
+        var b = +d - 1;
+        if (!cur.revealed) return '<span class="fillblank">&nbsp;</span>';
+        var opts = cur.perm[b].map(function (o, i) { return '<option value="' + i + '"' + (cur.pick[b] === i ? ' selected' : '') + '>' + esc(x.o[b][o]) + '</option>'; }).join('');
+        var cls = '';
+        if (cur.checked) { var oo = cur.pick[b] >= 0 ? cur.perm[b][cur.pick[b]] : -1; cls = oo === x.c[b] ? ' r' : ' w'; }
+        return '<select class="inline' + cls + '" data-blank="' + b + '"' + (cur.checked ? ' disabled' : '') + ' aria-label="Blank ' + d + '"><option value="-1">Choose…</option>' + opts + '</select>';
+      });
+    }
+    return '<div class="stem">' + q + '</div>';
+  }
+  function renderAnswerArea(x, cur) {
+    if (!cur.revealed) {
+      return '<div class="think" id="think"><b>Think first.</b> Recall the answer before the choices appear.<div class="bar"><i id="thinkbar"></i></div><span class="muted small" id="thinkleft">' + cur.wait + ' s</span></div>';
+    }
+    if (x.num) {
+      return '<div class="numin"><input id="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" value="' + esc(cur.pick) + '"' + (cur.checked ? ' disabled' : '') + '><span>' + esc(x.num.unit) + '</span></div>' +
+        '<p class="muted small">Type the number. Fractions like 3/2 or 1 1/2 are fine.</p>';
+    }
+    var t = x.t;
+    if (t === 'mc' || t === 'fill' || t === 'row' || t === 'tf' || t === 'sata') {
+      var multi = t === 'sata', h = multi ? '<p class="muted small">Select all that apply.</p>' : '';
+      h += '<div class="opts" role="' + (multi ? 'group' : 'radiogroup') + '">';
+      var order = t === 'tf' ? [0, 1] : cur.perm.map(function (o, i) { return i; });
+      order.forEach(function (d) {
+        var o = t === 'tf' ? d : cur.perm[d], txt = x.o[o];
+        var sel = multi ? cur.pick.indexOf(d) >= 0 : cur.pick === d;
+        var cls = 'opt' + (multi ? ' multi' : '') + (sel ? ' sel' : '') + (cur.checked ? ' locked' : '');
+        if (cur.checked) {
+          var right = multi ? x.c.indexOf(o) >= 0 : o === x.c;
+          if (right) cls += ' is-right'; else if (sel) cls += ' is-wrong';
+        }
+        h += '<button class="' + cls + '" data-opt="' + d + '" ' + (multi ? 'aria-pressed="' + sel + '"' : 'role="radio" aria-checked="' + sel + '"') + '><span class="let">' + LET[d] + '</span><span class="txt">' + esc(txt) + '</span></button>';
+      });
+      return h + '</div>';
+    }
+    if (t === 'order') {
+      var hh = '<p class="muted small">Tap the steps in order. Tap a placed step to take it back.</p><div class="orderpick">';
+      for (var i = 0; i < x.o.length; i++) {
+        var o2 = cur.pick[i];
+        var mark = '';
+        if (cur.checked) mark = o2 === i ? ' <span class="ok">✓</span>' : ' <span class="no">✗</span>';
+        hh += '<button class="slot' + (o2 !== undefined ? ' filled' : '') + '" data-slot="' + i + '"' + (cur.checked ? ' disabled' : '') + '><span class="num">' + (i + 1) + '</span><span>' + (o2 !== undefined ? esc(x.o[o2]) : '<span class="muted">…</span>') + mark + '</span></button>';
+      }
+      hh += '</div>';
+      if (!cur.checked) {
+        hh += '<div class="opts">';
+        cur.perm.forEach(function (o, d) {
+          if (cur.pick.indexOf(o) >= 0) return;
+          hh += '<button class="opt" data-step="' + o + '"><span class="let">' + LET[d] + '</span><span class="txt">' + esc(x.o[o]) + '</span></button>';
+        });
+        hh += '</div>';
+      }
+      return hh;
+    }
+    if (t === 'cloze') {
+      var th = '<div class="tblwrap"><table class="match"><tbody>';
+      x.o.rows.forEach(function (rw, r) {
+        var cls = '';
+        if (cur.checked) { var oo = cur.pick[r] >= 0 ? cur.perm[cur.pick[r]] : -1; cls = oo === x.c[r] ? ' class="r"' : ' class="w"'; }
+        th += '<tr><td>' + esc(rw) + '</td><td><select data-row="' + r + '"' + cls + (cur.checked ? ' disabled' : '') + ' aria-label="' + esc(rw) + '"><option value="-1">Choose…</option>' +
+          cur.perm.map(function (o, d) { return '<option value="' + d + '"' + (cur.pick[r] === d ? ' selected' : '') + '>' + esc(x.o.choices[o]) + '</option>'; }).join('') + '</select></td></tr>';
+      });
+      return th + '</tbody></table></div>';
+    }
+    return '';
+  }
+  function canCheck(x, cur) {
+    if (!cur.revealed) return false;
+    if (x.num) return String(cur.pick).trim() !== '';
+    if (x.t === 'sata') return cur.pick.length > 0;
+    if (x.t === 'order') return cur.pick.length === x.o.length;
+    if (x.t === 'cloze' || x.t === 'blanks') return cur.pick.every(function (p) { return p >= 0; });
+    return cur.pick >= 0;
+  }
+  function drawActions() {
+    var cur = SESS.cur, x = it(cur.q), el = document.getElementById('acts'); if (!el) return;
+    if (!cur.checked) el.innerHTML = '<button class="btn primary" data-act="check"' + (canCheck(x, cur) ? '' : ' disabled') + '>Check</button>';
+    else if (cur.res.full && Core.parseId(cur.q).row < 0) el.innerHTML = '<button class="btn primary" data-act="next">Knew it - Next</button><button class="btn" data-act="guessed">I guessed</button>';
+    else el.innerHTML = '<button class="btn primary" data-act="next">Next</button>';
+  }
+  function runThink() {
+    var cur = SESS.cur, left = cur.wait - Math.floor((now() - cur.shownAt) / 1000);
+    var bar = document.getElementById('thinkbar'), lab = document.getElementById('thinkleft');
+    function tick() {
+      left = cur.wait - Math.floor((now() - cur.shownAt) / 1000);
+      if (bar) bar.style.width = Math.max(0, 100 * left / cur.wait) + '%';
+      if (lab) lab.textContent = Math.max(0, left) + ' s';
+      if (left <= 0) { clearInterval(thinkTimer); reveal(); }
+    }
+    tick(); thinkTimer = setInterval(tick, 250);
+  }
+  function reveal() {
+    var cur = SESS.cur; if (!cur || cur.revealed) return;
+    clearInterval(thinkTimer);
+    cur.revealed = true; saveLocal();
+    var y = window.pageYOffset; renderQuestion(); window.scrollTo(0, y);
+  }
+  function refreshAnswer() {
+    var cur = SESS.cur, x = it(cur.q);
+    if (x.t === 'fill' || x.t === 'blanks') { var st = document.querySelector('.stem'); st.outerHTML = renderStem(x, cur); }
+    document.getElementById('answer').innerHTML = renderAnswerArea(x, cur);
+    drawActions(); saveLocal();
+  }
+  function pickOption(d) {
+    var cur = SESS.cur, x = it(cur.q);
+    if (!cur || cur.checked || !cur.revealed) return;
+    if (x.t === 'sata') { var i = cur.pick.indexOf(d); if (i >= 0) cur.pick.splice(i, 1); else cur.pick.push(d); }
+    else if (x.t === 'order') { if (d < cur.perm.length) { var o = cur.perm[d]; if (cur.pick.indexOf(o) < 0) cur.pick.push(o); } }
+    else if (x.t === 'mc' || x.t === 'fill' || x.t === 'row' || x.t === 'tf') { if (d < (x.t === 'tf' ? 2 : cur.perm.length)) cur.pick = d; }
+    else return;
+    refreshAnswer();
+  }
+
+  /* ---------------- check / feedback */
+  function doCheck() {
+    var cur = SESS.cur, x = it(cur.q);
+    if (!cur || cur.checked || !canCheck(x, cur)) return;
+    var res = Core.grade(D, cur.q, cur.perm, cur.pick);
+    cur.checked = true; cur.res = res;
+    var secs = Math.max(0, (now() - cur.shownAt) / 1000 - (cur.wait || 0));
+    Core.record(D, S, cur.q, res, SESS.sid, now(), secs, cur.pos);
+    dirty[Core.parseId(cur.q).base] = 1; if (!res.full) dirtyMiss = true;
+    SESS.ans.push({ q: cur.q, perm: cur.perm, pick: cur.pick, sc: res.sc, full: res.full, t: now() });
+    SESS.lastU = x.u; SESS.lastT = x.t; SESS.recent.push(cur.q);
+    
+    if (!res.full) scheduleFollowUp(cur.q);
+    SESS.t = now();
+    saveLocal(); push(false);
+    var y = window.pageYOffset;
+    renderQuestion(); window.scrollTo(0, y);
+    var v = document.getElementById('verdict'); if (v) scrollUnderHeader(v);
+  }
+  function scheduleFollowUp(q) {
+    if (SESS.mode === 'pretest' || SESS.mode === 'lastpass' || SESS.mode === 'lp20') return;
+    var cap = Math.floor(Math.max(SESS.planned, SESS.mode === 'endless' ? SESS.ans.length + 6 : 0) / 3);
+    if (SESS.fu >= cap) return;
+    var used = {}; SESS.queue.forEach(function (z) { used[z] = 1; });
+    S._block = null;
+    var f = Core.followUp(D, S, q, used, R);
+    delete S._block;
+    if (!f) return;
+    var at = Math.min(SESS.pos + 3 + Math.floor(R() * 4), SESS.queue.length);
+    if (SESS.mode === 'endless') { SESS.pending = SESS.pending || []; SESS.pending.push({ q: f, at: SESS.ans.length + 3 + Math.floor(R() * 4) }); }
+    else SESS.queue.splice(at, 0, f);
+    SESS.fu++;
+  }
+  function choiceText(x, o) { return x.t === 'cloze' ? x.o.choices[o] : x.t === 'row' ? x.o[o] : x.o[o]; }
+  function feedbackHTML(q, perm, pick, res, withCard) {
+    var x = it(q), h = '', t = x.t, wrongs = [];
+    var parent = x.parent || x;
+    var cls = res.full ? 'v-right' : res.sc > 0 && (t === 'sata' || t === 'cloze' || t === 'blanks') ? 'v-part' : 'v-wrong';
+    var title = res.full ? 'Correct' : cls === 'v-part' ? 'Partly correct: ' + (t === 'sata' ? res.score : res.right) + ' of ' + res.max : 'Not quite';
+    h += '<div class="verdict ' + cls + '" id="verdict"><h2>' + esc(title) + '</h2>';
+    if (x.num) {
+      if (res.accept) h += '<p>' + esc(res.accept) + '</p>';
+      res.notes.forEach(function (n) { h += '<p><b>' + esc(n) + '</b></p>'; });
+      if (!res.full) {
+        h += '<div class="why"><b>Why ' + esc(pick) + ' is wrong:</b> ' + esc(res.near || 'It does not match the setup below; work through each step.') + '</div>';
+        h += '<p><b>Right answer:</b> ' + esc(x.num.answer) + ' ' + esc(x.num.unit) + '</p>';
+      }
+    } else if (t === 'mc' || t === 'fill' || t === 'row' || t === 'tf') {
+      if (!res.full) {
+        var o = res.orig, why = x.x && x.x[o];
+        if (t === 'row' && !why) { var ri = parent.c.indexOf(o); why = ri >= 0 ? 'That choice goes with "' + parent.o.rows[ri] + '".' : ''; }
+        h += '<div class="why"><b>Why "' + esc(choiceText(x, o)) + '" is wrong:</b> ' + esc(why || '') + '</div>';
+        h += '<p><b>Right answer:</b> ' + esc(choiceText(x, x.c)) + '</p>';
+      }
+    } else if (t === 'sata') {
+      var wrongPicked = res.origs.filter(function (o) { return x.c.indexOf(o) < 0; });
+      var missed = x.c.filter(function (o) { return res.origs.indexOf(o) < 0; });
+      wrongPicked.forEach(function (o) { h += '<div class="why"><b>Why "' + esc(x.o[o]) + '" is wrong:</b> ' + esc(x.x[o] || '') + '</div>'; });
+      if (missed.length) h += '<p><b>Right answers you left out:</b></p><ul>' + missed.map(function (o) { return '<li>' + esc(x.o[o]) + '</li>'; }).join('') + '</ul>';
+      if (!res.full) h += '<p><b>All right answers:</b> ' + esc(x.c.map(function (o) { return x.o[o]; }).join('; ')) + '</p>';
+    } else if (t === 'order') {
+      if (!res.full) h += '<p><b>Right order:</b></p><ol>' + x.o.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+    } else if (t === 'cloze') {
+      res.origs.forEach(function (o, r) {
+        if (o === x.c[r]) return;
+        var why = x.x[o];
+        if (!why) { var ri = x.c.indexOf(o); why = ri >= 0 ? 'That choice goes with "' + x.o.rows[ri] + '".' : ''; }
+        h += '<div class="why"><b>' + esc(x.o.rows[r]) + ': why "' + esc(x.o.choices[o]) + '" is wrong:</b> ' + esc(why) + ' Right: ' + esc(x.o.choices[x.c[r]]) + '.</div>';
+      });
+    } else if (t === 'blanks') {
+      res.origs.forEach(function (o, b) {
+        if (o === x.c[b]) return;
+        h += '<div class="why"><b>Blank ' + (b + 1) + ': why "' + esc(x.o[b][o]) + '" is wrong:</b> ' + esc(x.x[b + ':' + o] || '') + ' Right: ' + esc(x.o[b][x.c[b]]) + '.</div>';
+      });
+    }
+    h += '<div class="keyidea"><b>The key idea</b><p>' + esc(x.w) + '</p></div></div>';
+    if (withCard && !res.full) h += conceptCard(x.k);
+    return h;
+  }
+  function conceptCard(cid) {
+    var c = cid && D.concepts[cid]; if (!c) return '';
+    var inKey = {}; (c.sec || []).forEach(function (s) { s.key.forEach(function (k) { inKey[k] = 1; }); });
+    var extra = c.points.filter(function (p) { return !inKey[p]; });
+    var h = '<div class="ccard"><p class="eyebrow">Concept card · ' + esc(c.unit) + '</p><h3 style="margin-top:2px">' + esc(c.title) + '</h3>' +
+      (extra.length ? '<ul>' + extra.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') +
+      '<p class="muted small">Source: ' + esc(c.source) + '</p>';
+    (c.sec || []).forEach(function (s) {
+      h += '<h3>Key ideas</h3><ul>' + s.key.map(function (k) { return '<li>' + esc(k) + '</li>'; }).join('') + '</ul>';
+      if (CFG.guide_url) h += '<p><a href="' + esc(CFG.guide_url + '#' + s.id) + '" target="_blank" rel="noopener">Open in the guide: ' + esc(s.title) + '</a></p>';
+    });
+    return h + '</div>';
+  }
+  function drawFeedback() {
+    var cur = SESS.cur, el = document.getElementById('fb');
+    el.innerHTML = feedbackHTML(cur.q, cur.perm, cur.pick, cur.res, true);
+  }
+  function doNext(guessed) {
+    var cur = SESS.cur; if (!cur || !cur.checked) return;
+    if (guessed) { Core.markGuessed(S, cur.q, now()); dirty[Core.parseId(cur.q).base] = 1; SESS.ans[SESS.ans.length - 1].guessed = true; }
+    cur.checked = 'done';
+    SESS.pos++; SESS.cur = null; SESS.t = now();
+    if (SESS.mode === 'endless' && SESS.pending && SESS.pending.length) {
+      var due = SESS.pending.filter(function (p) { return p.at <= SESS.ans.length; });
+      if (due.length) { SESS.pending = SESS.pending.filter(function (p) { return due.indexOf(p) < 0; }); SESS.queue.splice(SESS.pos, 0, due[0].q); }
+    }
+    saveLocal(); push(false);
+    if (SESS.mode === 'timed' && SESS.timeUp) return finish();
+    if (SESS.mode !== 'endless' && SESS.pos >= SESS.queue.length) return finish();
+    go('q');
+  }
+  function startClock() {
+    clearInterval(clockTimer);
+    if (!SESS || SESS.mode !== 'timed') return;
+    function tick() {
+      var el = document.getElementById('clock'); if (!SESS) return clearInterval(clockTimer);
+      var left = Math.max(0, Math.round((SESS.deadline - now()) / 1000));
+      if (el) { el.textContent = (left <= 0 ? 'Time is up' : Math.floor(left / 60) + ':' + ('0' + left % 60).slice(-2)); el.className = 'clock' + (left < 120 ? ' low' : ''); }
+      if (left <= 0 && !SESS.timeUp) {
+        SESS.timeUp = true; saveLocal();
+        if (!SESS.cur || !SESS.cur.revealed && !SESS.cur.checked && SESS.ans.length) { /* let the person finish the question on screen */ }
+      }
+    }
+    tick(); clockTimer = setInterval(tick, 1000);
+  }
+
+  /* ---------------- concept-card step (Fix this) */
+  function renderCardStep(cid) {
+    var c = D.concepts[cid];
+    var h = '<p class="eyebrow">Fix my misses · re-teach</p>' + conceptCard(cid) +
+      '<p class="muted">Read the card, then answer a different question on this concept.</p><div class="actions"><button class="btn primary" data-act="cardnext">Ask me a question on this</button></div>';
+    app.innerHTML = h;
+  }
+
+  /* ---------------- review / submit */
+  function reviewList(ans) {
+    if (!ans.length) return '<p class="muted">No answers yet.</p>';
+    return ans.map(function (a, i) {
+      var x = it(a.q), res = Core.grade(D, a.q, a.perm, a.pick);
+      return '<div class="rv"><p class="eyebrow">' + (i + 1) + '. ' + esc(x.u) + (a.guessed ? ' · guessed' : '') + '</p><p><b>' + esc(x.q.replace(/\{\d\}/g, '____')) + '</b></p><p class="small">Your answer: ' + esc(pickText(x, a)) + '</p>' + feedbackHTML(a.q, a.perm, a.pick, res, false) + '</div>';
+    }).join('');
+  }
+  function pickText(x, a) {
+    if (x.num) return a.pick + ' ' + x.num.unit;
+    if (x.t === 'mc' || x.t === 'fill' || x.t === 'row') return a.pick >= 0 ? choiceText(x, a.perm[a.pick]) : '-';
+    if (x.t === 'tf') return a.pick === 0 ? 'True' : a.pick === 1 ? 'False' : '-';
+    if (x.t === 'sata') return a.pick.map(function (d) { return x.o[a.perm[d]]; }).join('; ') || '-';
+    if (x.t === 'order') return a.pick.map(function (o, i) { return (i + 1) + '. ' + x.o[o]; }).join('  ');
+    if (x.t === 'cloze') return a.pick.map(function (d, r) { return x.o.rows[r] + ' → ' + (d >= 0 ? x.o.choices[a.perm[d]] : '-'); }).join('; ');
+    if (x.t === 'blanks') return a.pick.map(function (d, b) { return d >= 0 ? x.o[b][a.perm[b][d]] : '-'; }).join(' / ');
+    return '';
+  }
+  function renderReview() {
+    header({});
+    var ans = SESS ? SESS.ans : (LASTRES ? LASTRES.ans : []);
+    app.innerHTML = '<h1>Your answers' + (SESS ? ' so far' : '') + '</h1><p class="muted">' + plural(ans.length, 'answer') + ', with your pick, the right answer and both explanations.</p>' +
+      '<div class="actions"><button class="btn primary" data-act="' + (SESS ? 'backq' : 'backres') + '">' + (SESS ? 'Back to the question' : 'Back to results') + '</button></div>' + reviewList(ans);
+  }
+  function renderSubmit() {
+    header({});
+    var n = SESS.ans.length, isPre = SESS.mode === 'pretest', left = SESS.mode === 'endless' ? 0 : Math.max(0, sessCount() - n);
+    app.innerHTML = '<h1>' + (isPre ? 'Stop the pre-test?' : 'Submit this session?') + '</h1>' +
+      '<div class="card strong"><p>You answered <b>' + n + '</b>' + (SESS.mode !== 'endless' ? ' of ' + sessCount() : '') + ' questions.</p>' +
+      (left ? '<p>The ' + plural(left, 'unanswered question') + ' will not be graded or count toward your progress.</p>' : '') +
+      (isPre ? '<p>Topics you did not reach get no level from this pre-test.</p>' : '') +
+      '<p><b>This cannot be undone.</b></p><div class="actions"><button class="btn primary" data-act="backq">Keep going</button><button class="btn" data-act="dosubmit">Submit now</button></div></div>';
+  }
+
+  /* ---------------- results */
+  var BANDS = [[90, 'Exam-ready', 'Keep it fresh: run the last pass once more the day before the exam.'],
+    [80, 'Strong', 'Drill your starred and missed questions, then do a 30-minute timed plan.'],
+    [70, 'Almost there', 'Open Fix my misses and fix your top two concepts, then drill 20 again.'],
+    [60, 'Shaky', 'Re-read the guide sections for your weakest topic, then drill only that topic.'],
+    [0, 'Needs work', 'Study the guide for your weakest topic first, then do 10-question sessions on it daily.']];
+  function finish() {
+    clearInterval(clockTimer);
+    if (!SESS) return go('main');
+    var ans = SESS.ans, res = { mode: SESS.mode, ans: ans, units: SESS.units, t: now(), sid: SESS.sid };
+    if (SESS.mode === 'pretest') {
+      var sc = ans.reduce(function (a, b) { return a + b.sc; }, 0);
+      S.pre.last = { t: now(), pct: ans.length ? Math.round(100 * sc / ans.length) : 0, n: ans.length };
+    }
+    LASTRES = res; lsSet('lastres', { mode: res.mode, ans: ans, units: res.units, t: res.t });
+    SESS = null; saveLocal(); push(false);
+    go('results');
+  }
+  function renderResults() {
+    header({});
+    var r = LASTRES; if (!r) return go('main');
+    var ans = r.ans, n = ans.length, sc = ans.reduce(function (a, b) { return a + b.sc; }, 0), pct = n ? Math.round(100 * sc / n) : 0;
+    var band = BANDS.filter(function (b) { return pct >= b[0]; })[0];
+    var per = {}; ans.forEach(function (a) { var u = it(a.q).u; per[u] = per[u] || { n: 0, s: 0 }; per[u].n++; per[u].s += a.sc; });
+    var weakest = Object.keys(per).filter(function (u) { return per[u].n >= 3 && per[u].s / per[u].n < 0.8; })
+      .sort(function (a, b) { return per[a].s / per[a].n - per[b].s / per[b].n; })[0];
+    var h = '';
+    if (r.mode === 'pretest') {
+      var lv = Core.topicLevels(D, S);
+      var weakU = UNITS.filter(function (u) { return lv[u].level; }).sort(function (a, b) { return lv[a].pct - lv[b].pct; }).filter(function (u) { return lv[u].level !== 'Strong'; }).slice(0, 3);
+      h += '<p class="eyebrow">Pre-test results</p><h1>Your level by topic</h1><p class="big">' + pct + '%</p><p class="muted">' + (Math.round(sc * 10) / 10) + ' of ' + n + ' right on the pre-test. Levels combine the pre-test with all your saved answers.</p>';
+      h += '<div class="card"><div class="tblwrap"><table class="rates"><tr><th>Topic</th><th>Level</th><th class="n">Score</th></tr>' + UNITS.map(function (u) {
+        var L = lv[u]; return '<tr><td>' + esc(u) + '</td><td>' + (L.level ? '<span class="lvl ' + L.level + '">' + L.level + '</span>' : '<span class="muted">No level yet</span>') + '</td><td class="n">' + (L.pct === null ? '-' : L.pct + '%') + '</td></tr>';
+      }).join('') + '</table></div></div>';
+      h += '<div class="card strong"><h2>Next step</h2><p>Do the last pass next' + (weakU.length ? ', then drill your weakest topics: <b>' + esc(listText(weakU)) + '</b>.' : '.') + '</p>' +
+        '<div class="actions"><button class="btn primary" data-act="lp">Start last pass</button>' + (weakU.length ? '<button class="btn" data-act="weakdrill" data-units="' + esc(weakU.join('|')) + '">Drill ' + esc(listText(weakU)) + '</button>' : '') + '</div></div>';
+    } else {
+      h += '<p class="eyebrow">Session results</p><h1>' + esc(band[1]) + '</h1><p class="big">' + pct + '%</p><p class="muted">' + (Math.round(sc * 10) / 10) + ' of ' + n + ' right' + (r.mode === 'timed' ? ' in the timed plan' : '') + '.</p>' +
+        '<p><b>Next step:</b> ' + esc(band[2]) + '</p>';
+      if (weakest) h += '<p>Weakest topic this session: <b>' + esc(weakest) + '</b> (' + Math.round(100 * per[weakest].s / per[weakest].n) + '% on ' + per[weakest].n + ').</p>';
+      if (n < 10) h += '<p class="muted small">This session had fewer than 10 questions, so the score is a rough guide.</p>';
+    }
+    var lpMode = r.mode === 'lastpass' || r.mode === 'lp20';
+    var ids = lpMode ? D.items.filter(function (x) { return x.lp; }).map(function (x) { return x.id; }) : Core.unitItems(D, r.units).map(function (x) { return x.id; });
+    h += '<div class="card"><h2>' + (lpMode ? 'Last pass status' : 'Status for these topics') + '</h2>' + statusBar(Core.statusCounts(D, S, ids)) +
+      '<p class="muted small">One session can only make a question "right once": it becomes solid after you get it right again in a later session, once it has rested.</p></div>';
+    h += '<div class="card"><h2>By topic this session</h2><div class="bars">' + Object.keys(per).sort(function (a, b) { return UNITS.indexOf(a) - UNITS.indexOf(b); }).map(function (u) {
+      var p = Math.round(100 * per[u].s / per[u].n);
+      return '<div class="b"><span>' + esc(u) + '</span><span class="track"><span class="fill' + (p < 60 ? ' low' : '') + '" style="display:block;width:' + p + '%"></span></span><span class="pct">' + p + '%</span></div>';
+    }).join('') + '</div></div>';
+    h += '<div class="actions"><button class="btn primary" data-act="again">Drill again</button><button class="btn" data-act="viewans">Check my answers</button><button class="btn" data-act="home">Change topics</button><button class="btn danger" id="reset" data-act="reset">Reset all progress</button></div>';
+    app.innerHTML = h;
+  }
+
+  /* ---------------- fix my misses */
+  function rates(keyFn) {
+    var out = {};
+    D.items.forEach(function (x) {
+      var rec = S.p[x.id]; if (!rec) return;
+      var e = Core.eff(rec.h); if (!e) return;
+      var k = keyFn(x); out[k] = out[k] || { a: 0, m: 0 };
+      out[k].a += e.length; out[k].m += (e.match(/[WP]/g) || []).length;
+    });
+    return out;
+  }
+  function rateTable(title, o) {
+    var ks = Object.keys(o).sort(function (a, b) { return o[b].m / o[b].a - o[a].m / o[a].a; });
+    if (!ks.length) return '';
+    return '<h3>' + esc(title) + '</h3><div class="tblwrap"><table class="rates"><tr><th>' + esc(title.replace('By ', '')) + '</th><th class="n">Answers</th><th class="n">Misses</th><th class="n">Miss rate</th></tr>' +
+      ks.map(function (k) { return '<tr><td>' + esc(k) + '</td><td class="n">' + o[k].a + '</td><td class="n">' + o[k].m + '</td><td class="n">' + Math.round(100 * o[k].m / o[k].a) + '%</td></tr>'; }).join('') + '</table></div>';
+  }
+  var FMT = { mc: 'Multiple choice', sata: 'Select all', cloze: 'Matching table', fill: 'Word bank', order: 'Put in order', tf: 'True/false', blanks: 'Sentence blanks' };
+  function renderFix() {
+    header({});
+    var labs = {};
+    S.miss.forEach(function (m) { (m.lab || '').split('; ').forEach(function (l) { if (!l) return; labs[l] = labs[l] || { n: 0, k: it(m.q) && it(m.q).k }; labs[l].n++; }); });
+    var lk = Object.keys(labs).sort(function (a, b) { return labs[b].n - labs[a].n; }).slice(0, 10);
+    var byC = {};
+    D.items.forEach(function (x) { if (Core.status(x, S.p[x.id]) === 'shaky' && x.k) (byC[x.k] = byC[x.k] || []).push(x.id); });
+    var cids = Object.keys(byC).sort(function (a, b) { return byC[b].length - byC[a].length; });
+    var h = '<h1>Fix my misses</h1><p class="muted">Each fix re-teaches the concept, then asks a different question on it. A missed question is fixed once you get it and its follow-up right.</p>';
+    h += '<div class="card"><h2>Mistakes I keep making</h2>' + (lk.length ? '<ul>' + lk.map(function (l) {
+      var c = labs[l].k && D.concepts[labs[l].k];
+      return '<li><b>' + esc(l) + '</b> <span class="count">× ' + labs[l].n + '</span>' + (c ? ' <span class="muted small">· ' + esc(c.title) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>' : '<p class="muted">No repeated mistakes yet.</p>') + '</div>';
+    h += '<div class="card"><h2>Shaky questions by concept</h2>' + (cids.length ? '<div class="actions"><button class="btn primary" data-act="fixall">Fix all (' + cids.length + ' concepts)</button></div>' +
+      cids.map(function (cid) {
+        var c = D.concepts[cid];
+        return '<div class="rv"><p class="eyebrow">' + esc(c.unit) + '</p><div class="row" style="justify-content:space-between"><span><b>' + esc(c.title) + '</b> <span class="count">' + plural(byC[cid].length, 'shaky question') + '</span></span><button class="btn small" data-act="fixone" data-cid="' + esc(cid) + '">Fix this</button></div></div>';
+      }).join('') : '<p class="muted">Nothing shaky right now.</p>') + '</div>';
+    h += '<details class="fold"><summary>Detailed miss rates</summary>' +
+      rateTable('By kind of question', rates(function (x) { return x.kind; })) +
+      rateTable('By topic', rates(function (x) { return x.u; })) +
+      rateTable('By format', rates(function (x) { return x.num ? 'Typed number' : FMT[x.t]; })) +
+      rateTable('By source', rates(function (x) { return x.src; })) + '</details>';
+    app.innerHTML = h;
+  }
+  function renderReadme() {
+    header({});
+    app.innerHTML = document.getElementById('readme-src').innerHTML +
+      (CFG.guide_url ? '<p><a class="btn small ghost" href="' + esc(CFG.guide_url) + '" target="_blank" rel="noopener">Open the Mastery Guide</a></p>' : '');
+  }
+
+  /* ------------------------------------------------------------ events */
+  var resetArmed = 0;
+  function toggleStar() {
+    var cur = SESS && SESS.cur; if (!cur || cur.card) return;
+    var id = Core.parseId(cur.q).base, on = !Core.isStar(S, id);
+    S.stars[id] = { on: on ? 1 : 0, t: now() }; dirtyStars[id] = 1; saveLocal(); push(false);
+    var b = document.querySelector('[data-act="star"]'); if (b) { b.textContent = on ? '★ Starred' : '☆ Star'; b.setAttribute('aria-pressed', on); }
+  }
+  function doReset() {
+    var b = document.getElementById('reset');
+    if (!resetArmed || now() - resetArmed > 6000) {
+      resetArmed = now(); if (b) { b.classList.add('armed'); b.textContent = 'Tap again to erase all progress (stars are kept)'; }
+      return;
+    }
+    resetArmed = 0;
+    var stars = S.stars; S = Core.newState(); S.stars = stars; SESS = null; LASTRES = null; lsSet('lastres', null);
+    saveLocal(); push(true); go('main');
+  }
+  app.addEventListener('click', onClick); hb.addEventListener('click', onClick);
+  function onClick(e) {
+    var t = e.target.closest('[data-act],[data-opt],[data-step],[data-slot],[data-len]');
+    if (!t) return;
+    if (t.hasAttribute('data-opt')) return pickOption(+t.getAttribute('data-opt'));
+    if (t.hasAttribute('data-step')) { var cur = SESS.cur; if (!cur.checked && cur.pick.indexOf(+t.getAttribute('data-step')) < 0) { cur.pick.push(+t.getAttribute('data-step')); refreshAnswer(); } return; }
+    if (t.hasAttribute('data-slot')) { var c2 = SESS.cur, i = +t.getAttribute('data-slot'); if (!c2.checked && c2.pick[i] !== undefined) { c2.pick.splice(i, 1); refreshAnswer(); } return; }
+    if (t.hasAttribute('data-len')) { UI.len = t.getAttribute('data-len'); saveLocal(); return renderMain(); }
+    var a = t.getAttribute('data-act');
+    if (a === 'overlap' || a === 'think') return;
+    if (a !== 'reset') { resetArmed = 0; }
+    switch (a) {
+      case 'home': clearInterval(clockTimer); if (SESS) { saveLocal(); push(false); } return go('main');
+      case 'readme': return go('readme');
+      case 'fix': return go('fix');
+      case 'resume': return go('q');
+      case 'fresh': SESS = null; saveLocal(); push(false); return renderMain();
+      case 'pretest': return startPretest();
+      case 'lp': return startLastPass(false);
+      case 'lp20': return startLastPass(true);
+      case 'uall': UI.units = UNITS.slice(); saveLocal(); return renderMain();
+      case 'unone': UI.units = []; saveLocal(); return renderMain();
+      case 'start': return startFromSetup();
+      case 'reset': return doReset();
+      case 'check': return doCheck();
+      case 'next': return doNext(false);
+      case 'guessed': return doNext(true);
+      case 'star': return toggleStar();
+      case 'timer': UI.think = !UI.think; saveLocal(); t.textContent = 'Timer: ' + (UI.think ? 'on' : 'off'); if (!UI.think && SESS.cur && !SESS.cur.revealed) reveal(); return;
+      case 'sofar': return go('review');
+      case 'submit': return go('submit');
+      case 'backq': return go('q');
+      case 'backres': return go('results');
+      case 'dosubmit': return finish();
+      case 'viewans': return go('review');
+      case 'again':
+        if (LASTRES && (LASTRES.mode === 'lastpass' || LASTRES.mode === 'lp20')) return startLastPass(LASTRES.mode === 'lp20');
+        if (LASTRES && LASTRES.mode === 'pretest') return startPretest();
+        return startFromSetup();
+      case 'weakdrill': UI.units = t.getAttribute('data-units').split('|'); UI.filters = {}; UI.len = '20'; saveLocal(); return startFromSetup();
+      case 'fixall': return startFix(Object.keys((function () { var o = {}; D.items.forEach(function (x) { if (x.k && Core.status(x, S.p[x.id]) === 'shaky') o[x.k] = 1; }); return o; })()).slice(0, 15));
+      case 'fixone': return startFix([t.getAttribute('data-cid')]);
+      case 'cardnext': SESS.pos++; SESS.cur = null; saveLocal(); push(false); if (SESS.pos >= SESS.queue.length) return finish(); return go('q');
+    }
+  }
+  app.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.hasAttribute('data-unit')) {
+      var u = t.getAttribute('data-unit'), i = UI.units.indexOf(u);
+      if (t.checked && i < 0) UI.units.push(u); if (!t.checked && i >= 0) UI.units.splice(i, 1);
+      UI.units.sort(function (a, b) { return UNITS.indexOf(a) - UNITS.indexOf(b); });
+      saveLocal(); var y = window.pageYOffset; renderMain(); window.scrollTo(0, y); return;
+    }
+    if (t.hasAttribute('data-filter')) { UI.filters[t.getAttribute('data-filter')] = t.checked; saveLocal(); var y2 = window.pageYOffset; renderMain(); window.scrollTo(0, y2); return; }
+    var a = t.getAttribute('data-act');
+    if (a === 'overlap') { UI.overlap = t.checked; saveLocal(); document.getElementById('desc').textContent = describe(); return; }
+    if (a === 'think') { UI.think = t.checked; saveLocal(); return; }
+    if (t.id === 'custom') { UI.custom = Math.max(5, Math.min(500, +t.value || 25)); t.value = UI.custom; saveLocal(); document.getElementById('desc').textContent = describe(); return; }
+    if (t.hasAttribute('data-row') && SESS && SESS.cur) { SESS.cur.pick[+t.getAttribute('data-row')] = +t.value; saveLocal(); drawActions(); return; }
+    if (t.hasAttribute('data-blank') && SESS && SESS.cur) { SESS.cur.pick[+t.getAttribute('data-blank')] = +t.value; saveLocal(); drawActions(); return; }
+  });
+  app.addEventListener('input', function (e) {
+    if (e.target.id === 'numin' && SESS && SESS.cur) { SESS.cur.pick = e.target.value; saveLocal(); drawActions(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (screen !== 'q' || !SESS || !SESS.cur || e.metaKey || e.ctrlKey || e.altKey) return;
+    var typing = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA');
+    var cur = SESS.cur;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (cur.card) return onClick({ target: document.querySelector('[data-act="cardnext"]') });
+      return cur.checked ? doNext(false) : doCheck();
+    }
+    if (typing || cur.card) return;
+    if (/^[1-6]$/.test(e.key)) { pickOption(+e.key - 1); return; }
+    if (e.key === 's' || e.key === 'S') return toggleStar();
+    if ((e.key === 'g' || e.key === 'G') && cur.checked && cur.res && cur.res.full) return doNext(true);
+  });
+
+  /* ------------------------------------------------------------ boot */
+  if (SESS && SESS.cur && SESS.cur.checked === 'done') { SESS.pos++; SESS.cur = null; }
+  render();
+  initSync();
+})();
+</script>

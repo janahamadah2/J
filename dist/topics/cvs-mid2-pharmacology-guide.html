@@ -1,0 +1,248 @@
+<title>CVS Mid 2 Pharmacology Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Pharmacology Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/YLFAShgk3BR2wQXJF9sCvP" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Pharmacology only · Sunday 29 November 2026</p>
+    <h1>CVS Mid 2 Pharmacology Guide</h1>
+    <p class="lede">7 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Pharmacology</li>
+<li><a href="#pharm-classes">Hypertension: definition and drug classes</a></li>
+<li><a href="#pharm-diuretics">Diuretics in hypertension</a></li>
+<li><a href="#pharm-ccb">Calcium channel blockers</a></li>
+<li><a href="#pharm-ras">Renin inhibitors, ACE inhibitors and ARBs</a></li>
+<li><a href="#pharm-central">Centrally acting sympatholytics</a></li>
+<li><a href="#pharm-alpha-beta">Alpha blockers, beta blockers and alpha-beta blockers</a></li>
+<li><a href="#pharm-vasodilators">Direct vasodilators</a></li></ul></details>
+    <h2 class="unit-h" id="unit-pharmacology">Pharmacology</h2>
+
+<section class="sec" id="pharm-classes" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 1</p>
+  <h3>Hypertension: definition and drug classes</h3>
+  <div class="block mech"><h4>How it works</h4><p>Blood pressure is cardiac output times peripheral resistance, kept up by volume, the sympathetic system and the renin-angiotensin system. Each drug class removes one of these supports: diuretics (volume), sympatholytics (nerves), RAS drugs (angiotensin), CCBs and vasodilators (vessel tone).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Classify every drug on a client's list before giving it.</li><li>Use the current threshold: 130/80 mm Hg or higher is hypertension.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's readings average 132/82: hypertension by the ACC/AHA and SHA definitions.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Using the old 140/90 threshold.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>-pril = ACE inhibitor, -sartan = ARB, -olol = beta blocker, -dipine = dihydropyridine CCB.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The only renin inhibitor listed is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">aliskiren</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Hypertension is defined as 130/80 mm Hg or higher (ACC/AHA 2023 and Saudi Heart Association).</li><li>Classes: diuretics, calcium channel blockers, drugs acting on the renin-angiotensin system, sympatholytic drugs, vasodilators.</li><li>Drug list: hydrochlorothiazide, indapamide, furosemide, spironolactone (diuretics); clonidine, methyldopa, prazosin, propranolol, labetalol, esmolol (sympathoplegic); hydralazine, nitroprusside, minoxidil, diazoxide, fenoldopam, CCBs (vasodilators); captopril, enalapril, enalaprilat (ACE inhibitors); losartan (ARB); aliskiren (renin inhibitor).</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-diuretics" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 2</p>
+  <h3>Diuretics in hypertension</h3>
+  <div class="block mech"><h4>How it works</h4><p>Diuretics lower pressure first by shrinking plasma volume and cardiac output. Over 4-8 weeks the volume recovers but resistance falls: sodium depletion lowers smooth muscle Na+, which lowers intracellular Ca++ through the Na/Ca exchanger, relaxing arterioles.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Use thiazides first in normal renal function; loop diuretics in CKD or malignant hypertension.</li><li>Add a potassium-sparing diuretic to a thiazide to counteract hypokalemia; spironolactone for hyperaldosteronism.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client 6 weeks into thiazide therapy has normal urine output but a lower blood pressure: peripheral resistance has fallen.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Believing diuretics work only by making urine.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Thiazide first, Loop for kidney failure, K-sparing for K.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Diuretics can <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">enhance</span></button> the hypotensive effects of many antihypertensive agents.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Early: diuretics lower plasma volume and cardiac output. After 4-8 weeks volume and output return toward normal while peripheral vascular resistance falls (arteriolar vasodilation).</li><li>Main mechanism of the vasodilation: depletion of body Na+, lowering smooth muscle Na+ and then intracellular Ca++ via the Na/Ca exchanger.</li><li>Thiazides are first choice; antihypertensive doses are lower than diuretic doses.</li><li>Loop diuretics are preferable in malignant hypertension and chronic kidney disease.</li><li>Potassium-sparing diuretics are used with thiazides to counteract hypokalemia; spironolactone is used in hyperaldosteronism.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-ccb" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 3</p>
+  <h3>Calcium channel blockers</h3>
+  <div class="block mech"><h4>How it works</h4><p>CCBs block L-type Ca++ channels, so less calcium enters smooth muscle (and, for verapamil and diltiazem, heart muscle). Dihydropyridines act on vessels only, so heart rate may rise; verapamil and diltiazem also slow the heart.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Expect a possible rise in heart rate with nifedipine and a fall with verapamil or diltiazem.</li><li>Use nicardipine for hypertensive emergencies; avoid short-acting nifedipine.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client starting nifedipine has a slightly faster pulse.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting nifedipine to slow the heart like verapamil.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dihydropyridine = Dilates only; Verapamil = Ventricle too.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>CCBs are first-choice drugs and are more effective in <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">African</span></button> patients.</li><li>Nicardipine has <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">very high</span></button> vascular selectivity.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>CCBs bind the L-type voltage-gated Ca++ channel from the inner side of the membrane.</li><li>Verapamil and diltiazem block Ca++ channels in heart and vessels; dihydropyridines (nifedipine, nicardipine) block vessels only.</li><li>Heart rate: increased with dihydropyridines; unchanged or decreased with verapamil and diltiazem. Postural hypotension is negligible.</li><li>First-choice drugs, more effective in African patients; nicardipine for hypertensive emergencies; short-acting nifedipine increases mortality.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-ras" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 4</p>
+  <h3>Renin inhibitors, ACE inhibitors and ARBs</h3>
+  <div class="block mech"><h4>How it works</h4><p>Renin turns angiotensinogen into angiotensin I, ACE turns angiotensin I into angiotensin II (and breaks down bradykinin), and angiotensin II acts on AT1 receptors. Blocking any step lowers angiotensin II effects; the step blocked decides the side effects: ACE inhibitors raise bradykinin (cough, angioedema), ARBs do not.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Monitor potassium, renal function, first-dose blood pressure and the airway (angioedema).</li><li>Question ACE inhibitors and ARBs in pregnancy and bilateral renal artery stenosis.</li><li>Switch to an ARB when an ACE inhibitor causes cough.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on captopril develops a dry cough and is switched to losartan.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking losartan inhibits ACE.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>ACE inhibitors Accumulate bradykinin; ARBs Avoid it.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The ACE inhibitor given intravenously is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">enalaprilat</span></button>.</li><li>ARBs selectively block <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">AT1</span></button> receptors.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Aliskiren competitively inhibits renin: angiotensin I, II and aldosterone fall and renin rises; hyperkalemia when combined with ACE inhibitors or ARBs.</li><li>ACE inhibitors block conversion of angiotensin I to II and raise bradykinin; less angiotensin II removes negative feedback, so renin rises.</li><li>Captopril, lisinopril and enalaprilat are active drugs; enalapril, benazepril and fosinopril are prodrugs activated by the liver; enalaprilat is the IV form.</li><li>ACE inhibitor adverse effects: first-dose hypotension, dry cough (bradykinin, prostaglandins or substance P), renal insufficiency in bilateral renal artery stenosis, hyperkalemia, angioedema; pregnancy category D.</li><li>ARBs (losartan) selectively block AT1 receptors, inhibit angiotensin more completely and have no effect on bradykinin; contraindicated in bilateral renal artery stenosis and pregnancy.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-central" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 5</p>
+  <h3>Centrally acting sympatholytics</h3>
+  <div class="block mech"><h4>How it works</h4><p>Clonidine and methyldopa act in the brain: they stimulate central alpha-2 (and, for clonidine, imidazoline) receptors that turn down sympathetic outflow. Methyldopa first has to be converted to methylnorepinephrine inside neurons.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Teach clients on clonidine never to stop it suddenly.</li><li>Prefer methyldopa in pregnancy.</li><li>Expect sedation; check for a positive Coombs' test with methyldopa.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on clonidine wants to stop abruptly; the nurse warns of a hypertensive crisis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking methyldopa is unsafe in pregnancy.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Clonidine: don't Cut it suddenly. Methyldopa: Mothers.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Transdermal clonidine causes skin eruption in up to <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">20%</span></button> of clients.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Clonidine and methyldopa are alpha-2 receptor agonists; methyldopa is a false neurotransmitter converted to methylnorepinephrine; clonidine also acts on imidazoline receptors in the medulla.</li><li>The final common effect is a decrease in central adrenergic tone.</li><li>Second-choice drugs; methyldopa is often preferred in pregnancy.</li><li>Adverse effects: sedation, depression, bradycardia, AV block, sexual dysfunction; clonidine withdrawal can cause a hypertensive crisis; methyldopa can cause a positive Coombs' test.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-alpha-beta" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 6</p>
+  <h3>Alpha blockers, beta blockers and alpha-beta blockers</h3>
+  <div class="block mech"><h4>How it works</h4><p>Alpha-1 blockers dilate arterioles and veins, so standing can drop the pressure, especially after the first dose. Beta blockers lower cardiac output and renin release and leave veins alone, so they do not cause postural hypotension but can slow the heart, narrow airways and mask or cause low glucose.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>After a first prazosin dose, monitor for postural hypotension.</li><li>Choose a beta-1 selective drug (atenolol, bisoprolol, metoprolol) when airways are a concern.</li><li>Never stop a beta blocker abruptly: rebound hypertension.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with heart failure and hypertension is treated with carvedilol.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting postural hypotension from a pure beta blocker.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>A for alpha-1 and Arise-dizzy; B for beta and Bradycardia, Bronchospasm, Blood sugar low.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>IV <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">labetalol</span></button> is used for hypertensive emergencies.</li><li>Peripheral edema with alpha blockers after chronic treatment is due to <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">sodium and water</span></button> retention.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Prazosin and doxazosin selectively block alpha-1 receptors, dilating resistance and capacitance vessels; postural hypotension after the first dose ("first-dose phenomenon").</li><li>Beta blockers lower cardiac output (cardiac beta-1) and inhibit renin release (juxtaglomerular beta-1); they do not cause postural hypotension.</li><li>Selective beta-1: atenolol, bisoprolol, metoprolol. Non-selective: propranolol, penbutolol, timolol.</li><li>Beta-blocker adverse effects: bradycardia, rebound hypertension on abrupt withdrawal, bronchoconstriction, insomnia, depression, hypoglycemia, sexual dysfunction.</li><li>Labetalol and carvedilol block alpha and beta; labetalol for hypertension in pregnancy and IV in emergencies; carvedilol for heart failure.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+
+<section class="sec" id="pharm-vasodilators" data-unit="Pharmacology">
+  <p class="sec-eyebrow">Pharmacology · 7</p>
+  <h3>Direct vasodilators</h3>
+  <div class="block mech"><h4>How it works</h4><p>Direct vasodilators relax vessel smooth muscle by different routes: NO (nitroprusside), K+ channel opening (minoxidil, diazoxide), D1 activation (fenoldopam) or an uncertain mechanism (hydralazine). Their toxicities are drug-specific and well worth memorizing.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>During nitroprusside infusion, watch for cyanide toxicity.</li><li>Check glucose with diazoxide, hair growth with minoxidil, lupus-like symptoms with high-dose hydralazine.</li><li>Question fenoldopam in glaucoma, angina or hypokalemia.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client on minoxidil notices new hair growth: hypertrichosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting diazoxide to cause diuresis like a thiazide.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Nitroprusside: Nitric oxide and cyaNide. Minoxidil: More hair. Diazoxide: Diabetes-like sugar.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Nitroprusside is metabolized by red blood cells, releasing cyanide that becomes <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">thiocyanate</span></button>.</li><li>Hydralazine is combined with isosorbide mononitrate in <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">heart failure</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Nitroprusside: arterioles and veins, nitric oxide; metabolized by red cells releasing cyanide (to thiocyanate); half-life about 2 minutes, continuous infusion; for emergencies, severe heart failure, controlled hypotension.</li><li>Hydralazine: arterioles, uncertain mechanism; headache, palpitations, flushing; immunological lupoid syndrome (up to 20% at very high doses).</li><li>Minoxidil: arteriolar K+ channel opener, a prodrug; salt and water retention, tachycardia, hypertrichosis; also used for baldness.</li><li>Diazoxide: K+ channel opener without diuresis (lacks a sulfonamide group); salt and water retention, hyperglycemia; for hypertensive emergencies.</li><li>Fenoldopam: IV D1 agonist, renal and mesenteric vasodilation and natriuresis; reflex tachycardia, raised intraocular pressure, low potassium; contraindicated in angina, glaucoma and hypokalemia.</li></ul></div>
+  <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

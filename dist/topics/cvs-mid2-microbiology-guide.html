@@ -1,0 +1,234 @@
+<title>CVS Mid 2 Microbiology Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Microbiology Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/JVCNc3cUjjCLr5e71cVqhy" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Microbiology only · Sunday 29 November 2026</p>
+    <h1>CVS Mid 2 Microbiology Guide</h1>
+    <p class="lede">6 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Microbiology</li>
+<li><a href="#micro-ie-types">Infective endocarditis: classification and organisms</a></li>
+<li><a href="#micro-organisms">Specific organisms and their associations</a></li>
+<li><a href="#micro-patho">Pathophysiology of infective endocarditis</a></li>
+<li><a href="#micro-signs">Clinical features of infective endocarditis</a></li>
+<li><a href="#micro-dx-tx">Diagnosis, treatment and prophylaxis</a></li>
+<li><a href="#micro-lab-id">Laboratory identification of IE organisms</a></li></ul></details>
+    <h2 class="unit-h" id="unit-microbiology">Microbiology</h2>
+
+<section class="sec" id="micro-ie-types" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 1</p>
+  <h3>Infective endocarditis: classification and organisms</h3>
+  <div class="block mech"><h4>How it works</h4><p>Infective endocarditis is classified by speed (acute vs subacute), by the valve (native, prosthetic, device) and by the route (IV drug use). Virulent organisms attack healthy valves fast; less virulent ones need a damaged valve and take weeks.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Match setting to organism: IV drug use = tricuspid, S. aureus; prosthetic valve = S. epidermidis or S. aureus; damaged valve after dental work = viridans.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client who injects drugs has tricuspid vegetations and Gram-positive cocci in clusters: S. aureus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Assuming subacute IE affects healthy valves.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Acute = Aureus, Aggressive; Subacute = Slow, Strep viridans.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Left-sided endocarditis accounts for more than <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">95%</span></button> of cases.</li><li>Early prosthetic valve endocarditis develops within <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">12</span></button> months of surgery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>IE: infection of the endocardium and its valves (native or prosthetic) with septic vegetations; left-sided in over 95% of cases.</li><li>Acute IE: rapid (hours to days), mostly healthy valves, severe symptoms; S. aureus, S. pyogenes; mitral and aortic valves.</li><li>Subacute IE: slow (weeks to months), preexisting valve disease, low-grade fever, weight loss; viridans streptococci, enterococci, HACEK.</li><li>Prosthetic valve IE: early (within 12 months, intraoperative contamination) or late; mostly S. epidermidis and S. aureus.</li><li>IV drug use IE: mainly the tricuspid valve; S. aureus, Pseudomonas aeruginosa, Candida.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-organisms" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 2</p>
+  <h3>Specific organisms and their associations</h3>
+  <div class="block mech"><h4>How it works</h4><p>Each organism hints at its source: skin and devices (staphylococci), mouth (viridans), bowel (S. bovis), urinary or GI tract (enterococci), pharynx (HACEK).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>After S. bovis endocarditis, expect evaluation of the colon.</li><li>Think HACEK when cultures stay negative without special media.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An elderly client gets endocarditis after a urinary procedure: Enterococcus faecalis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the K in HACEK is Klebsiella (it is Kingella).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>HACEK = Haemophilus, Aggregatibacter, Cardiobacterium, Eikenella, Kingella.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Streptococcus bovis is associated with <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">colorectal carcinoma</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>S. aureus: most common overall, IV drug users and healthcare-associated IE; acute, rapid valve destruction.</li><li>Streptococcus bovis is associated with colorectal carcinoma or GI lesions.</li><li>Enterococcus faecalis: elderly and hospital-acquired IE, after genitourinary or gastrointestinal procedures.</li><li>HACEK (Haemophilus, Aggregatibacter, Cardiobacterium hominis, Eikenella corrodens, Kingella): slow-growing fastidious Gram-negative bacilli of pharyngeal flora; subacute IE with negative cultures unless special media are used.</li><li>Cardiac device IE (pacemaker, ICD) usually comes from skin contamination at implantation; mostly staphylococci.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-patho" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 3</p>
+  <h3>Pathophysiology of infective endocarditis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Three things must meet: a damaged valve surface with a sterile platelet-fibrin clot, bacteria in the blood, and bacteria able to stick. Inside the vegetation bacteria hide from phagocytes and antibiotics, shed into the blood and break off as emboli.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Ask about recent dental, skin or invasive procedures (transient bacteremia).</li><li>Watch for embolic infarcts and abscesses in brain, kidney, spleen and lung.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with valve disease develops a vegetation after a dental procedure.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking antibiotics reach organisms in vegetations easily.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Injury, bacteremia, adherence, vegetation.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Viridans streptococci adhere using <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">dextran</span></button>.</li><li>Immune complex deposition can cause <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">glomerulonephritis</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>IE needs endothelial injury, bacteremia and microbial adherence leading to vegetation formation.</li><li>Damaged valvular endothelium collects platelets and fibrin, forming a sterile microthrombus (sterile vegetation).</li><li>Adherence factors: S. aureus clumping factor and fibronectin-binding protein; viridans streptococci dextran; E. faecalis teichoic acid; Gram-negatives pili.</li><li>Vegetations contain fibrin, platelets, bacteria and inflammatory cells; they are friable and embolize, and the bacteria are protected from phagocytes and antibiotics.</li><li>Consequences: valve destruction with regurgitation and heart failure, septic emboli with infarcts or abscesses, immune complex glomerulonephritis and vasculitis.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-signs" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 4</p>
+  <h3>Clinical features of infective endocarditis</h3>
+  <div class="block mech"><h4>How it works</h4><p>The extracardiac signs come from septic emboli and immune-mediated injury: small hemorrhages and lesions in nails, skin and retina.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Inspect nails, palms, soles, finger pads and retina in suspected IE.</li><li>Separate IE signs from rheumatic fever signs (erythema marginatum, extensor nodules, chorea).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client has painful nodules on the finger pads: Osler nodes.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up Janeway (painless) and Osler (painful).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Osler = Ouch; Janeway = painless palms.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Roth spots are <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">retinal hemorrhages</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Acute: high fever and sepsis. Subacute: mild fever, headache, myalgia, weight loss, night sweats. Cardiac: murmur, heart failure.</li><li>Splinter hemorrhages: petechial hemorrhages under the fingernails.</li><li>Janeway lesions: small, nontender, erythematous lesions on palms and soles. Osler nodes: painful nodules on the pads of fingers and toes.</li><li>Roth spots: retinal hemorrhages.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-dx-tx" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 5</p>
+  <h3>Diagnosis, treatment and prophylaxis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Organisms shed continuously from the vegetation, so blood cultures catch them, but only if taken before antibiotics. Empiric treatment starts right after cultures and is narrowed when results arrive. Prophylaxis protects high-risk valves before procedures.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Draw three sets of blood cultures from different sites before the first antibiotic.</li><li>Anticipate vancomycin + cefepime for native valves; add gentamicin + rifampin for prosthetic valves.</li><li>Give prophylaxis 30-60 minutes before the procedure; use azithromycin or doxycycline if penicillin-allergic.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a prosthetic valve and penicillin allergy gets azithromycin before a dental extraction.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the first antibiotic dose before cultures.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Culture first, cure second.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Fastidious organisms in culture-negative IE are confirmed by serology or <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">PCR</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Blood cultures are the gold standard: three sets from different venipuncture sites before treatment.</li><li>Culture-negative IE: prior antibiotics, fastidious bacteria (Coxiella burnetii, Bartonella, Brucella, HACEK; confirm by serology or PCR), fungal infection.</li><li>Empiric therapy once cultures are drawn: native valve vancomycin + cefepime; prosthetic valve vancomycin + cefepime + gentamicin + rifampin; then targeted therapy.</li><li>Prophylaxis before dental or invasive procedures in high-risk clients, 30-60 minutes before: amoxicillin, ampicillin or cefazolin; if penicillin-allergic, a macrolide (azithromycin) or doxycycline.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+
+<section class="sec" id="micro-lab-id" data-unit="Microbiology">
+  <p class="sec-eyebrow">Microbiology · 6</p>
+  <h3>Laboratory identification of IE organisms</h3>
+  <div class="block mech"><h4>How it works</h4><p>Shape and arrangement split staphylococci (clusters) from streptococci (chains). Then catalase, coagulase, hemolysis, optochin and bile solubility separate the species.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Coagulase positive = S. aureus; coagulase negative = S. epidermidis.</li><li>Alpha hemolytic: optochin sensitive and bile soluble = pneumococcus; resistant and insoluble = viridans.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A blood culture shows Gram-positive cocci in clusters that are coagulase positive: S. aureus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up viridans and pneumococcus, both alpha hemolytic.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Pneumococcus is Optochin-sensitive: O-P.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>S. aureus forms golden yellow colonies and ferments <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">mannitol</span></button>.</li><li>Haemophilus grows on <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">chocolate</span></button> agar.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.</li><li>S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.</li><li>Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.</li><li>S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.</li><li>S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble.</li></ul></div>
+  <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

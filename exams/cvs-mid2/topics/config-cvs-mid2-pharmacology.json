@@ -1,0 +1,53 @@
+{
+  "title": "CVS Mid 2 Pharmacology Drill",
+  "eyebrow": "CVS block · Mid 2 · Pharmacology only · Sunday 29 November 2026",
+  "storage_key": "cvs-mid2-2026-11-29-pharmacology",
+  "units": [
+    "Pharmacology"
+  ],
+  "out": "../../../dist/topics/cvs-mid2-pharmacology-drill.html",
+  "deck": null,
+  "items_module": [
+    "../items-cvs-mid2-pharmacology.py"
+  ],
+  "explanations": [
+    "../items-cvs-mid2-pharmacology.py"
+  ],
+  "misconceptions": [
+    "../items-cvs-mid2-pharmacology.py"
+  ],
+  "concepts": [
+    "../items-cvs-mid2-pharmacology.py"
+  ],
+  "row_stems": [
+    "../items-cvs-mid2-pharmacology.py"
+  ],
+  "numeric": [],
+  "last_pass": [
+    "../items-cvs-mid2-pharmacology.py"
+  ],
+  "rationales": [],
+  "item_overrides": [],
+  "deck_overrides": [],
+  "high_roi_units": [],
+  "pretest_per_topic": 10,
+  "last_pass_tags": [
+    "in-class case",
+    "in-class question",
+    "slide exercise",
+    "slide note"
+  ],
+  "last_pass_note": "The Pharmacology questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.",
+  "hub_url": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe",
+  "guide": {
+    "parts": [
+      "../guide-cvs-mid2-pharmacology.py"
+    ],
+    "title": "CVS Mid 2 Pharmacology Guide",
+    "out": "../../../dist/topics/cvs-mid2-pharmacology-guide.html",
+    "index_out": "../../../dist/topics/cvs-mid2-pharmacology-guide-index.json",
+    "url": "https://claude.ai/artifact/9E3TcJ36SXeUGwmpUgx7GV",
+    "drill_url": "https://claude.ai/artifact/YLFAShgk3BR2wQXJF9sCvP",
+    "links": "guide-links-cvs-mid2-pharmacology.py"
+  }
+}

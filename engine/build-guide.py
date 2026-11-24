@@ -110,6 +110,7 @@ def build(cfg_path):
     out = (shell.replace("__TITLE__", html.escape(g["title"]))
                 .replace("__EYEBROW__", html.escape(cfg.get("eyebrow", "")))
                 .replace("__DRILL_URL__", html.escape(g.get("drill_url") or ""))
+                .replace("__HUB_URL__", html.escape(cfg.get("hub_url") or ""))
                 .replace("<!--__README__-->", readme)
                 .replace("<!--__TOC__-->", "\n".join(toc))
                 .replace("<!--__SECTIONS__-->", "\n".join(body))

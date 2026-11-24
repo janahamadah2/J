@@ -1,0 +1,19 @@
+"""Concept card -> guide section links for Physiology (generated from ../guide-links-cvs-mid2.py)."""
+LINKS = {
+    "phys-ecg-leads": "phys-ecg-leads",
+    "phys-ecg-waves": "phys-ecg-waves",
+    "phys-ecg-rate": "phys-ecg-rate",
+    "phys-sinus": "phys-sinus",
+    "phys-arrhythmia": "phys-arrhythmia",
+    "phys-av-block": "phys-av-block",
+    "phys-axis": "phys-axis",
+    "phys-co": "phys-co",
+    "phys-autonomic": "phys-autonomic",
+    "phys-starling": "phys-starling",
+    "phys-venous-return": "phys-venous-return",
+    "phys-co-measure": "phys-co-measure",
+    "phys-coronary-flow": "phys-coronary-flow",
+    "phys-phasic-flow": "phys-phasic-flow",
+    "phys-coronary-control": "phys-coronary-control",
+    "phys-ihd": "phys-ihd",
+}

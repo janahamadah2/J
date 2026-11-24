@@ -1,0 +1,72 @@
+{
+"micro-ie-types": {
+"title": "Infective endocarditis: classification and organisms",
+"unit": "Microbiology",
+"key": [
+"IE: infection of the endocardium and its valves (native or prosthetic) with septic vegetations; left-sided in over 95% of cases.",
+"Acute IE: rapid (hours to days), mostly healthy valves, severe symptoms; S. aureus, S. pyogenes; mitral and aortic valves.",
+"Subacute IE: slow (weeks to months), preexisting valve disease, low-grade fever, weight loss; viridans streptococci, enterococci, HACEK.",
+"Prosthetic valve IE: early (within 12 months, intraoperative contamination) or late; mostly S. epidermidis and S. aureus.",
+"IV drug use IE: mainly the tricuspid valve; S. aureus, Pseudomonas aeruginosa, Candida."
+],
+"text": "infective endocarditis: classification and organisms infective endocarditis is classified by speed (acute vs subacute), by the valve (native, prosthetic, device) and by the route (iv drug use). virulent organisms attack healthy valves fast; less virulent ones need a damaged valve and take weeks. a client who injects drugs has tricuspid vegetations and gram-positive cocci in clusters: s. aureus. assuming subacute ie affects healthy valves. acute = aureus, aggressive; subacute = slow, strep viridans. match setting to organism: iv drug use = tricuspid, s. aureus; prosthetic valve = s. epidermidis or s. aureus; damaged valve after dental work = viridans. left-sided endocarditis accounts for more than 95% of cases. early prosthetic valve endocarditis develops within 12 months of surgery. ie: infection of the endocardium and its valves (native or prosthetic) with septic vegetations; left-sided in over 95% of cases. acute ie: rapid (hours to days), mostly healthy valves, severe symptoms; s. aureus, s. pyogenes; mitral and aortic valves. subacute ie: slow (weeks to months), preexisting valve disease, low-grade fever, weight loss; viridans streptococci, enterococci, hacek. prosthetic valve ie: early (within 12 months, intraoperative contamination) or late; mostly s. epidermidis and s. aureus. iv drug use ie: mainly the tricuspid valve; s. aureus, pseudomonas aeruginosa, candida."
+},
+"micro-organisms": {
+"title": "Specific organisms and their associations",
+"unit": "Microbiology",
+"key": [
+"S. aureus: most common overall, IV drug users and healthcare-associated IE; acute, rapid valve destruction.",
+"Streptococcus bovis is associated with colorectal carcinoma or GI lesions.",
+"Enterococcus faecalis: elderly and hospital-acquired IE, after genitourinary or gastrointestinal procedures.",
+"HACEK (Haemophilus, Aggregatibacter, Cardiobacterium hominis, Eikenella corrodens, Kingella): slow-growing fastidious Gram-negative bacilli of pharyngeal flora; subacute IE with negative cultures unless special media are used.",
+"Cardiac device IE (pacemaker, ICD) usually comes from skin contamination at implantation; mostly staphylococci."
+],
+"text": "specific organisms and their associations each organism hints at its source: skin and devices (staphylococci), mouth (viridans), bowel (s. bovis), urinary or gi tract (enterococci), pharynx (hacek). an elderly client gets endocarditis after a urinary procedure: enterococcus faecalis. thinking the k in hacek is klebsiella (it is kingella). hacek = haemophilus, aggregatibacter, cardiobacterium, eikenella, kingella. after s. bovis endocarditis, expect evaluation of the colon. think hacek when cultures stay negative without special media. streptococcus bovis is associated with colorectal carcinoma. s. aureus: most common overall, iv drug users and healthcare-associated ie; acute, rapid valve destruction. streptococcus bovis is associated with colorectal carcinoma or gi lesions. enterococcus faecalis: elderly and hospital-acquired ie, after genitourinary or gastrointestinal procedures. hacek (haemophilus, aggregatibacter, cardiobacterium hominis, eikenella corrodens, kingella): slow-growing fastidious gram-negative bacilli of pharyngeal flora; subacute ie with negative cultures unless special media are used. cardiac device ie (pacemaker, icd) usually comes from skin contamination at implantation; mostly staphylococci."
+},
+"micro-patho": {
+"title": "Pathophysiology of infective endocarditis",
+"unit": "Microbiology",
+"key": [
+"IE needs endothelial injury, bacteremia and microbial adherence leading to vegetation formation.",
+"Damaged valvular endothelium collects platelets and fibrin, forming a sterile microthrombus (sterile vegetation).",
+"Adherence factors: S. aureus clumping factor and fibronectin-binding protein; viridans streptococci dextran; E. faecalis teichoic acid; Gram-negatives pili.",
+"Vegetations contain fibrin, platelets, bacteria and inflammatory cells; they are friable and embolize, and the bacteria are protected from phagocytes and antibiotics.",
+"Consequences: valve destruction with regurgitation and heart failure, septic emboli with infarcts or abscesses, immune complex glomerulonephritis and vasculitis."
+],
+"text": "pathophysiology of infective endocarditis three things must meet: a damaged valve surface with a sterile platelet-fibrin clot, bacteria in the blood, and bacteria able to stick. inside the vegetation bacteria hide from phagocytes and antibiotics, shed into the blood and break off as emboli. a client with valve disease develops a vegetation after a dental procedure. thinking antibiotics reach organisms in vegetations easily. injury, bacteremia, adherence, vegetation. ask about recent dental, skin or invasive procedures (transient bacteremia). watch for embolic infarcts and abscesses in brain, kidney, spleen and lung. viridans streptococci adhere using dextran. immune complex deposition can cause glomerulonephritis. ie needs endothelial injury, bacteremia and microbial adherence leading to vegetation formation. damaged valvular endothelium collects platelets and fibrin, forming a sterile microthrombus (sterile vegetation). adherence factors: s. aureus clumping factor and fibronectin-binding protein; viridans streptococci dextran; e. faecalis teichoic acid; gram-negatives pili. vegetations contain fibrin, platelets, bacteria and inflammatory cells; they are friable and embolize, and the bacteria are protected from phagocytes and antibiotics. consequences: valve destruction with regurgitation and heart failure, septic emboli with infarcts or abscesses, immune complex glomerulonephritis and vasculitis."
+},
+"micro-signs": {
+"title": "Clinical features of infective endocarditis",
+"unit": "Microbiology",
+"key": [
+"Acute: high fever and sepsis. Subacute: mild fever, headache, myalgia, weight loss, night sweats. Cardiac: murmur, heart failure.",
+"Splinter hemorrhages: petechial hemorrhages under the fingernails.",
+"Janeway lesions: small, nontender, erythematous lesions on palms and soles. Osler nodes: painful nodules on the pads of fingers and toes.",
+"Roth spots: retinal hemorrhages."
+],
+"text": "clinical features of infective endocarditis the extracardiac signs come from septic emboli and immune-mediated injury: small hemorrhages and lesions in nails, skin and retina. a client has painful nodules on the finger pads: osler nodes. mixing up janeway (painless) and osler (painful). osler = ouch; janeway = painless palms. inspect nails, palms, soles, finger pads and retina in suspected ie. separate ie signs from rheumatic fever signs (erythema marginatum, extensor nodules, chorea). roth spots are retinal hemorrhages. acute: high fever and sepsis. subacute: mild fever, headache, myalgia, weight loss, night sweats. cardiac: murmur, heart failure. splinter hemorrhages: petechial hemorrhages under the fingernails. janeway lesions: small, nontender, erythematous lesions on palms and soles. osler nodes: painful nodules on the pads of fingers and toes. roth spots: retinal hemorrhages."
+},
+"micro-dx-tx": {
+"title": "Diagnosis, treatment and prophylaxis",
+"unit": "Microbiology",
+"key": [
+"Blood cultures are the gold standard: three sets from different venipuncture sites before treatment.",
+"Culture-negative IE: prior antibiotics, fastidious bacteria (Coxiella burnetii, Bartonella, Brucella, HACEK; confirm by serology or PCR), fungal infection.",
+"Empiric therapy once cultures are drawn: native valve vancomycin + cefepime; prosthetic valve vancomycin + cefepime + gentamicin + rifampin; then targeted therapy.",
+"Prophylaxis before dental or invasive procedures in high-risk clients, 30-60 minutes before: amoxicillin, ampicillin or cefazolin; if penicillin-allergic, a macrolide (azithromycin) or doxycycline."
+],
+"text": "diagnosis, treatment and prophylaxis organisms shed continuously from the vegetation, so blood cultures catch them, but only if taken before antibiotics. empiric treatment starts right after cultures and is narrowed when results arrive. prophylaxis protects high-risk valves before procedures. a client with a prosthetic valve and penicillin allergy gets azithromycin before a dental extraction. giving the first antibiotic dose before cultures. culture first, cure second. draw three sets of blood cultures from different sites before the first antibiotic. anticipate vancomycin + cefepime for native valves; add gentamicin + rifampin for prosthetic valves. give prophylaxis 30-60 minutes before the procedure; use azithromycin or doxycycline if penicillin-allergic. fastidious organisms in culture-negative ie are confirmed by serology or pcr. blood cultures are the gold standard: three sets from different venipuncture sites before treatment. culture-negative ie: prior antibiotics, fastidious bacteria (coxiella burnetii, bartonella, brucella, hacek; confirm by serology or pcr), fungal infection. empiric therapy once cultures are drawn: native valve vancomycin + cefepime; prosthetic valve vancomycin + cefepime + gentamicin + rifampin; then targeted therapy. prophylaxis before dental or invasive procedures in high-risk clients, 30-60 minutes before: amoxicillin, ampicillin or cefazolin; if penicillin-allergic, a macrolide (azithromycin) or doxycycline."
+},
+"micro-lab-id": {
+"title": "Laboratory identification of IE organisms",
+"unit": "Microbiology",
+"key": [
+"S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.",
+"S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.",
+"Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.",
+"S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.",
+"S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble."
+],
+"text": "laboratory identification of ie organisms shape and arrangement split staphylococci (clusters) from streptococci (chains). then catalase, coagulase, hemolysis, optochin and bile solubility separate the species. a blood culture shows gram-positive cocci in clusters that are coagulase positive: s. aureus. mixing up viridans and pneumococcus, both alpha hemolytic. pneumococcus is optochin-sensitive: o-p. coagulase positive = s. aureus; coagulase negative = s. epidermidis. alpha hemolytic: optochin sensitive and bile soluble = pneumococcus; resistant and insoluble = viridans. s. aureus forms golden yellow colonies and ferments mannitol. haemophilus grows on chocolate agar. s. aureus: gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive. s. epidermidis: gram-positive cocci in clusters; catalase positive, coagulase negative. viridans streptococci (s. mutans): gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile. s. pyogenes: gram-positive cocci in chains; beta hemolysis; catalase negative. s. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble."
+}
+}

@@ -310,7 +310,7 @@
     return out;
   }
   function buildPretest(D, S, r) {
-    var units = D.cfg.units.slice(), k = units.length > 10 ? 2 : 3;
+    var units = D.cfg.units.slice(), k = D.cfg.pretest_per_topic || (units.length > 10 ? 2 : 3);
     var hasStar = {}; D.items.forEach(function (it) { if (isStar(S, it.id)) hasStar[it.u] = 1; });
     units.sort(function (a, b) {
       return ((D.hiUnits[b] ? 2 : 0) + (hasStar[b] ? 1 : 0)) - ((D.hiUnits[a] ? 2 : 0) + (hasStar[a] ? 1 : 0))
@@ -324,7 +324,9 @@
                  ((status(a, S.p[a.id]) === 'new' ? 0 : 1) - (status(b, S.p[b.id]) === 'new' ? 0 : 1));
         });
       var chosen = [], types = {};
-      cand.forEach(function (it) { if (chosen.length < k && !types[it.t]) { chosen.push(it.id); types[it.t] = 1; } });
+      var cons = {};
+      cand.forEach(function (it) { if (chosen.length < k && !types[it.t] && !cons[it.k]) { chosen.push(it.id); types[it.t] = 1; cons[it.k] = 1; } });
+      cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0 && !cons[it.k]) { chosen.push(it.id); cons[it.k] = 1; } });
       cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0) chosen.push(it.id); });
       picks[u] = chosen;
     });
@@ -351,7 +353,7 @@
     var ranked = units.filter(function (u) { return tot[u]; }).sort(function (a, b) { return weakScore(a) - weakScore(b); });
     var weak = ranked.filter(function (u) { return (lv[u] && lv[u].level && lv[u].level !== 'Strong') || shaky[u]; }).slice(0, 3);
     if (weak.length < Math.min(2, ranked.length)) weak = ranked.slice(0, Math.min(2, ranked.length));
-    var cap = Math.ceil(count / 2), perU = {}, taken = {}, pick = [], mix = { weak: 0, review: 0, fresh: 0, fill: 0 };
+    var cap = units.length > 1 ? Math.ceil(count / 2) : count, perU = {}, taken = {}, pick = [], mix = { weak: 0, review: 0, fresh: 0, fill: 0 };
     function ok(x) { return !taken[x.id] && (perU[x.it.u] || 0) < cap; }
     function add(x, key) { taken[x.id] = 1; perU[x.it.u] = (perU[x.it.u] || 0) + 1; pick.push(x.id); mix[key]++; }
     var nW = Math.round(0.5 * count), nR = Math.round(0.3 * count), nN = count - nW - nR;

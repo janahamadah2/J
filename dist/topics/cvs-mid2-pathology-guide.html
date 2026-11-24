@@ -1,0 +1,332 @@
+<title>CVS Mid 2 Pathology Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Pathology Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/DSaQnrAcDCyx2jQPKCaKUR" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Pathology only · Sunday 29 November 2026</p>
+    <h1>CVS Mid 2 Pathology Guide</h1>
+    <p class="lede">13 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Pathology</li>
+<li><a href="#path-congestion">Hyperemia and congestion</a></li>
+<li><a href="#path-edema">Edema: causes and classification</a></li>
+<li><a href="#path-ischemia-infarct">Ischemia and infarction</a></li>
+<li><a href="#path-virchow">Thrombosis and Virchow&#x27;s triad</a></li>
+<li><a href="#path-thrombus-types">Sites, types and fate of thrombi</a></li>
+<li><a href="#path-embolism">Embolism and pulmonary embolism</a></li>
+<li><a href="#path-systemic-emboli">Systemic, fat, air and amniotic fluid emboli</a></li>
+<li><a href="#path-arf">Acute rheumatic fever: pathogenesis and lesions</a></li>
+<li><a href="#path-jones">Jones criteria</a></li>
+<li><a href="#path-rhd">Chronic rheumatic heart disease and mitral stenosis</a></li>
+<li><a href="#path-arteriosclerosis">Arteriosclerosis patterns</a></li>
+<li><a href="#path-athero">Atherosclerosis: risk factors, pathogenesis and plaque</a></li>
+<li><a href="#path-athero-complications">Complications and sites of atherosclerosis</a></li></ul></details>
+    <h2 class="unit-h" id="unit-pathology">Pathology</h2>
+
+<section class="sec" id="path-congestion" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 1</p>
+  <h3>Hyperemia and congestion</h3>
+  <div class="block mech"><h4>How it works</h4><p>Both hyperemia and congestion mean more blood in a tissue, with dilated capillaries and a risk of edema. The difference is the direction of the problem: hyperemia is active arterial inflow (red, oxygenated), congestion is passive venous outflow failure (blue, deoxygenated). Chronic left failure or mitral stenosis congests the lungs, producing heart failure cells and brown induration.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Use color to tell them apart: red = hyperemia, dusky blue = congestion.</li><li>Link chronic right-sided failure to generalized congestion and cardiac edema.</li><li>Link chronic left-sided failure and mitral stenosis to pulmonary congestion.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a DVT has a dusky reddish-blue swollen leg: acute localized congestion.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling the red face of exercise or blushing congestion; it is hyperemia.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Hyperemia is Hot and red (active); congestion is Clogged and blue (passive).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Hemosiderin-laden alveolar macrophages are called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">heart failure cells</span></button>.</li><li>Long-standing pulmonary congestion with fibrosis causes <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">brown induration</span></button> of the lung.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Hyperemia: an active process in which arteriolar dilation increases blood flow; tissue turns red (erythema) from oxygenated blood.</li><li>Congestion: a passive process from impaired venous outflow; tissue is dusky reddish-blue (cyanosis) from deoxygenated blood.</li><li>Acute localized congestion: sudden complete venous obstruction (DVT, ligature, twisted pedicle of an ovary) causing rapid edema and hemorrhage.</li><li>Chronic generalized venous congestion is caused by chronic right-sided heart failure; acute generalized congestion by acute heart failure.</li></ul></div>
+  <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
+</section>
+
+<section class="sec" id="path-edema" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 2</p>
+  <h3>Edema: causes and classification</h3>
+  <div class="block mech"><h4>How it works</h4><p>Fluid leaves capillaries when the pushing force rises (hydrostatic pressure), the holding force falls (colloid osmotic pressure), the wall leaks (permeability) or the drain is blocked (lymphatics). Edema fluid may be a transudate, an exudate or lymph.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Match the cause to the mechanism before choosing a treatment focus.</li><li>Press the skin: pitting suggests generalized or venous edema; non-pitting suggests inflammatory or lymphatic edema.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A malnourished client with serum albumin below 1.5 gm% develops nutritional edema from low colloid osmotic pressure.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting lymphatic edema (e.g. filariasis) to pit.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Four ways to flood: push up, pull down, leak, block.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Fluid in the pleural cavity is called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">hydrothorax</span></button>.</li><li>Generalized edema due to renal failure is called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">renal</span></button> edema.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Edema: an abnormal increase in interstitial fluid within tissues; fluid may be transudate, exudate or lymph.</li><li>Causes: increased capillary hydrostatic pressure, decreased plasma colloid osmotic pressure, increased capillary permeability, lymphatic obstruction.</li><li>Hypoproteinemia: total plasma proteins below 2.5 gm% or serum albumin below 1.5 gm%.</li><li>Pitting edema: generalized edema and obstructive venous edema. Non-pitting: inflammatory and lymphatic edema.</li></ul></div>
+  <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
+</section>
+
+<section class="sec" id="path-ischemia-infarct" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 3</p>
+  <h3>Ischemia and infarction</h3>
+  <div class="block mech"><h4>How it works</h4><p>Ischemia is too little arterial supply. Whether it kills tissue depends on speed and collaterals: sudden complete occlusion in an organ with poor collaterals gives an infarct. Infarct color depends on whether blood can seep in: loose tissue, dual supply, venous occlusion or reperfusion give red infarcts; dense end-arterial organs give white ones.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Predict red vs white from the organ: lung, liver, intestine, ovary red; heart, spleen, kidney white.</li><li>Think venous infarction in organs with a single venous outflow (testis, ovary).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>After angioplasty restores flow to an infarcted area, the infarct turns red (reperfusion).</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling a lung infarct white.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Solid organs, end arteries, white (heart, spleen, kidney).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>About <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">99%</span></button> of infarcts result from thrombosis or embolism.</li><li>Infarcts are also classified as septic or <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">bland</span></button> (aseptic).</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Ischemia: deficient arterial blood supply due to partial or complete occlusion of the artery; acute (sudden complete) or chronic (gradual partial).</li><li>Organs with good collateral circulation show no effect; poor collateral circulation leads to infarction (acute) or chronic ischemic changes.</li><li>Infarct: an area of ischemic necrosis from occlusion of the arterial supply or venous drainage; 99% from thrombosis or embolism.</li><li>Red infarct: venous occlusion (ovary), loose tissue (lung), dual circulation (lung, liver, small intestine), reperfusion after angioplasty.</li><li>White infarct: arterial occlusion in solid organs with end-arterial circulation (heart, spleen, kidney); tissue density limits seepage of blood.</li></ul></div>
+  <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
+</section>
+
+<section class="sec" id="path-virchow" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 4</p>
+  <h3>Thrombosis and Virchow&#x27;s triad</h3>
+  <div class="block mech"><h4>How it works</h4><p>Hemostasis depends on the vessel wall, platelets and coagulation factors. Virchow's triad names the three ways it tips into thrombosis: damaged or dysfunctional endothelium, abnormal flow (stasis or turbulence), and blood that clots too easily.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Screen surgical and immobile clients for all three triad factors.</li><li>Separate hereditary (factor V, prothrombin gene, antithrombin III deficiency) from acquired hypercoagulability.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A postoperative client on bed rest has stasis and acquired hypercoagulability: two arms of the triad.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Listing edema mechanisms (permeability, lymphatic obstruction) as causes of thrombosis.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Virchow = Vessel wall, Velocity (flow), Viscosity-like clotting (hypercoagulability).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Turbulence <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">mechanically injures</span></button> endothelial cells.</li><li>DIC is an <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">acquired</span></button> cause of hypercoagulability.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Thrombosis: formation of a compact mass of circulating blood elements inside the cardiovascular system during life.</li><li>Virchow's triad: endothelial injury/dysfunction, alterations in blood flow (stasis or turbulence), hypercoagulability.</li><li>Endothelial dysfunction increases procoagulants (thromboplastin, vWF, PAI) and decreases anticoagulants (thrombomodulin, antithrombin III, NO, PA).</li><li>Stasis reduces inflow of fresh blood containing natural anticoagulants and retards removal of small platelet aggregates.</li><li>Acquired hypercoagulability: prolonged bed rest, surgery, burns, pregnancy, oral contraceptives, disseminated cancer, smoking, DIC. Hereditary: factor V and prothrombin gene mutations, antithrombin III deficiency.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-thrombus-types" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 5</p>
+  <h3>Sites, types and fate of thrombi</h3>
+  <div class="block mech"><h4>How it works</h4><p>Where a thrombus forms depends on local conditions: slow venous flow plus hypercoagulability gives venous (red) thrombi; atherosclerotic arteries give arterial thrombi; stasis in a dilated atrium or over an infarct gives cardiac thrombi. Once formed, a thrombus can dissolve, grow, break off or be organized.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Monitor a client with DVT for pulmonary embolism.</li><li>Watch for propagation: a tail makes detachment more likely.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with mitral stenosis develops an auricular thrombus in the left atrium.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking arterial thrombi are most common. Venous thrombi are.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Veins: slow and sticky; arteries: fast and thick-walled.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Thrombi of infected veins are called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">thrombophlebitis</span></button>.</li><li>Septic thrombi that embolize produce <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">pyemia</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Venous thrombi (phlebothrombosis, red thrombi) are the most common type, associated with stasis and hypercoagulability.</li><li>DVT sites: popliteal, femoral and iliac veins; complication: embolism to the lungs (pulmonary infarction).</li><li>Arterial thrombosis is less common because of rapid flow and the thick elastic arterial wall; most common cause is atherosclerosis (coronary, cerebral, femoral).</li><li>Cardiac thrombi: auricular thrombus in the left atrium in mitral stenosis; mural thrombus in the left ventricle over an infarct; vegetations on valves.</li><li>Fate: dissolution, propagation (a tail liable to detach), embolization, organization and recanalization.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-embolism" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 6</p>
+  <h3>Embolism and pulmonary embolism</h3>
+  <div class="block mech"><h4>How it works</h4><p>An embolus is anything solid, liquid or gas carried away from where it formed. Almost all are thromboemboli, and almost all pulmonary emboli come from leg DVT. What happens next depends on embolus size and the state of the lung.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Suspect PE in a postoperative or immobile client with sudden dyspnea.</li><li>Expect a saddle embolus to cause sudden death from acute right-sided failure.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with heart failure and lung congestion gets a medium embolus: pulmonary infarction.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting a medium embolus in a healthy lung to infarct; it causes hemorrhage only.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Big = dead, medium = depends on the lung, small and many = pulmonary hypertension.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>About <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">60-80%</span></button> of pulmonary emboli are small and clinically silent.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>An embolus is a detached intravascular solid, liquid or gaseous mass carried by the blood to a site distant from its origin.</li><li>Thromboemboli are the most common type (99%); others: fat, parasitic, air or nitrogen, amniotic fluid, tumor, cholesterol and foreign body emboli.</li><li>Pulmonary emboli: 95% originate from deep vein thrombi of the legs; seen in up to 25-30% of DVT patients; 60-80% are small and silent.</li><li>Saddle embolus causes sudden death (acute right failure); medium emboli give hemorrhage in a normal lung or infarction in a congested lung; small repeated emboli give pulmonary hypertension and cor pulmonale.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-systemic-emboli" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 7</p>
+  <h3>Systemic, fat, air and amniotic fluid emboli</h3>
+  <div class="block mech"><h4>How it works</h4><p>Systemic emboli travel in arteries, so they come from the left heart or arteries. A venous embolus reaches the systemic side only through a septal defect (paradoxical). Fat, air and amniotic fluid emboli each have a typical setting.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>After a large MI, check limb pulses: most systemic emboli lodge in the legs.</li><li>Two days after a long bone fracture, watch for fat embolism syndrome.</li><li>During delivery, sudden dyspnea, shock, seizures and bleeding suggest amniotic fluid embolism.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with an atrial septal defect and DVT has a stroke: paradoxical embolism.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Sending a leg DVT embolus to the brain without a septal defect.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Fat after fracture, air after access, amniotic at delivery.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Fat embolism syndrome is fatal in about <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">5% to 15%</span></button> of cases.</li><li>Decompression sickness is also called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">Caisson</span></button> disease.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Systemic emboli: 80% from intracardiac thrombi (2/3 left ventricular wall infarcts, 1/3 dilated left atria or vegetations); also aortic aneurysm, ulcerated plaques, paradoxical emboli.</li><li>Paradoxical emboli start as venous emboli but pass through an interatrial or interventricular defect into the systemic circulation.</li><li>Site of arrest: 75% lower extremities, 10% brain.</li><li>Fat embolism: long bone fracture is the most common cause; the syndrome begins 1-3 days after injury with tachypnea, dyspnea, tachycardia, neurologic symptoms, thrombocytopenia and anemia.</li><li>Air embolism needs more than 100 cc of air for a pulmonary effect; causes include neck vein injury, chest wall injury, obstetric or laparoscopic procedures, bypass surgery and decompression sickness.</li><li>Amniotic fluid embolism: 1 in 40,000 deliveries, mortality 80%; sudden dyspnea, cyanosis, shock, seizures, pulmonary edema and DIC.</li></ul></div>
+  <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
+</section>
+
+<section class="sec" id="path-arf" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 8</p>
+  <h3>Acute rheumatic fever: pathogenesis and lesions</h3>
+  <div class="block mech"><h4>How it works</h4><p>Weeks after strep throat, antibodies and T cells made against streptococcal M proteins cross-react with heart antigens. Complement and macrophages are activated and Aschoff bodies form in every layer of the heart, giving pancarditis.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Ask about a sore throat 10 days to 6 weeks before.</li><li>Recognize Aschoff bodies and Anitschkow cells as pathognomonic.</li><li>Prompt antibiotic treatment of strep pharyngitis prevents disease.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A 14-year-old with a sore throat 3 weeks ago, fever, nodules and a new apical murmur: biopsy shows fibrinoid necrosis with histiocytes.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the streptococcus infects the heart directly; the damage is immune cross-reaction.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>M protein Mimics heart.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Anitschkow cells are also called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">caterpillar</span></button> cells.</li><li>Rheumatic vegetations overlie foci of <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fibrinoid necrosis</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>ARF is an acute, immunologically mediated, multisystem inflammatory disease a few weeks after group A streptococcal pharyngitis.</li><li>It appears 10 days to 6 weeks after pharyngitis, in about 3% of infected patients, most often in children aged 5-15.</li><li>Antibodies and CD4+ T cells against streptococcal M proteins cross-react with self antigens in the heart.</li><li>Aschoff bodies are pathognomonic: focal necrosis, T lymphocytes and Anitschkow (caterpillar) cells with a slender wavy ribbon of chromatin.</li><li>Pancarditis: fibrinous "bread and butter" pericarditis, myocarditis, and small vegetations along the lines of closure over fibrinoid necrosis (mitral 65%, aortic 25%).</li></ul></div>
+  <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
+</section>
+
+<section class="sec" id="path-jones" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 9</p>
+  <h3>Jones criteria</h3>
+  <div class="block mech"><h4>How it works</h4><p>Because no single test proves rheumatic fever, the Jones criteria combine clinical features with evidence of a recent group A strep infection.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Count majors and minors, then check for strep evidence.</li><li>Diagnose with 2 major, or 1 major + 2 minor, plus strep evidence.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>Chorea + fever + raised ESR + high antibody titer = 1 major + 2 minor with evidence: criteria met.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling arthralgia a major criterion; migratory polyarthritis is major, arthralgia is minor.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Majors spell J-O-N-E-S: Joints, O (carditis, the heart), Nodules, Erythema marginatum, Sydenham chorea.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>A prolonged <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">PR interval</span></button> on ECG is a minor criterion.</li><li>Subcutaneous nodules are firm, painless and found on <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">extensor</span></button> surfaces.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Major: carditis, migratory polyarthritis, Sydenham chorea, erythema marginatum, subcutaneous nodules.</li><li>Minor: fever, arthralgia, previous rheumatic fever, raised ESR, CRP or leukocytosis, prolonged PR interval.</li><li>Evidence of preceding group A strep: positive throat culture or rapid antigen test, or raised or rising streptococcal antibody titer.</li><li>Diagnosis: 2 major, or 1 major and 2 minor, supported by evidence of preceding group A streptococcal infection.</li><li>Migratory polyarthritis of large joints is self-limited with no chronic deformities.</li></ul></div>
+  <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
+</section>
+
+<section class="sec" id="path-rhd" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 10</p>
+  <h3>Chronic rheumatic heart disease and mitral stenosis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Each attack of rheumatic endocarditis heals by fibrosis; repeated infections reactivate it, scarring the valves over decades. A scarred mitral valve narrows (fish mouth), blood dams up behind it in the left atrium and lungs, and the right heart eventually fails.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>In mitral stenosis, monitor for atrial fibrillation, thromboembolism and right heart failure.</li><li>Remember surgery (repair or replacement) has greatly improved the outlook.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A 9-year-old from an endemic area with recurrent fever, lung crackles and an apical diastolic murmur dies of rheumatic heart disease.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Expecting the left ventricle to enlarge in pure mitral stenosis; it is largely unaffected.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Fish mouth valve, flooded lungs, failing right heart.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The mitral valve in chronic RHD looks like a <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fish mouth</span></button> or buttonhole.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Endocarditis of ARF heals by fibrosis; repeated pharyngeal infections reactivate the disease and scar the valves.</li><li>Mitral valve most commonly affected, then aortic; fibrosis of the leaflets leads to stenosis ("fish mouth" or "buttonhole").</li><li>Usually becomes clinically manifest decades after ARF.</li><li>Mitral stenosis: left atrial dilatation (with thrombi), chronic pulmonary venous congestion, lung fibrosis, pulmonary hypertension, chronic right-sided failure; the left ventricle is largely unaffected.</li><li>Other complications: arrhythmias (especially atrial fibrillation), thromboembolism, infective endocarditis.</li></ul></div>
+  <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
+</section>
+
+<section class="sec" id="path-arteriosclerosis" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 11</p>
+  <h3>Arteriosclerosis patterns</h3>
+  <div class="block mech"><h4>How it works</h4><p>Arteriosclerosis is the umbrella term for stiff, thick arteries. Its three patterns differ in which vessel layer and size they hit: intima of large arteries (atherosclerosis), media of muscular arteries (Mönckeberg) or small arteries and arterioles (arteriolosclerosis).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Link arteriolosclerosis to hypertension and diabetes.</li><li>Recognize onion-skinning as hyperplastic arteriolosclerosis.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A diabetic client's renal arterioles are thickened by amorphous protein: hyaline arteriolosclerosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Putting Mönckeberg sclerosis in arterioles.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Athero = intima plaque; Mönckeberg = Media calcium; arteriolo = tiny vessels.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Mönckeberg medial sclerosis occurs in people older than <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">50</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Arteriosclerosis: thickening and loss of elasticity of arterial walls ("hardening of the arteries").</li><li>Atherosclerosis: the most frequent and important pattern.</li><li>Mönckeberg medial sclerosis: calcific deposits in muscular arteries in people older than 50.</li><li>Arteriolosclerosis: small arteries and arterioles, with hypertension and diabetes; hyaline (amorphous proteinaceous wall) and hyperplastic ("onion-skinning").</li></ul></div>
+  <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
+</section>
+
+<section class="sec" id="path-athero" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 12</p>
+  <h3>Atherosclerosis: risk factors, pathogenesis and plaque</h3>
+  <div class="block mech"><h4>How it works</h4><p>In the response-to-injury view, atherosclerosis is chronic inflammation started by endothelial injury. Monocytes enter the intima, smooth muscle cells are recruited, both swallow lipid as foam cells, and smooth muscle proliferation and collagen turn the lesion into a fibrofatty plaque.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Target modifiable risk factors: hyperlipidemia, hypertension, smoking, diabetes.</li><li>Know the lesion sequence: fatty spot, fatty streak, atheroma.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A young client's aorta shows flat yellow foam-cell streaks that do not narrow the lumen: fatty streaks.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking fatty streaks obstruct flow.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Spot (under 1 mm), streak (1 cm, flat), plaque (raised, capped).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The earliest lesion of atherosclerosis is the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fatty spot</span></button>.</li><li>The atheroma's lipid core is covered by a firm white <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fibrous cap</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Atherosclerosis: a chronic inflammatory disease of the arterial wall with intimal atheromas that protrude into the lumen and weaken the media.</li><li>Non-modifiable risk factors: increasing age, male gender, family history. Modifiable: hyperlipidemia (LDL), hypertension, cigarette smoking, diabetes mellitus.</li><li>Response to injury: chronic endothelial injury, endothelial dysfunction with monocyte adhesion, smooth muscle recruitment and macrophage activation, foam cells, then smooth muscle proliferation and collagen deposition.</li><li>Fatty spots (<1 mm, foam cells) are the earliest lesion; fatty streaks (1 cm or longer) are not significantly raised and do not disturb blood flow.</li><li>Atheroma: raised intimal patch with a soft yellow lipid core under a firm white fibrous cap; cells, ECM and lipid.</li></ul></div>
+  <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
+</section>
+
+<section class="sec" id="path-athero-complications" data-unit="Pathology">
+  <p class="sec-eyebrow">Pathology · 13</p>
+  <h3>Complications and sites of atherosclerosis</h3>
+  <div class="block mech"><h4>How it works</h4><p>A plaque causes disease by narrowing a lumen slowly or by changing suddenly: rupture, ulceration or erosion exposes material that triggers thrombosis, and hemorrhage into a plaque can expand or rupture it. Pressure atrophy of the media leads to aneurysm.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Suspect acute plaque change behind a sudden MI or stroke.</li><li>Link each site to its disease: coronary IHD, cerebral stroke, aorta aneurysm, legs gangrene.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with known coronary plaques suddenly has an MI: plaque rupture with thrombosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Blaming calcification for the acute event.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Rupture, bleed, shower, bulge, calcify: the five plaque complications.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Rupture and hemorrhage into a plaque are called <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">acute plaque changes</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Common sites: lower abdominal aorta, coronary, popliteal and internal carotid arteries, and the circle of Willis.</li><li>Acute plaque changes: rupture, ulceration or erosion (induces thrombosis), and fissure with hemorrhage into the plaque.</li><li>Other complications: atheroembolism, aneurysm from weakened media, calcification.</li><li>Consequences: ischemic heart disease (coronary), stroke (cerebral), aortic aneurysm (aorta), peripheral vascular disease with gangrene (leg arteries).</li></ul></div>
+  <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

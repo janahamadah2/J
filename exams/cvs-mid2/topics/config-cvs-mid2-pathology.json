@@ -1,0 +1,53 @@
+{
+  "title": "CVS Mid 2 Pathology Drill",
+  "eyebrow": "CVS block · Mid 2 · Pathology only · Sunday 29 November 2026",
+  "storage_key": "cvs-mid2-2026-11-29-pathology",
+  "units": [
+    "Pathology"
+  ],
+  "out": "../../../dist/topics/cvs-mid2-pathology-drill.html",
+  "deck": null,
+  "items_module": [
+    "../items-cvs-mid2-pathology.py"
+  ],
+  "explanations": [
+    "../items-cvs-mid2-pathology.py"
+  ],
+  "misconceptions": [
+    "../items-cvs-mid2-pathology.py"
+  ],
+  "concepts": [
+    "../items-cvs-mid2-pathology.py"
+  ],
+  "row_stems": [
+    "../items-cvs-mid2-pathology.py"
+  ],
+  "numeric": [],
+  "last_pass": [
+    "../items-cvs-mid2-pathology.py"
+  ],
+  "rationales": [],
+  "item_overrides": [],
+  "deck_overrides": [],
+  "high_roi_units": [],
+  "pretest_per_topic": 10,
+  "last_pass_tags": [
+    "in-class case",
+    "in-class question",
+    "slide exercise",
+    "slide note"
+  ],
+  "last_pass_note": "The Pathology questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.",
+  "hub_url": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe",
+  "guide": {
+    "parts": [
+      "../guide-cvs-mid2-pathology.py"
+    ],
+    "title": "CVS Mid 2 Pathology Guide",
+    "out": "../../../dist/topics/cvs-mid2-pathology-guide.html",
+    "index_out": "../../../dist/topics/cvs-mid2-pathology-guide-index.json",
+    "url": "https://claude.ai/artifact/KKFgnAj17Sru2Nb1kssKtY",
+    "drill_url": "https://claude.ai/artifact/DSaQnrAcDCyx2jQPKCaKUR",
+    "links": "guide-links-cvs-mid2-pathology.py"
+  }
+}

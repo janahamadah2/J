@@ -12,3 +12,12 @@ One config + content files -> a Mastery Study Guide page and an active-recall Dr
 - New exam: copy the config, write new content files, add new item files at the END of `items_module` (ids follow file order).
 
 Published: drill https://claude.ai/artifact/F16ffDggDNEKMrvNsnAP4D · guide https://claude.ai/artifact/A1TLoMo73wpzbXEL8EnYGF
+
+## Per-topic packs
+
+    python3 exams/cvs-mid2/make-topic-configs.py          # one config per topic -> exams/cvs-mid2/topics/
+    for f in exams/cvs-mid2/topics/config-*.json; do python3 engine/build-exam.py "$f"; done
+    python3 exams/cvs-mid2/make-hub.py                    # dist/cvs-mid2-hub.html
+
+Each topic drill has its own storage key (own progress) and a 10-question pre-test (`pretest_per_topic`).
+URLs: exams/cvs-mid2/topics/urls.json. Hub: https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe

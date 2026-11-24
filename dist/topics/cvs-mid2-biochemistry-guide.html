@@ -1,0 +1,234 @@
+<title>CVS Mid 2 Biochemistry Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Biochemistry Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/VpQeVMkkr1N7UtbXh3x7Dv" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Biochemistry only · Sunday 29 November 2026</p>
+    <h1>CVS Mid 2 Biochemistry Guide</h1>
+    <p class="lede">6 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Biochemistry</li>
+<li><a href="#bio-lipids-chd">Blood lipids and coronary heart disease</a></li>
+<li><a href="#bio-fats">Types of dietary fat and their effects</a></li>
+<li><a href="#bio-cholesterol-sterols">Dietary cholesterol, plant sterols and cholesterol-lowering factors</a></li>
+<li><a href="#bio-ros">Free radicals, ROS and RNS</a></li>
+<li><a href="#bio-burst-no">Respiratory burst, nitric oxide and antioxidants</a></li>
+<li><a href="#bio-oxldl">Oxidized LDL and the stages of atherosclerosis</a></li></ul></details>
+    <h2 class="unit-h" id="unit-biochemistry">Biochemistry</h2>
+
+<section class="sec" id="bio-lipids-chd" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 1</p>
+  <h3>Blood lipids and coronary heart disease</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cholesterol travels in blood packed in lipoproteins. LDL carries it to tissues and raises coronary risk; HDL is associated with lower risk. Lowering LDL by diet or drugs lowers risk.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Encourage diet control and expect a 10-20% fall; expect 30-40% with statins.</li><li>Read a high HDL as protective.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with high LDL asks whether diet alone is enough: it lowers LDL by about 10-20%.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Treating all cholesterol as bad: high HDL lowers risk.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>LDL = Lousy, HDL = Helpful.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Elevated <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">LDL</span></button> cholesterol increases the risk of CHD.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Total blood cholesterol comes from diet and endogenous synthesis and is carried by lipoproteins, especially LDL and HDL.</li><li>CHD risk rises with total and LDL cholesterol; high HDL-cholesterol is associated with decreased risk.</li><li>Diet control lowers TC and LDL-C by 10-20%; statins lower them by 30-40%.</li></ul></div>
+  <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
+</section>
+
+<section class="sec" id="bio-fats" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 2</p>
+  <h3>Types of dietary fat and their effects</h3>
+  <div class="block mech"><h4>How it works</h4><p>A fat's effect depends on its fatty acids: saturation, the number and position of double bonds, and cis or trans shape. Omega numbers count from the methyl end to the first double bond.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Advise limiting saturated and trans fats.</li><li>Suggest olive oil (MUFA) and fatty fish (omega-3).</li><li>Teach the label clue "partially hydrogenated".</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client switches butter for olive oil: LDL falls and HDL rises.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking omega-3 mainly lowers LDL; its main effect is on triacylglycerol, arrhythmia, thrombosis and inflammation.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>SMASH fish for omega-3: salmon, mackerel, anchovies, sardines, herring.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Trans fats should be under <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">1%</span></button> of energy (under 2.2 g per day on 2000 kcal).</li><li>EPA has <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">20</span></button> carbons and 5 double bonds; DHA has 22 carbons and 6.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Saturated fats (no double bonds; dairy, meat, coconut and palm oils) raise TC and LDL-C and CHD risk.</li><li>Monounsaturated fats (one double bond; olive oil, oleic acid, omega-9) lower TC and LDL-C and raise HDL-C when substituted for saturated fats.</li><li>Omega-6 fats (first double bond at carbon 6 from the methyl end; corn, sesame, cottonseed, sunflower oils) lower TC and LDL-C but also lower HDL-C and are proinflammatory.</li><li>Omega-3 fats suppress arrhythmia, reduce blood triacylglycerol, decrease thrombosis and inflammation, with little effect on LDL-C and HDL-C.</li><li>Trans fats are chemically unsaturated but behave like saturated fats: they raise LDL-C and lower HDL-C; formed by partial hydrogenation of vegetable oils (margarine).</li></ul></div>
+  <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
+</section>
+
+<section class="sec" id="bio-cholesterol-sterols" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 3</p>
+  <h3>Dietary cholesterol, plant sterols and cholesterol-lowering factors</h3>
+  <div class="block mech"><h4>How it works</h4><p>Dietary cholesterol matters less than the fat mix. Plant sterols compete with cholesterol in the gut, so less is absorbed and LDL falls.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Correct a client who focuses only on dietary cholesterol.</li><li>Suggest plant-sterol margarines, fiber and MUFA.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client says eaten cholesterol matters more than fat type: needs further teaching.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking plant foods contain cholesterol.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Cholesterol only comes with a face (animal products).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Plant sterols reduce LDL by inhibiting intestinal <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">absorption</span></button> of cholesterol.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Dietary cholesterol is found only in animal products; its effect on blood cholesterol is less important than the amount and type of fatty acids.</li><li>Plant sterols reduce LDL-cholesterol by inhibiting intestinal absorption of cholesterol.</li><li>Dietary factors that decrease blood cholesterol: omega-6 PUFA, MUFA, antioxidants (beta carotene, vitamins E and C), plant sterols, vegetable fiber, large-dose vitamin B3.</li></ul></div>
+  <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
+</section>
+
+<section class="sec" id="bio-ros" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 4</p>
+  <h3>Free radicals, ROS and RNS</h3>
+  <div class="block mech"><h4>How it works</h4><p>A free radical has an unpaired outer electron and steals one from the nearest molecule, starting chain damage to lipids, proteins and DNA. Non-radicals have no unpaired electron but are strong oxidants. Damage occurs when oxidants outrun antioxidants.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Classify each species as radical or non-radical.</li><li>Separate endogenous (metabolism, phagocytosis) from exogenous (drugs, radiation, smoke) sources.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A smoker has an exogenous source of free radicals in cigarette smoke.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Calling H2O2 a radical.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Radicals end with a dot: O2.-, OH., NO.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Peroxynitrite is a reactive nitrogen <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">non-radical</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Oxidative stress: an imbalance favoring oxidants and/or disfavoring antioxidants, potentially leading to damage.</li><li>A free radical is a molecule with an unpaired electron in an outer valence shell; it plucks an electron from the nearest molecule.</li><li>ROS radicals: superoxide, hydroxyl, peroxyl. ROS non-radicals: hydrogen peroxide, hypochlorous acid, ozone.</li><li>RNS radicals: nitric oxide, nitrogen dioxide. RNS non-radical: peroxynitrite.</li><li>Endogenous sources: electron leak from the respiratory chain, oxidases (xanthine oxidase), prostaglandin synthesis, NO from arginine, phagocytosis. Exogenous: drug metabolism (halothane, cytochrome P450), ionizing radiation, cigarette smoke.</li></ul></div>
+  <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
+</section>
+
+<section class="sec" id="bio-burst-no" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 5</p>
+  <h3>Respiratory burst, nitric oxide and antioxidants</h3>
+  <div class="block mech"><h4>How it works</h4><p>Reactive species are also tools. Neutrophils make superoxide, H2O2 and hypochlorous acid to kill bacteria. Endothelial NO dilates vessels. Antioxidant enzymes and nutrients keep the balance.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Link sepsis and inflammation to large iNOS output.</li><li>Explain nitroglycerin works by becoming NO.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's angina is relieved by nitroglycerin, which is metabolized to nitric oxide.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up constitutive eNOS (low, steady) with inducible iNOS (large, prolonged).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>i for inducible and inflammatory.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The enzyme that converts H2O2 and chloride into hypochlorous acid is <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">myeloperoxidase</span></button>.</li><li>NO synthase uses <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">L-arginine</span></button> as its precursor.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Respiratory burst: NADPH oxidase converts O2 to superoxide; superoxide dismutase makes H2O2; myeloperoxidase converts H2O2 and chloride to hypochlorous acid, which kills bacteria.</li><li>NO is a free radical gas with a half-life of seconds, made from L-arginine by NO synthase.</li><li>eNOS and nNOS are constitutive and make low levels of NO; iNOS (macrophages, neutrophils; induced by bacterial toxins, TNF, cytokines) makes large amounts for hours or days.</li><li>eNOS-derived NO improves vascular dilation and perfusion; nitroglycerin is metabolized to NO and relieves coronary spasm in angina.</li><li>Enzymatic antioxidants: superoxide dismutase, catalase, glutathione peroxidase. Nutrient antioxidants: vitamins A, E, C, selenium. Metabolic: glutathione, ceruloplasmin, albumin, transferrin, ferritin, uric acid.</li></ul></div>
+  <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
+</section>
+
+<section class="sec" id="bio-oxldl" data-unit="Biochemistry">
+  <p class="sec-eyebrow">Biochemistry · 6</p>
+  <h3>Oxidized LDL and the stages of atherosclerosis</h3>
+  <div class="block mech"><h4>How it works</h4><p>Oxidation turns LDL into a danger signal. Oxidized LDL in the intima activates endothelium to recruit monocytes; macrophages take it up by scavenger receptors and become foam cells. Smooth muscle cells build a cap, dead cells pile up into a necrotic core, and a vulnerable plaque can rupture.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Trace the stages in order from endothelial dysfunction to thrombosis.</li><li>Link impaired efferocytosis to the necrotic core.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's plaque ruptures and exposes thrombogenic material, causing an MI.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking VCAM-1 is on macrophages; it is on activated endothelial cells.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dysfunction, Oxidation, Recruitment, Foam, Cap, Core, Clot.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>Monocytes are captured by <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">VCAM-1</span></button> and ICAM-1 on activated endothelium.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Free radicals oxidize LDL cholesterol; oxidized LDL triggers inflammation and plaque buildup.</li><li>Stages: endothelial dysfunction, LDL retention and oxidation in the intima, recruitment of monocytes and T cells by VCAM-1, ICAM-1 and MCP-1, foam cell formation (fatty streak), SMC migration and fibrous cap, necrotic core and calcification, rupture or erosion with thrombosis.</li><li>Macrophages engulf oxidized LDL via scavenger receptors and become lipid-laden foam cells.</li><li>Failure to clear dead macrophages and SMCs (impaired efferocytosis) enlarges an acellular necrotic core.</li></ul></div>
+  <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

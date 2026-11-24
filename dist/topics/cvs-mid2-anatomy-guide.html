@@ -1,0 +1,276 @@
+<title>CVS Mid 2 Anatomy Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Anatomy Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/LvPACbYG3rYRyHxFKVVRzX" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Anatomy only · Sunday 29 November 2026</p>
+    <h1>CVS Mid 2 Anatomy Guide</h1>
+    <p class="lede">9 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Anatomy</li>
+<li><a href="#anat-coronary">Coronary arteries: origin, course and territories</a></li>
+<li><a href="#anat-dominance">Coronary dominance</a></li>
+<li><a href="#anat-cardiac-veins">Venous drainage of the heart</a></li>
+<li><a href="#anat-surface">Surface anatomy of the heart and valves</a></li>
+<li><a href="#anat-pci">Coronary angiography and PCI</a></li>
+<li><a href="#anat-carotid">Common, external and internal carotid arteries</a></li>
+<li><a href="#anat-subclavian">Subclavian artery</a></li>
+<li><a href="#anat-facial-veins">Facial veins and the dangerous area of the face</a></li>
+<li><a href="#anat-neck-veins">Jugular, subclavian and brachiocephalic veins</a></li></ul></details>
+    <h2 class="unit-h" id="unit-anatomy">Anatomy</h2>
+
+<section class="sec" id="anat-coronary" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 1</p>
+  <h3>Coronary arteries: origin, course and territories</h3>
+  <div class="block mech"><h4>How it works</h4><p>The two coronary arteries leave the ascending aorta from sinuses just above the aortic valve cusps. The <b>RCA</b> runs in the coronary groove between right atrium and right ventricle, then posteriorly, and ends as the posterior interventricular artery. The short <b>left main</b> runs between the pulmonary trunk and the left auricle and divides into the <b>circumflex</b> and the <b>LAD</b>. Which artery feeds which wall follows from which groove it runs in.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Read the stenosed artery on the angiogram, then name the wall it feeds: LAD = front (sternocostal surface, anterior 2/3 of the septum, A-V bundle).</li><li>Occlusion of the RCA can threaten the SA node (65%) and the AV node (80%): watch the rhythm.</li><li>The septum is split: anterior 2/3 LAD, posterior 1/3 posterior interventricular artery.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A 68-year-old with recurrent angina has a 90% LAD stenosis on angiography: the anterior two thirds of the septum is at risk.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the AV node to the LAD. The LAD supplies the A-V <i>bundle</i>; the AV <i>node</i> artery comes from the RCA (80%) or circumflex (20%).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Anterior groove = Anterior descending = Anterior septum. RCA numbers: SA 65, AV 80.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The LAD runs in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">anterior interventricular</span></button> groove with the great cardiac vein.</li><li>The artery to the AV node arises from the RCA in <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">80%</span></button> of people.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Right coronary artery: from the right (anterior) aortic sinus; left coronary artery: from the left (anterior) aortic sinus.</li><li>LAD runs in the anterior interventricular groove and supplies the sternocostal surface of both ventricles, the anterior 2/3 of the interventricular septum and the A-V bundle.</li><li>The posterior interventricular artery (PDA) runs in the posterior interventricular groove and supplies the diaphragmatic surface of both ventricles and the posterior 1/3 of the septum.</li><li>Artery to the SA node: RCA 65%, circumflex 35%. Artery to the AV node: RCA 80%, circumflex 20%.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-dominance" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 2</p>
+  <h3>Coronary dominance</h3>
+  <div class="block mech"><h4>How it works</h4><p>Dominance is named after the artery that gives the posterior interventricular artery to the diaphragmatic surface. The slide gives three patterns with their frequencies.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>When a report says left dominant, expect the posterior interventricular artery from the circumflex.</li><li>Note the slide's frequencies (70 / 15 / 15) and check with your instructor: many textbooks give right dominance as the most common pattern.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client's report reads "left dominant": a circumflex occlusion could then threaten the posterior septum and diaphragmatic surface.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing co-dominance (RCA gives the PDA AND the circumflex also reaches the diaphragmatic LV) with left dominance (PDA from the circumflex).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dominance = who owns the PDA.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>In left dominance the posterior interventricular artery is a branch of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">circumflex</span></button> artery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Co-dominance (balanced) 70%: the right coronary has the posterior interventricular branch and the circumflex has a branch to the diaphragmatic surface of the left ventricle.</li><li>Right dominance (15%): the posterior interventricular artery is a large branch.</li><li>Left dominance (15%): the posterior interventricular artery is a large branch of the circumflex coronary.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-cardiac-veins" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 3</p>
+  <h3>Venous drainage of the heart</h3>
+  <div class="block mech"><h4>How it works</h4><p>Cardiac veins run with the arteries in the same grooves and drain three ways: most into the <b>coronary sinus</b>, which empties into the right atrium; some straight into the right atrium (anterior cardiac veins); and some straight into any chamber (venae cordis minimi).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Pair each vein with its artery: great cardiac vein with the LAD, middle cardiac vein with the posterior interventricular artery.</li><li>Remember the coronary sinus ends in the posterior wall of the RIGHT atrium.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>During cannulation of the coronary sinus, the nurse expects the great, middle and small cardiac veins, the posterior vein of the left ventricle and the oblique vein of the left atrium to drain through it.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Sending the coronary sinus to the left atrium because it lies next to it. It lies between the left atrium and the diaphragmatic surface but ends in the right atrium.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Great goes with the Grand anterior artery (LAD); Middle goes with the middle of the back (PDA).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The anterior cardiac veins end in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">anterior wall of the right atrium</span></button>.</li><li>Venae cordis minimi drain <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">directly into the cardiac chambers</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Coronary sinus: lies between the left atrium and the diaphragmatic surface and ends in the posterior wall of the right atrium.</li><li>Tributaries of the coronary sinus: great, middle and small cardiac veins, posterior vein of the left ventricle and oblique vein of the left atrium.</li><li>Anterior cardiac veins arise from the right ventricle and end in the anterior wall of the right atrium.</li><li>Venae cordis minimi drain directly into the cardiac chambers, especially on the right side.</li><li>The great cardiac vein runs with the LAD in the anterior interventricular groove; the middle cardiac vein runs with the posterior interventricular artery.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-surface" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 4</p>
+  <h3>Surface anatomy of the heart and valves</h3>
+  <div class="block mech"><h4>How it works</h4><p>Four points 0.5 inch from the sternum (and the apex 3.5 inches from the midline) outline the heart on the chest wall; joining them in order gives the four borders. The valves lie in a diagonal line behind the sternum, PAMT from top left to bottom middle.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Mark A (left 2nd costal cartilage, lower border), B (right 3rd costal cartilage, upper border), C (right 6th costal cartilage), D (left 5th intercostal space).</li><li>Join A-B (upper), B-C (right), C-D (lower), D-A (left).</li><li>Place the valves in order: pulmonary 3rd costal cartilage, aortic 3rd space, mitral 4th cartilage, tricuspid 4th space.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>Before an exam a nurse marks a client's apex at the left 5th intercostal space, 3.5 inches from the midline.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Confusing a costal cartilage with the intercostal space below it, e.g. putting the mitral valve at the 4th space (that is the tricuspid).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>PAMT goes down half a level at a time: P 3rd cartilage, A 3rd space, M 4th cartilage, T 4th space.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The right border of the heart runs from point <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">B</span></button> to point <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">C</span></button>.</li><li>The coronary groove is marked by a line from the left 3rd costal cartilage to point <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">C</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Point A: lower border of the left 2nd costal cartilage, 0.5 inch from the sternum; point B: upper border of the right 3rd costal cartilage, 0.5 inch from the sternum.</li><li>Point C: right 6th costal cartilage, 0.5 inch from the sternum; point D: left 5th intercostal space, 3.5 inches from the midline.</li><li>Borders: upper A-B, right B-C, lower C-D, left D-A.</li><li>Valves (PAMT): pulmonary behind the left 3rd costal cartilage; aortic opposite the left 3rd intercostal space; mitral opposite the left 4th costal cartilage; tricuspid opposite the left 4th intercostal space behind the midline of the sternum.</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-pci" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 5</p>
+  <h3>Coronary angiography and PCI</h3>
+  <div class="block mech"><h4>How it works</h4><p>Coronary angiography and PCI reach the coronary orifices from the ascending aorta by passing a catheter backwards (retrograde) up the arterial tree from the wrist or groin.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Expect local anesthesia, catheter entry through the radial or femoral artery, contrast injected into each coronary orifice, then a stent if a vessel is narrowed by plaque.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client with a narrowed coronary artery has a stent placed after contrast pictures show the stenosis.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the catheter is passed through a vein: it goes retrograde from the radial or femoral ARTERY.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>In through the wrist or groin, up to the aorta, dye, picture, stent.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The catheter is passed <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">retrograde</span></button> from the radial or femoral artery into the ascending aorta.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>A catheter is passed retrograde from the radial or femoral artery into the ascending aorta under local anesthesia.</li><li>Radiopaque contrast is injected into the orifice of each coronary artery to photograph all segments of each vessel.</li><li>A stent may be placed to open vessels narrowed by plaque buildup (atherosclerosis).</li></ul></div>
+  <p class="src">Source: Anatomy L4 slides</p>
+</section>
+
+<section class="sec" id="anat-carotid" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 6</p>
+  <h3>Common, external and internal carotid arteries</h3>
+  <div class="block mech"><h4>How it works</h4><p>The common carotid arteries start differently on each side, climb inside the carotid sheath and divide at the upper border of the thyroid cartilage. The external carotid gives the face and neck their branches and ends in the parotid gland; the internal carotid gives nothing in the neck and goes straight into the skull.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Find the bifurcation at the upper border of the thyroid cartilage (C3-4).</li><li>Before a jugular puncture, remember the IJV lies lateral to the artery in the sheath.</li><li>Feel the superficial temporal pulse just in front of the tragus.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An anesthesiologist at the head of the table checks the pulse in front of the tragus: the superficial temporal artery.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Looking for neck branches on the internal carotid. It has none; all named neck branches are from the external carotid or subclavian.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>ECA branches in order: Some Anatomists Like Freaking Out Poor Medical Students (superior thyroid, ascending pharyngeal, lingual, facial, occipital, posterior auricular, maxillary, superficial temporal).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The external carotid ends in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">parotid gland</span></button> behind the neck of the mandible.</li><li>The right common carotid arises from the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">brachiocephalic artery</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Right common carotid: from the brachiocephalic artery behind the sternoclavicular joint; left common carotid: from the arch of the aorta.</li><li>The common carotid ascends in the carotid sheath, related medially to the trachea and larynx and laterally to the IJV, and ends at the upper border of the thyroid cartilage (C3-4).</li><li>The external carotid ends in the parotid gland behind the neck of the mandible by dividing into the maxillary and superficial temporal arteries.</li><li>External carotid branches: superior thyroid, ascending pharyngeal, lingual, facial, occipital, posterior auricular, superficial temporal and maxillary.</li><li>The internal carotid has no branches in the neck; it enters the skull through the carotid canal.</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+
+<section class="sec" id="anat-subclavian" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 7</p>
+  <h3>Subclavian artery</h3>
+  <div class="block mech"><h4>How it works</h4><p>Scalenus anterior crosses in front of the subclavian artery and so divides it into three parts. Each part has its own branches, and the artery ends at the outer border of the 1st rib by becoming the axillary artery.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Sort branches by part: 1st = vertebral, internal thoracic, thyrocervical trunk; 2nd = costocervical trunk; 3rd = dorsal scapular.</li><li>Remember the thyrocervical trunk gives the inferior thyroid, transverse cervical and suprascapular arteries.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>During thyroid surgery near the thyrocervical trunk, the inferior thyroid artery is at risk, not the superior thyroid (an external carotid branch).</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing the superior thyroid artery (external carotid) with the inferior thyroid artery (thyrocervical trunk).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>1st part 3 branches, 2nd part 1 trunk, 3rd part 1 branch.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The subclavian artery becomes the axillary artery at the outer border of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">1st rib</span></button>.</li><li>The costocervical trunk arises from the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">2nd</span></button> part of the subclavian artery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Right subclavian: from the brachiocephalic artery behind the right sternoclavicular joint; left subclavian: from the arch of the aorta.</li><li>It ends at the outer border of the 1st rib by becoming the axillary artery.</li><li>Scalenus anterior passes anterior to the artery and divides it into 3 parts: medial, behind and lateral to the muscle.</li><li>1st part: vertebral, internal thoracic and thyrocervical trunk (inferior thyroid, transverse cervical, suprascapular). 2nd part: costocervical trunk. 3rd part: dorsal scapular (66%).</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+
+<section class="sec" id="anat-facial-veins" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 8</p>
+  <h3>Facial veins and the dangerous area of the face</h3>
+  <div class="block mech"><h4>How it works</h4><p>The facial veins join and divide around the parotid gland. The anterior facial vein links to the cavernous sinus inside the skull through the ophthalmic veins and through the deep facial vein and pterygoid plexus, which is why the nose and upper lip are the dangerous area.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Teach clients not to squeeze lesions on the nose and upper lip: infection can reach the cavernous sinus.</li><li>Trace formation: supraorbital + supratrochlear = anterior facial; maxillary + superficial temporal = retromandibular; anterior facial + anterior division of retromandibular = common facial (to IJV).</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A client squeezes an infected pimple on the upper lip; the nurse is concerned about spread to the cavernous sinus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Thinking the route goes through the jugular veins. The dangerous route runs backwards from the anterior facial vein into the skull.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Dangerous triangle: nose and upper lip drain back to the brain.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The deep facial vein connects the anterior facial vein to the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">pterygoid plexus</span></button>.</li><li>The retromandibular vein is formed inside the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">parotid gland</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Anterior facial vein: formed by the supraorbital and supratrochlear veins at the medial angle of the eye.</li><li>Retromandibular (posterior facial) vein: formed by the maxillary and superficial temporal veins inside the parotid gland; divides at the lower pole of the parotid.</li><li>Common facial vein: anterior facial vein + anterior division of the retromandibular vein; drains into the IJV.</li><li>The deep facial vein connects the anterior facial vein to the pterygoid plexus.</li><li>Dangerous area of the face (nose and upper lip): infection can reach the cavernous sinus through the connections of the anterior facial vein.</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+
+<section class="sec" id="anat-neck-veins" data-unit="Anatomy">
+  <p class="sec-eyebrow">Anatomy · 9</p>
+  <h3>Jugular, subclavian and brachiocephalic veins</h3>
+  <div class="block mech"><h4>How it works</h4><p>Blood from the head reaches the heart by two jugular veins. The external jugular is superficial and drains into the subclavian vein; the internal jugular is deep, begins at the jugular foramen and joins the subclavian to form the brachiocephalic vein. Both brachiocephalic veins form the SVC.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Sort tributaries: EJV = transverse cervical, suprascapular, anterior jugular; IJV = pharyngeal, common facial, lingual, superior and middle thyroid.</li><li>Trace face to heart: anterior facial, common facial, IJV, brachiocephalic, SVC.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A nurse sees a distended vein crossing sternomastoid: the external jugular vein, formed by the posterior division of the retromandibular vein and the posterior auricular vein.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Draining the external jugular into the internal jugular. It ends in the subclavian vein.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>External ends External-ish (subclavian); Internal starts Inside the skull (sigmoid sinus).</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The internal jugular vein begins as the continuation of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">sigmoid sinus</span></button>.</li><li>The external jugular vein ends in the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">subclavian vein</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>External jugular vein: formed by the posterior division of the retromandibular vein and the posterior auricular vein; descends superficial to sternomastoid; ends in the subclavian vein.</li><li>External jugular tributaries: transverse cervical, suprascapular and anterior jugular veins.</li><li>Internal jugular vein: begins as the continuation of the sigmoid sinus at the jugular foramen; joins the subclavian vein to form the brachiocephalic vein.</li><li>Internal jugular tributaries: pharyngeal, common facial, lingual, superior thyroid and middle thyroid veins.</li><li>Right and left brachiocephalic veins unite to form the SVC.</li></ul></div>
+  <p class="src">Source: Anatomy L5 slides</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

@@ -1,0 +1,35 @@
+{
+  "all": {
+    "drill": "https://claude.ai/artifact/F16ffDggDNEKMrvNsnAP4D",
+    "guide": "https://claude.ai/artifact/A1TLoMo73wpzbXEL8EnYGF"
+  },
+  "anatomy": {
+    "drill": "https://claude.ai/artifact/LvPACbYG3rYRyHxFKVVRzX",
+    "guide": "https://claude.ai/artifact/JMj7Jx6ZCA58Ged5jHK8bL"
+  },
+  "physiology": {
+    "drill": "https://claude.ai/artifact/P9sKTYuFfXVTCzZrze1jEF",
+    "guide": "https://claude.ai/artifact/C8he4yofJNoStPoxA1VXgT"
+  },
+  "pathology": {
+    "drill": "https://claude.ai/artifact/DSaQnrAcDCyx2jQPKCaKUR",
+    "guide": "https://claude.ai/artifact/KKFgnAj17Sru2Nb1kssKtY"
+  },
+  "pharmacology": {
+    "drill": "https://claude.ai/artifact/YLFAShgk3BR2wQXJF9sCvP",
+    "guide": "https://claude.ai/artifact/9E3TcJ36SXeUGwmpUgx7GV"
+  },
+  "biochemistry": {
+    "drill": "https://claude.ai/artifact/VpQeVMkkr1N7UtbXh3x7Dv",
+    "guide": "https://claude.ai/artifact/D5qLrThMy37rtjGap9NCRs"
+  },
+  "microbiology": {
+    "drill": "https://claude.ai/artifact/JVCNc3cUjjCLr5e71cVqhy",
+    "guide": "https://claude.ai/artifact/L5bjzY3LeYuJ35SDYFDkge"
+  },
+  "embryology": {
+    "drill": "https://claude.ai/artifact/CeZehWHfTJtqtaV7nf8NJV",
+    "guide": "https://claude.ai/artifact/JFH8TEQJsE3KP2jWC2VC8Q"
+  },
+  "hub": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe"
+}

@@ -344,7 +344,7 @@ def build(cfg_path):
         "cfg": {"title": cfg["title"], "eyebrow": cfg.get("eyebrow", ""), "storage_key": cfg["storage_key"],
                 "units": units, "high_roi_units": cfg.get("high_roi_units") or [],
                 "last_pass_note": cfg.get("last_pass_note", ""),
-                "guide_url": (g or {}).get("url", ""), "guide_title": (g or {}).get("title", "")},
+                "guide_url": (g or {}).get("url", ""), "hub_url": cfg.get("hub_url", ""), "pretest_per_topic": cfg.get("pretest_per_topic"), "guide_title": (g or {}).get("title", "")},
         "items": items, "concepts": concepts,
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")

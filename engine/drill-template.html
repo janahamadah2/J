@@ -307,7 +307,7 @@ table.rates td.n { text-align: right; }
     return { plan: Core.buildLimited(D, S, ids, Math.min(N, ids.length), nTopic(units), Core.rng(UI.seed), now()), poolN: ids.length, units: units };
   }
   function describe() {
-    var units = unitsOn(), L = lenValue(), uTxt = units.length === UNITS.length ? 'all topics' : listText(units);
+    var units = unitsOn(), L = lenValue(), uTxt = units.length === UNITS.length && UNITS.length > 1 ? 'all topics' : listText(units);
     var act = Object.keys(UI.filters).filter(function (k) { return UI.filters[k]; });
     var fTxt = act.length ? ' (' + (act.length > 1 ? (UI.overlap ? 'only the overlap of ' : 'mixed: ') : '') +
       act.map(function (k) { return { missed: 'missed', starred: 'starred', lp: 'last pass', never: 'never practiced' }[k]; }).join(act.length > 1 && UI.overlap ? ' and ' : ' + ') + ')' : '';
@@ -350,7 +350,7 @@ table.rates td.n { text-align: right; }
     // pre-test card
     var preN = Core.buildPretest(D, S, Core.rng(1)).length;
     h += '<div class="card' + (!any ? ' strong' : '') + '"><h2>Pre-test - ' + preN + ' questions' + (!any ? '<span class="badge">Start here</span>' : '') + '</h2>' +
-      '<p class="muted small">A level check: 3 questions from every topic, mixed formats, never a last-pass question. Each topic gets a level: Strong 80%+, Okay 60-79%, Weak under 60%.</p>';
+      '<p class="muted small">A level check: ' + (UNITS.length > 1 ? Math.round(preN / UNITS.length) + ' questions from every topic' : preN + ' questions across the concepts of this topic') + ', mixed formats, never a last-pass question. Each topic gets a level: Strong 80%+, Okay 60-79%, Weak under 60%.</p>';
     if (SESS && SESS.mode === 'pretest') h += '<button class="btn primary" data-act="resume">Resume pre-test - ' + SESS.ans.length + ' of ' + SESS.queue.length + ' done</button>';
     else if (S.pre.last) h += '<p>Last pre-test: ' + esc(fmtDate(S.pre.last.t)) + ', ' + S.pre.last.pct + '%. <button class="linkbtn" data-act="pretest">Retake pre-test</button></p>';
     else h += '<button class="btn primary" data-act="pretest">Start pre-test</button>';
@@ -383,7 +383,7 @@ table.rates td.n { text-align: right; }
       '<label class="switch"><input type="checkbox" data-act="think"' + (UI.think ? ' checked' : '') + '> Think first: hide the choices for 10-15 s so you recall before you recognise</label>' +
       '<div class="actions"><button class="btn primary" data-act="start">Start</button></div></div>';
     h += '<p class="small"><b>Totals:</b> ' + all.length + ' questions · ' + tot.solid + ' solid · ' + tot.once + ' right once · ' + tot.shaky + ' shaky · ' + tot['new'] + ' not answered yet</p>' + statusBar(tot);
-    h += '<div class="row" style="margin-top:14px">' + (CFG.guide_url ? '<a class="btn small ghost" href="' + esc(CFG.guide_url) + '" target="_blank" rel="noopener">Open the Mastery Guide</a>' : '') +
+    h += '<div class="row" style="margin-top:14px">' + (CFG.hub_url ? '<a class="btn small ghost" href="' + esc(CFG.hub_url) + '" target="_blank" rel="noopener">All topics</a>' : '') + (CFG.guide_url ? '<a class="btn small ghost" href="' + esc(CFG.guide_url) + '" target="_blank" rel="noopener">Open the Mastery Guide</a>' : '') +
       '<button class="btn small danger" id="reset" data-act="reset">Reset all progress</button></div>' +
       '<p class="syncline" id="syncline"></p>';
     app.innerHTML = h; syncLine();

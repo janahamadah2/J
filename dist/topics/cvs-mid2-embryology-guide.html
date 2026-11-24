@@ -1,0 +1,206 @@
+<title>CVS Mid 2 Embryology Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky header with Guide / Read me tabs; contents list folds on phones. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #555b61; --line: #e3e5e8; --soft: #f5f6f7;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --wrong: #b3261e; --wrong-bg: #fcecea;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.brand { font: 700 18px/1.2 var(--serif); flex: 1 1 auto; min-width: 0; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; text-decoration: none; }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .tab:hover { border-color: var(--fg); } }
+.tab:active { background: var(--soft); }
+main { max-width: 760px; margin: 0 auto; padding-block: 20px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; color: var(--muted); letter-spacing: .02em; margin: 0 0 4px; }
+h1 { font: 700 30px/1.2 var(--serif); margin: 0 0 8px; text-wrap: balance; }
+h2 { font: 700 24px/1.25 var(--serif); margin: 36px 0 8px; text-wrap: balance; }
+h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 10px; text-wrap: balance; }
+h4 { font: 600 13px/1.3 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+.lede { color: var(--muted); margin: 0 0 16px; max-width: 65ch; }
+details.toc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 16px 0 8px; }
+details.toc summary { cursor: pointer; font-weight: 600; }
+details.toc ul { list-style: none; padding: 0; margin: 8px 0 0; columns: 2 260px; column-gap: 24px; }
+details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
+details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
+details.toc a { color: var(--fg); }
+.unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
+.sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
+.block { margin: 12px 0; }
+.block p, .block ol, .block ul { margin: 0; max-width: 68ch; }
+.block ol, .block ul { padding-left: 22px; }
+.trap p { border-left: 3px solid var(--wrong); padding-left: 10px; }
+.hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+ul.blanks { list-style: none; padding-left: 0; }
+ul.blanks li { padding: 4px 0; }
+.blank { font: inherit; border: none; border-bottom: 2px solid var(--fg); background: var(--soft); border-radius: 4px 4px 0 0; padding: 0 6px; min-width: 64px; cursor: pointer; color: transparent; }
+.blank .ans { visibility: hidden; }
+.blank.shown { color: var(--right); background: var(--right-bg); border-color: var(--right); }
+.blank.shown .ans { visibility: visible; }
+.key { border: 1.5px solid var(--fg); border-radius: 10px; padding: 12px 14px; margin: 14px 0 6px; }
+.key ul { margin: 0; padding-left: 20px; }
+.key li { margin: 3px 0; }
+.src { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.readme h2 { margin-top: 4px; }
+.readme h3 { margin-top: 20px; }
+.readme ol { padding-left: 22px; max-width: 68ch; }
+.readme li { margin: 4px 0; }
+.small { font-size: 14px; color: var(--muted); }
+a { color: var(--fg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } }
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">CVS Mid 2 Embryology Guide</div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
+      <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
+      <a class="tab" id="drill-link" href="https://claude.ai/artifact/CeZehWHfTJtqtaV7nf8NJV" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="view-guide">
+    <p class="eyebrow">CVS block · Mid 2 · Embryology only · Sunday 29 November 2026</p>
+    <h1>CVS Mid 2 Embryology Guide</h1>
+    <p class="lede">4 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Embryology</li>
+<li><a href="#emb-arches">Formation and derivatives of the aortic arches</a></li>
+<li><a href="#emb-sac-dorsal">Aortic sac, dorsal aorta and the origin of the great arteries</a></li>
+<li><a href="#emb-anomalies">Anomalies of the aortic arches</a></li>
+<li><a href="#emb-veins">Development of the veins</a></li></ul></details>
+    <h2 class="unit-h" id="unit-embryology">Embryology</h2>
+
+<section class="sec" id="emb-arches" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 1</p>
+  <h3>Formation and derivatives of the aortic arches</h3>
+  <div class="block mech"><h4>How it works</h4><p>In the 4th week, paired aortic arch vessels link the aortic sac to the dorsal aortae. Some disappear and others are remodeled into the adult great arteries; the recurrent laryngeal nerves hook around the 6th arches, so their adult course depends on which arch segments survive.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Memorize arch by arch: 1 maxillary, 2 stapedial, 3 carotids, 4 aortic arch (left) and right subclavian (right), 5 none, 6 pulmonary arteries and ductus.</li><li>Protect the left recurrent laryngeal nerve during ductus surgery.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>During PDA ligation, the left recurrent laryngeal nerve is at risk because it hooks around the ductus.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up the 1st (maxillary) and 2nd (stapedial) arch remnants.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>1-2 small leftovers, 3 Carotid (C is the 3rd letter), 4 Systemic (aorta, subclavian), 5 gone, 6 Pulmonary.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The right recurrent laryngeal nerve hooks around the proximal part of the right <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">subclavian</span></button> artery.</li><li>The distal part of the left 6th arch forms the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">ductus arteriosus</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>At the 4th week two primitive aortae appear, each with a ventral aorta, a dorsal aorta and a connecting segment; the ventral aortae fuse into the aortic sac with right and left horns.</li><li>1st arch: disappears, remnant forms the maxillary arteries. 2nd arch: disappears, remnant forms the stapedial arteries. 5th arch: disappears completely.</li><li>3rd arch: proximal parts form the common carotid arteries; distal parts join the dorsal aorta to form the internal carotid arteries. The external carotid is a new bud from the junction.</li><li>Left 4th arch: part of the arch of the aorta between the left common carotid and left subclavian. Right 4th arch: proximal part of the right subclavian artery.</li><li>6th arch: left proximal forms the left pulmonary artery and left distal forms the ductus arteriosus; right proximal forms the right pulmonary artery and right distal degenerates.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+
+<section class="sec" id="emb-sac-dorsal" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 2</p>
+  <h3>Aortic sac, dorsal aorta and the origin of the great arteries</h3>
+  <div class="block mech"><h4>How it works</h4><p>The aortic sac, its horns and the dorsal aortae each contribute a segment to the adult vessels. Reading the arch of the aorta from proximal to distal walks through sac, left horn, left 4th arch and left dorsal aorta.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Answer origin questions by locating the segment first: brachiocephalic = right horn; left subclavian = 7th intersegmental artery; right subclavian = right 4th arch + right dorsal aorta at the 7th intersegmental.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A review sheet asks for the origin of the brachiocephalic artery: the right horn of the aortic sac.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the common carotid to the right horn.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Right horn = brachiocephalic; left horn = the bit of arch next to it.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The common dorsal aorta forms the abdominal aorta and the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">median sacral</span></button> artery.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Aortic sac: arch of the aorta proximal to the brachiocephalic artery. Left horn: arch between the brachiocephalic and left common carotid. Right horn: brachiocephalic artery.</li><li>Right dorsal aorta: cranial to the 3rd arch forms the distal internal carotid; at the 7th intersegmental artery forms the distal right subclavian; the rest degenerates.</li><li>Left dorsal aorta: at the 7th intersegmental artery forms the subclavian; between the 4th and 6th arches forms the distal arch of the aorta; caudal to the 6th arch forms the descending thoracic and abdominal aorta.</li><li>Arch of the aorta from proximal to distal: aortic sac, left horn, left 4th arch, left dorsal aorta between the 4th and 6th arches.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+
+<section class="sec" id="emb-anomalies" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 3</p>
+  <h3>Anomalies of the aortic arches</h3>
+  <div class="block mech"><h4>How it works</h4><p>Each anomaly is a normal step that failed: the ductus did not close (PDA), the right side persisted instead of the left (right arch), both persisted (double arch, a ring), or a segment narrowed (coarctation).</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Suspect a double arch in an infant with dyspnea and dysphagia.</li><li>Classify coarctation by where it sits relative to the ductus.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>An infant with stridor and feeding difficulty has a vascular ring: double aortic arch.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Mixing up right arch (one arch on the wrong side) with double arch (two arches).</p></div>
+  <div class="block"><h4>Memory trick</h4><p>PRE-ductal: before the duct, duct oPEN.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>A patent ductus connects the left pulmonary artery to the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">arch of the aorta</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>Patent ductus arteriosus: a patent duct between the left pulmonary artery and the arch of the aorta; associated with aortic stenosis, pulmonary stenosis and Fallot's tetralogy.</li><li>Right arch of aorta: develops from the right dorsal aorta and right 4th arch.</li><li>Double arch of aorta: persistence of the distal right dorsal aorta; a vascular ring around the trachea (dyspnea) and esophagus (dysphagia).</li><li>Coarctation: constriction of the aorta distal to the left subclavian. Postductal: distal to the ductus, ductus usually closed. Preductal: proximal to the ductus, ductus open.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+
+<section class="sec" id="emb-veins" data-unit="Embryology">
+  <p class="sec-eyebrow">Embryology · 4</p>
+  <h3>Development of the veins</h3>
+  <div class="block mech"><h4>How it works</h4><p>At the 5th week three pairs of veins (umbilical, vitelline, cardinal) drain into the sinus venosus. Vitelline veins build the gut's venous drainage, umbilical veins become ligaments after birth, and the cardinal veins become the systemic veins.</p></div>
+  <div class="block"><h4>What to do first</h4><ol><li>Sort derivatives by vein: vitelline = portal and SMV; anterior cardinal = upper body; posterior cardinal = IVC and lower body veins.</li></ol></div>
+  <div class="block"><h4>Client example</h4><p>A nurse traces the ligamentum teres back to the obliterated left umbilical vein.</p></div>
+  <div class="block trap"><h4>Common trap</h4><p>Giving the IVC to the vitelline veins.</p></div>
+  <div class="block"><h4>Memory trick</h4><p>Vitelline = Viscera; Anterior cardinal = Above; Posterior cardinal = below.</p></div>
+  <div class="block"><h4>Test yourself <span class="hint">tap each blank</span></h4><ul class="blanks"><li>The cardinal veins are the main venous drainage of the <button type="button" class="blank" aria-label="Tap to reveal"><span class="ans">fetus</span></button>.</li></ul></div>
+  <div class="key"><h4>Key ideas</h4><ul><li>At the 5th week each horn of the sinus venosus receives the umbilical, vitelline and common cardinal veins.</li><li>Vitelline veins form the portal and superior mesenteric veins. After birth the ductus venosus becomes the ligamentum venosum and the left umbilical vein the ligamentum teres.</li><li>Right common cardinal vein: SVC inside the pericardium. Left common cardinal vein: oblique vein of the left atrium.</li><li>Right anterior cardinal: SVC outside the pericardium, right brachiocephalic and right internal jugular veins. Left anterior cardinal: left superior intercostal, left brachiocephalic and left internal jugular veins.</li><li>Posterior cardinal veins: IVC, common iliac, suprarenal, testicular or ovarian, and renal veins.</li></ul></div>
+  <p class="src">Source: Embryology L3 slides (aortic arches)</p>
+</section>
+  </div>
+  <div id="view-readme" hidden><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</div>
+</main>
+
+<script>
+(function () {
+  var g = document.getElementById('view-guide'), r = document.getElementById('view-readme');
+  var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
+  var dl = document.getElementById('drill-link');
+  if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
+  function show(which) {
+    var isR = which === 'readme';
+    g.hidden = isR; r.hidden = !isR;
+    tg.setAttribute('aria-selected', String(!isR)); tr.setAttribute('aria-selected', String(isR));
+    window.scrollTo(0, 0);
+  }
+  tg.addEventListener('click', function () { show('guide'); });
+  tr.addEventListener('click', function () { show('readme'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.blank');
+    if (b) b.classList.toggle('shown');
+  });
+  function go() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'readme') { show('readme'); return; }
+    var el = id && document.getElementById(id);
+    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+  }
+  window.addEventListener('hashchange', go);
+  go();
+  if (window.innerWidth > 720) document.getElementById('toc').open = true;
+})();
+</script>

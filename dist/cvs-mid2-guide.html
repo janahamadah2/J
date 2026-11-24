@@ -73,6 +73,7 @@ a { color: var(--fg); }
       <button class="tab" id="tab-guide" role="tab" aria-selected="true">Guide</button>
       <button class="tab" id="tab-readme" role="tab" aria-selected="false">Read me</button>
       <a class="tab" id="drill-link" href="https://claude.ai/artifact/F16ffDggDNEKMrvNsnAP4D" target="_blank" rel="noopener">Open the drill</a>
+      <a class="tab" id="hub-link" href="https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe" target="_blank" rel="noopener">All topics</a>
     </nav>
   </div>
 </header>
@@ -989,6 +990,7 @@ a { color: var(--fg); }
   var tg = document.getElementById('tab-guide'), tr = document.getElementById('tab-readme');
   var dl = document.getElementById('drill-link');
   if (!dl.getAttribute('href')) dl.hidden = true;
+  var hl = document.getElementById('hub-link'); if (!hl.getAttribute('href')) hl.hidden = true;
   function show(which) {
     var isR = which === 'readme';
     g.hidden = isR; r.hidden = !isR;

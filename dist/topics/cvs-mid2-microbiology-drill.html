@@ -1,0 +1,1585 @@
+<title>CVS Mid 2 Microbiology Drill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one working column (max 720px) under a sticky header; cards stack; every control is a large tap target. */
+:root {
+  --bg: #ffffff; --fg: #111111; --muted: #565c62; --line: #e2e4e7; --soft: #f4f5f6; --press: #e9ebee;
+  --right: #1d7a3e; --right-bg: #eaf6ee; --right-soft: #9fd3b0;
+  --wrong: #b3261e; --wrong-bg: #fcecea;
+  --part: #8a5a00; --part-bg: #fff4dc;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--sans); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, a, label, select, input { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top-in { max-width: 720px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.brand { font: 700 17px/1.2 var(--serif); flex: 1 1 140px; min-width: 0; }
+.hbtns { display: flex; flex-wrap: wrap; gap: 6px; }
+.clock { font: 600 15px var(--sans); font-variant-numeric: tabular-nums; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.clock.low { color: var(--wrong); border-color: var(--wrong); }
+main { max-width: 720px; margin: 0 auto; padding-block: 16px 90px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font: 700 28px/1.2 var(--serif); margin: 4px 0 6px; text-wrap: balance; }
+h2 { font: 700 21px/1.25 var(--serif); margin: 0 0 6px; text-wrap: balance; }
+h3 { font: 700 17px/1.3 var(--serif); margin: 14px 0 6px; }
+.eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .02em; }
+p { margin: 6px 0; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.card { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+.card.strong { border: 1.5px solid var(--fg); }
+.badge { display: inline-block; font: 600 12px var(--sans); letter-spacing: .04em; text-transform: uppercase; border: 1.5px solid var(--fg); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1.5px solid var(--fg); background: var(--bg); border-radius: 10px; padding: 10px 16px; font-weight: 600; cursor: pointer; min-height: 44px; }
+.btn.primary { background: var(--fg); color: var(--bg); }
+.btn.small { padding: 6px 12px; min-height: 36px; font-size: 14px; border-width: 1px; }
+.btn.ghost { border-color: var(--line); font-weight: 500; }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn.danger { border-color: var(--wrong); color: var(--wrong); }
+.btn.danger.armed { background: var(--wrong); color: #fff; }
+.linkbtn { background: none; border: none; padding: 0; text-decoration: underline; cursor: pointer; font-weight: 500; }
+@media (hover: hover) {
+  .btn:hover:not(:disabled) { background: var(--soft); }
+  .btn.primary:hover:not(:disabled) { background: #333; }
+  .opt:hover:not(.locked) { border-color: var(--fg); }
+  .chip:hover { border-color: var(--fg); }
+}
+.btn:active:not(:disabled) { background: var(--press); }
+.btn.primary:active:not(:disabled) { background: #444; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; background: var(--bg); cursor: pointer; font-size: 15px; min-height: 40px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.chip:active { background: var(--press); }
+.chip.on:active { background: #333; }
+.check { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: #111; }
+.count { color: var(--muted); font-variant-numeric: tabular-nums; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0 16px; }
+.switch { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 0; }
+.switch input { width: 20px; height: 20px; accent-color: #111; }
+.desc { background: var(--soft); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+/* status bar */
+.sbar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: var(--soft); margin: 8px 0 6px; }
+.sbar i { display: block; height: 100%; }
+.s-solid { background: var(--right); } .s-once { background: var(--right-soft); } .s-shaky { background: var(--wrong); } .s-new { background: #d5d8dc; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+/* question */
+.qmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.tag { border: 1px solid var(--fg); color: var(--fg); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 600; }
+.stem { font-size: 18px; line-height: 1.5; margin: 6px 0 12px; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; gap: 12px; align-items: flex-start; text-align: left; border: 1.5px solid var(--line); background: var(--bg); border-radius: 10px; padding: 12px 14px; cursor: pointer; min-height: 48px; width: 100%; }
+.opt .let { flex: 0 0 auto; width: 26px; height: 26px; border: 1.5px solid var(--fg); border-radius: 50%; display: grid; place-items: center; font: 600 13px var(--sans); }
+.opt.multi .let { border-radius: 6px; }
+.opt.sel { border-color: var(--fg); background: var(--soft); }
+.opt.sel .let { background: var(--fg); color: var(--bg); }
+.opt:active:not(.locked) { background: var(--press); }
+.opt.locked { cursor: default; }
+.opt.is-right { border-color: var(--right); background: var(--right-bg); }
+.opt.is-wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+.opt .txt { flex: 1 1 auto; min-width: 0; }
+.think { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; }
+.think .bar { height: 6px; background: var(--soft); border-radius: 3px; overflow: hidden; margin: 10px 0 4px; }
+.think .bar i { display: block; height: 100%; background: var(--fg); width: 100%; transition: width 1s linear; }
+.fillblank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--fg); text-align: center; padding: 0 4px; }
+table.match { width: 100%; border-collapse: collapse; }
+table.match td { border-top: 1px solid var(--line); padding: 10px 6px; vertical-align: middle; }
+table.match td:first-child { width: 42%; font-weight: 500; }
+select { font: inherit; width: 100%; min-height: 44px; padding: 8px; border: 1.5px solid var(--fg); border-radius: 8px; background: var(--bg); color: var(--fg); }
+select.inline { width: auto; max-width: 100%; display: inline-block; min-height: 38px; padding: 4px 6px; margin: 2px 0; }
+select.r { border-color: var(--right); background: var(--right-bg); } select.w { border-color: var(--wrong); background: var(--wrong-bg); }
+.orderpick { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.orderpick .slot { border: 1.5px dashed var(--line); border-radius: 10px; padding: 10px 12px; min-height: 44px; display: flex; gap: 10px; align-items: center; cursor: pointer; text-align: left; background: var(--bg); width: 100%; }
+.orderpick .slot.filled { border-style: solid; border-color: var(--fg); }
+.orderpick .num { font-weight: 700; width: 22px; }
+.numin { display: flex; gap: 10px; align-items: center; }
+.numin input { font: 600 20px var(--sans); width: 160px; max-width: 60%; padding: 10px; border: 1.5px solid var(--fg); border-radius: 10px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 6px; }
+.verdict { border-radius: 12px; padding: 12px 14px; margin: 14px 0 8px; scroll-margin-top: 90px; }
+.verdict h2 { margin: 0; }
+.v-right { background: var(--right-bg); border: 1.5px solid var(--right); } .v-right h2 { color: var(--right); }
+.v-wrong { background: var(--wrong-bg); border: 1.5px solid var(--wrong); } .v-wrong h2 { color: var(--wrong); }
+.v-part { background: var(--part-bg); border: 1.5px solid var(--part); } .v-part h2 { color: var(--part); }
+.why { margin: 8px 0; }
+.why b { display: block; }
+.keyidea { border-left: 3px solid var(--fg); padding-left: 12px; margin: 12px 0; }
+.ccard { border: 1.5px solid var(--fg); border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+.ccard ul { margin: 4px 0; padding-left: 20px; }
+.ccard li { margin: 3px 0; }
+.ok { color: var(--right); font-weight: 600; } .no { color: var(--wrong); font-weight: 600; }
+.rv { border-top: 1px solid var(--line); padding: 14px 0; }
+.bars .b { display: grid; grid-template-columns: minmax(90px, 30%) 1fr 52px; gap: 8px; align-items: center; margin: 6px 0; font-size: 14px; }
+.bars .track { height: 10px; background: var(--soft); border-radius: 5px; overflow: hidden; }
+.bars .fill { height: 100%; background: var(--right); }
+.bars .fill.low { background: var(--wrong); }
+.bars .pct { text-align: right; font-variant-numeric: tabular-nums; }
+.big { font: 700 44px/1 var(--serif); font-variant-numeric: tabular-nums; }
+details.fold { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 12px 0; }
+details.fold summary { cursor: pointer; font-weight: 600; }
+table.rates { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.rates th, table.rates td { text-align: left; padding: 6px 4px; border-top: 1px solid var(--line); }
+table.rates td.n { text-align: right; }
+.tblwrap { overflow-x: auto; }
+.lvl { font-weight: 700; }
+.lvl.Strong { color: var(--right); } .lvl.Weak { color: var(--wrong); }
+.readme h2 { margin-top: 0; } .readme ol { padding-left: 22px; } .readme li { margin: 5px 0; }
+.syncline { font-size: 13px; color: var(--muted); margin-top: 18px; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .think .bar i { transition: none; } }
+@media (max-width: 480px) { h1 { font-size: 24px; } .stem { font-size: 17px; } .big { font-size: 38px; } }
+</style>
+
+<header class="top"><div class="top-in"><div class="brand" id="brand">CVS Mid 2 Microbiology Drill</div><div class="hbtns" id="hbtns"></div></div></header>
+<main id="app" aria-live="polite"></main>
+<template id="readme-src"><div class="readme">
+  <h2>Read me</h2>
+  <p>This exam has two pages that work as one system: the <b>Drill</b> finds what you do not know and proves when you do, and the <b>Mastery Guide</b> teaches it again. Every fact on a Fix my misses card in the Drill is in the Guide section it links to.</p>
+
+  <h3>How to use the Drill</h3>
+  <ol>
+    <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
+    <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
+    <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
+    <li><b>Use short daily sessions.</b> Pick 20 questions or a 30-minute timed plan. Questions you just answered rest before they come back, so each session is new work.</li>
+    <li><b>Finish with the last pass.</b> It asks every question from the cases asked in class, the slide exercises and the facts flagged on slides, shakiest first.</li>
+  </ol>
+  <p class="small">Keys: 1-6 pick an option, Enter checks and moves on, S stars, G marks a guess. Progress saves on this device and, inside claude.ai, to your account so your phone, tablet and laptop share it.</p>
+
+  <h3>How to use the Mastery Guide</h3>
+  <ol>
+    <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
+    <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
+    <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
+  </ol>
+
+  <h3>How to use both together</h3>
+  <ol>
+    <li><b>Drill to find:</b> run the pre-test, then open Fix my misses to see the concepts you keep missing.</li>
+    <li><b>Guide to re-learn:</b> follow the card's "Open in the guide" link and study that section.</li>
+    <li><b>Drill to prove:</b> come back and press "Fix this". A question counts as solid only after you get it right twice in a row (three times for true/false), with rest between.</li>
+  </ol>
+</div>
+</template>
+
+<script>
+var DATA = {"cfg":{"title":"CVS Mid 2 Microbiology Drill","eyebrow":"CVS block · Mid 2 · Microbiology only · Sunday 29 November 2026","storage_key":"cvs-mid2-2026-11-29-microbiology","units":["Microbiology"],"high_roi_units":[],"last_pass_note":"The Microbiology questions taken from cases asked in class, slide exercises and facts flagged on slides with NOTE, N.B. or REMEMBER.","guide_url":"https://claude.ai/artifact/L5bjzY3LeYuJ35SDYFDkge","hub_url":"https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe","pretest_per_topic":10,"guide_title":"CVS Mid 2 Microbiology Guide"},"items":[{"id":"q0","u":"Microbiology","t":"mc","q":"A 32-year-old man presents to the emergency department with fever, fatigue, and shortness of breath for 2 weeks. He reports painful nodules on his fingertips and a new heart murmur. His past medical history is significant for intravenous drug use. Temperature 38.9°C, HR 110 bpm, BP 110/65 mmHg, RR 20/min; WBC 15,000/µL, ESR elevated; 3 sets of blood cultures show Gram-positive cocci in clusters; echocardiography shows vegetations on the tricuspid valve. Which of the following is the most likely causative organism?","o":["Staphylococcus aureus","Streptococcus viridans","Enterococcus faecalis","Haemophilus parainfluenzae"],"c":0,"w":"Intravenous drug use endocarditis mainly affects the tricuspid valve, and Staphylococcus aureus is its main cause and the most common cause of IE overall. S. aureus is a Gram-positive coccus in clusters, catalase and coagulase positive, and causes an acute, aggressive infection with rapid valve destruction. Painful finger-pad nodules are Osler nodes. (Microbiology L3 slides (infective endocarditis), in-class case)","x":{"1":"Viridans streptococci are Gram-positive cocci in CHAINS that cause subacute IE on damaged valves, often after oral sources.","2":"Enterococcus faecalis causes IE in the elderly after GU or GI procedures; it does not grow in clusters.","3":"Haemophilus is a HACEK Gram-negative bacillus, not a Gram-positive coccus."},"m":{"1":"picks viridans for any endocarditis"},"lp":true,"k":"micro-ie-types","src":"materials","kind":"Apply a fact"},{"id":"q1","u":"Microbiology","t":"mc","q":"A client with known rheumatic valve disease has had low-grade fever, malaise and weight loss for 6 weeks after a dental extraction. Which organism should the nurse suspect?","o":["Viridans group streptococci","Staphylococcus aureus","Staphylococcus epidermidis","Streptococcus bovis"],"c":0,"w":"Subacute IE progresses slowly over weeks to months, usually in people with preexisting valve disease such as rheumatic heart disease, and causes milder symptoms such as low-grade fever, malaise, chills and weight loss. It is caused by less virulent organisms: viridans streptococci (notably S. mutans) from the oral cavity, enterococci and the HACEK group. A dental procedure is a classic source of the transient bacteremia. (Microbiology L3 slides (infective endocarditis))","x":{"1":"S. aureus causes ACUTE, rapidly progressive IE, often on healthy valves.","2":"S. epidermidis is typical of prosthetic valve and device infections.","3":"S. bovis is associated with colorectal carcinoma or GI lesions, not dental sources."},"m":{"1":"mixes up acute and subacute organisms"},"lp":false,"k":"micro-ie-types","src":"materials","kind":"Recognize and interpret"},{"id":"q2","u":"Microbiology","t":"mc","q":"A client who had a prosthetic valve inserted 3 months ago develops endocarditis. Which organism is most likely?","o":["Staphylococcus epidermidis","Viridans streptococci","Streptococcus bovis","Streptococcus pneumoniae"],"c":0,"w":"Prosthetic valve endocarditis is early when it develops within 12 months of surgery, often from intraoperative contamination, and late after 12 months from community-acquired infection. It is caused mostly by Staphylococcus epidermidis and Staphylococcus aureus; S. epidermidis is closely associated with indwelling devices and catheters. (Microbiology L3 slides (infective endocarditis))","x":{"1":"Viridans streptococci cause subacute IE on damaged native valves after oral sources.","2":"S. bovis is linked to colorectal carcinoma and GI lesions.","3":"S. pneumoniae is a rare cause of IE."},"m":{"1":"picks viridans for any endocarditis"},"lp":false,"k":"micro-ie-types","src":"materials","kind":"Apply a fact"},{"id":"q3","u":"Microbiology","t":"tf","q":"A nurse states that endocarditis in clients who inject drugs mainly affects the tricuspid valve.","o":["True","False"],"c":0,"w":"True. Intravenous drug abuse endocarditis mainly affects the tricuspid valve and is caused mostly by S. aureus, Pseudomonas aeruginosa and Candida. (Microbiology L3 slides (infective endocarditis))","x":{"1":"This statement is true: IVDU endocarditis is mainly tricuspid."},"m":{},"lp":false,"k":"micro-ie-types","src":"materials","kind":"Apply a fact"},{"id":"q4","u":"Microbiology","t":"tf","q":"A nurse states that subacute infective endocarditis usually affects healthy valves and is mostly caused by Staphylococcus aureus.","o":["True","False"],"c":1,"w":"False. That describes ACUTE IE. Subacute IE usually occurs on preexisting diseased valves, progresses over weeks to months and is caused by less virulent organisms such as viridans streptococci, enterococci and HACEK. (Microbiology L3 slides (infective endocarditis))","x":{"0":"That is acute IE; subacute IE affects diseased valves with less virulent organisms."},"m":{"0":"mixes up acute and subacute IE"},"lp":false,"k":"micro-ie-types","src":"materials","kind":"Apply a fact"},{"id":"q5","u":"Microbiology","t":"mc","q":"A client's blood cultures grow Streptococcus bovis and echocardiography confirms endocarditis. Which follow-up evaluation should the nurse anticipate?","o":["Evaluation for colorectal carcinoma or another GI lesion","A dental examination for an oral source","A review of recent genitourinary procedures","Inspection of a pacemaker pocket for skin contamination"],"c":0,"w":"Streptococcus bovis endocarditis is associated with colorectal carcinoma or other gastrointestinal lesions, so finding it should prompt a search of the bowel. Viridans streptococci point to the mouth, enterococci to GU or GI procedures and staphylococci to skin and devices. (Microbiology L3 slides (infective endocarditis))","x":{"1":"An oral source is typical of viridans streptococci.","2":"GU and GI procedures are linked with Enterococcus faecalis.","3":"Skin contamination at implantation causes cardiac device IE, usually staphylococcal."},"m":{"1":"links S. bovis to the mouth"},"lp":false,"k":"micro-organisms","src":"materials","kind":"Recognize and interpret"},{"id":"q6","u":"Microbiology","t":"mc","q":"An 80-year-old client develops endocarditis two weeks after a urinary tract procedure in the hospital. Which organism should the nurse suspect?","o":["Enterococcus faecalis","Streptococcus mutans","Staphylococcus epidermidis","Kingella"],"c":0,"w":"Enterococcus faecalis is common in elderly and hospital-acquired IE and is often associated with genitourinary or gastrointestinal procedures. It adheres to the damaged valve using teichoic acid. (Microbiology L3 slides (infective endocarditis))","x":{"1":"S. mutans (viridans group) comes from the oral cavity.","2":"S. epidermidis is linked to prosthetic valves and indwelling devices.","3":"Kingella belongs to the HACEK group of pharyngeal flora."},"m":{"1":"picks viridans for any endocarditis"},"lp":false,"k":"micro-organisms","src":"materials","kind":"Recognize and interpret"},{"id":"q7","u":"Microbiology","t":"sata","q":"A client has culture-negative endocarditis and HACEK organisms are suspected. Which organisms belong to the HACEK group? Select all that apply.","o":["Haemophilus","Aggregatibacter","Cardiobacterium hominis","Eikenella corrodens","Kingella","Klebsiella","Enterococcus faecalis","Escherichia coli"],"c":[0,1,2,3,4],"w":"HACEK stands for Haemophilus, Aggregatibacter, Cardiobacterium hominis, Eikenella corrodens and Kingella. They are slow-growing, fastidious Gram-negative bacilli of the pharyngeal flora that cause subacute IE with negative blood cultures unless special media are used. (Microbiology L3 slides (infective endocarditis))","x":{"5":"Klebsiella is a rare Gram-negative cause of IE, mainly in immunocompromised clients, not a HACEK member.","6":"Enterococcus faecalis is a Gram-positive coccus, not a HACEK member.","7":"E. coli is a rare Gram-negative cause, not a HACEK member."},"m":{"5":"thinks the K in HACEK is Klebsiella","6":"thinks the E in HACEK is Enterococcus","7":"thinks the E in HACEK is E. coli"},"lp":false,"k":"micro-organisms","src":"materials","kind":"Recognize and interpret"},{"id":"q8","u":"Microbiology","t":"order","q":"A nurse explains to a client with valve disease how endocarditis develops. Arrange the steps in order.","o":["Damaged valvular endothelium","Platelets and fibrin form a sterile microthrombus","Transient bacteremia, e.g. after a dental procedure","Circulating microbes adhere to the fibrin-platelet matrix","Bacteria proliferate to form a friable vegetation","Fragments break off as septic emboli"],"c":[0,1,2,3,4,5],"w":"IE needs endothelial injury, bacteremia and microbial adherence. Damaged valvular endothelium attracts platelets and fibrin, forming a sterile microthrombus. A transient bacteremia from dental procedures, oral or skin infections, IV drug use or invasive procedures seeds the blood, and organisms adhere to the fibrin-platelet matrix. They proliferate inside it to form a vegetation of fibrin, platelets, bacteria and inflammatory cells, which is friable and can fragment into septic emboli. (Microbiology L3 slides (infective endocarditis))","x":{},"m":{},"lp":false,"k":"micro-patho","src":"materials","kind":"Teaching and statements"},{"id":"q9","u":"Microbiology","t":"cloze","q":"A nurse reviews how organisms stick to damaged heart valves. Match each organism to its adherence factor.","o":{"rows":["Staphylococcus aureus","Viridans streptococci","Enterococcus faecalis","Gram-negative bacteria"],"choices":["Clumping factor and fibronectin-binding protein","Dextran (sticky polysaccharide)","Teichoic acid","Pili","M protein cross-reacting with heart antigens"]},"c":[0,1,2,3],"w":"After a bacteremia, organisms must adhere to the fibrin-platelet matrix on the valve. S. aureus uses clumping factor and fibronectin-binding protein (protein F), viridans streptococci use dextran, a sticky polysaccharide, Enterococcus faecalis uses teichoic acid, and Gram-negative bacteria use pili. (Microbiology L3 slides (infective endocarditis))","x":{"4":"M-protein cross-reaction is the immune mechanism of rheumatic fever, not a valve adherence factor."},"m":{"4":"confuses rheumatic fever with endocarditis"},"lp":false,"k":"micro-patho","src":"materials","rs":{"0":"A client has S. aureus endocarditis. Which adherence factor lets this organism stick to the valve?","1":"A client develops viridans streptococcal endocarditis after dental work. Which adherence factor does the organism use?","2":"A client has Enterococcus faecalis endocarditis. Which adherence factor does this organism use?","3":"A client has Gram-negative bacterial endocarditis. Which structure helps the bacteria adhere?"},"kind":"Apply a fact"},{"id":"q10","u":"Microbiology","t":"sata","q":"A nurse assesses a client with suspected infective endocarditis. Which extracardiac findings are consistent with the diagnosis? Select all that apply.","o":["Splinter hemorrhages under the fingernails","Painless erythematous lesions on the palms and soles","Painful nodules on the pads of the fingers","Retinal hemorrhages","Erythema marginatum","Firm painless subcutaneous nodules on extensor surfaces","Sydenham chorea"],"c":[0,1,2,3],"w":"Septic emboli and immune-mediated injury give IE its extracardiac signs: petechiae, especially splinter hemorrhages under the nails; Janeway lesions (small, nontender, erythematous lesions on palms and soles); Osler nodes (painful nodules on finger and toe pads); and Roth spots (retinal hemorrhages). Rheumatic fever has different skin signs. (Microbiology L3 slides (infective endocarditis))","x":{"4":"Erythema marginatum is a major Jones criterion of acute rheumatic fever.","5":"Subcutaneous nodules on extensor surfaces belong to acute rheumatic fever.","6":"Sydenham chorea is a neurologic manifestation of acute rheumatic fever."},"m":{"4":"confuses rheumatic fever with endocarditis","5":"confuses rheumatic fever with endocarditis"},"lp":false,"k":"micro-signs","src":"materials","kind":"Recognize and interpret"},{"id":"q11","u":"Microbiology","t":"cloze","q":"A nurse documents the skin and eye findings of a client with endocarditis. Match each finding to its description.","o":{"rows":["Janeway lesions","Osler nodes","Roth spots","Splinter hemorrhages"],"choices":["Small, nontender, erythematous lesions on palms and soles","Painful nodules on the pads of the fingers and toes","Retinal hemorrhages","Hemorrhages underneath the fingernails","Firm painless nodules on extensor surfaces"]},"c":[0,1,2,3],"w":"The four classic extracardiac signs of IE are easy to mix up. Janeway lesions are nontender and on palms and soles; Osler nodes are painful and on finger and toe pads (\"O for ouch\"); Roth spots are in the retina; splinter hemorrhages are under the nails. (Microbiology L3 slides (infective endocarditis))","x":{"4":"These are the subcutaneous nodules of acute rheumatic fever."},"m":{"4":"confuses rheumatic fever with endocarditis"},"lp":false,"k":"micro-signs","src":"materials","rs":{"0":"A client with endocarditis has Janeway lesions. Which description should the nurse document?","1":"A client with endocarditis has Osler nodes. Which description fits?","2":"A client with endocarditis has Roth spots on eye examination. What are they?","3":"A nurse notes splinter hemorrhages in a client with endocarditis. Where are they found?"},"kind":"Recognize and interpret"},{"id":"q12","u":"Microbiology","t":"mc","q":"A client is admitted with suspected infective endocarditis and empiric antibiotics are ordered. Which action should the nurse take first?","o":["Draw three sets of blood cultures from different venipuncture sites before the first antibiotic dose.","Give the first antibiotic dose, then draw blood cultures.","Draw one set of blood cultures from the existing IV line.","Wait for the echocardiogram before drawing any cultures."],"c":0,"w":"Blood cultures are the gold standard for diagnosing IE: three sets from different venipuncture sites, taken before treatment. Empiric antibiotics start once cultures have been sampled, then switch to targeted therapy when results are available. Giving antibiotics first is a leading cause of culture-negative endocarditis. (Microbiology L3 slides (infective endocarditis), slide note (gold standard))","x":{"1":"Prior antibiotic therapy is a main cause of culture-negative endocarditis.","2":"The standard is three sets from different venipuncture sites.","3":"Blood cultures are the gold standard and are taken before treatment; empiric therapy starts once they are sampled."},"m":{"1":"gives antibiotics before cultures"},"lp":true,"k":"micro-dx-tx","src":"materials","kind":"Priority / first action"},{"id":"q13","u":"Microbiology","t":"sata","q":"A client's blood cultures stay negative despite clinical endocarditis. Which causes should the nurse consider? Select all that apply.","o":["Antibiotics given before the cultures were drawn","A fastidious organism such as Coxiella burnetii or Bartonella","A HACEK organism","A fungal infection","Infection with Staphylococcus aureus","Drawing three sets from different venipuncture sites"],"c":[0,1,2,3],"w":"Culture-negative endocarditis has three main causes: prior antibiotic therapy before cultures, fastidious bacteria (Coxiella burnetii, Bartonella, Brucella and the HACEK group), which are confirmed by serology or PCR, and fungal infection. (Microbiology L3 slides (infective endocarditis))","x":{"4":"S. aureus grows readily; it is the classic culture-positive cause.","5":"Three sets from different sites is the correct technique, not a cause of negative cultures."},"m":{"4":"thinks S. aureus is hard to culture"},"lp":false,"k":"micro-dx-tx","src":"materials","kind":"Apply a fact"},{"id":"q14","u":"Microbiology","t":"mc","q":"A client with a native valve has suspected endocarditis and blood cultures have been drawn. Which empiric regimen should the nurse anticipate?","o":["Vancomycin plus cefepime","Vancomycin plus cefepime plus gentamicin plus rifampin","Amoxicillin 30-60 minutes before the procedure","Azithromycin alone"],"c":0,"w":"Empiric therapy starts once blood cultures have been sampled. Native valve endocarditis: vancomycin plus cefepime. Prosthetic valve endocarditis: vancomycin plus cefepime plus gentamicin plus rifampin. Therapy is switched to targeted antibiotics when culture results arrive, and antithrombotic agents are part of treatment. (Microbiology L3 slides (infective endocarditis))","x":{"1":"This four-drug regimen is for PROSTHETIC valve endocarditis.","2":"Amoxicillin is a prophylaxis regimen before dental or invasive procedures.","3":"Azithromycin is a prophylaxis option for penicillin-allergic clients."},"m":{"1":"mixes up native and prosthetic valve regimens","2":"confuses prophylaxis with treatment"},"lp":false,"k":"micro-dx-tx","src":"materials","kind":"Recognize and interpret"},{"id":"q15","u":"Microbiology","t":"mc","q":"A client with a prosthetic heart valve and a penicillin allergy is scheduled for a dental extraction. Which prophylaxis should the nurse anticipate?","o":["Azithromycin 30-60 minutes before the procedure","Amoxicillin 30-60 minutes before the procedure","Vancomycin plus cefepime for several weeks","No prophylaxis, because dental procedures are low risk"],"c":0,"w":"Endocarditis prophylaxis is indicated before dental or invasive procedures in clients with high-risk cardiac features or a prosthetic valve, given 30-60 minutes before. Without penicillin allergy, amoxicillin, ampicillin or cefazolin is used; with penicillin allergy, a macrolide such as azithromycin or doxycycline. (Microbiology L3 slides (infective endocarditis))","x":{"1":"Amoxicillin is a penicillin; it is the choice only without penicillin allergy.","2":"This is empiric TREATMENT of native valve endocarditis, not prophylaxis.","3":"Prophylaxis is indicated before dental procedures in clients with a prosthetic valve."},"m":{"1":"ignores the penicillin allergy","2":"confuses prophylaxis with treatment"},"lp":false,"k":"micro-dx-tx","src":"materials","kind":"Recognize and interpret"},{"id":"q16","u":"Microbiology","t":"cloze","q":"A nurse reviews laboratory reports from clients with endocarditis. Match each organism to its identifying result.","o":{"rows":["Staphylococcus aureus","Staphylococcus epidermidis","Viridans streptococci","Streptococcus pneumoniae"],"choices":["Cocci in clusters, coagulase positive","Cocci in clusters, catalase positive, coagulase negative","Cocci in chains, alpha hemolysis, optochin resistant","Lancet-shaped diplococci, optochin sensitive, bile soluble","Cocci in chains, beta hemolysis, catalase negative"]},"c":[0,1,2,3],"w":"Staphylococci grow in clusters and are catalase positive; coagulase separates S. aureus (positive, golden colonies, beta hemolysis, mannitol fermenter) from S. epidermidis (negative). Streptococci grow in chains: viridans streptococci are alpha hemolytic, optochin resistant and bile insoluble, S. pneumoniae is alpha hemolytic but optochin sensitive and bile soluble, and S. pyogenes is beta hemolytic and catalase negative. (Microbiology L3 slides (infective endocarditis))","x":{"4":"This is Streptococcus pyogenes."},"m":{"4":"mixes up streptococcal hemolysis patterns"},"lp":false,"k":"micro-lab-id","src":"materials","rs":{"0":"A client's blood culture grows S. aureus. Which laboratory result identifies it?","1":"A client with a prosthetic valve grows S. epidermidis. Which laboratory result identifies it?","2":"A client's blood culture grows viridans streptococci. Which laboratory result identifies them?","3":"A client's culture grows Streptococcus pneumoniae. Which laboratory result identifies it?"},"kind":"Recognize and interpret"}],"concepts":{"micro-ie-types":{"title":"Infective endocarditis: classification and organisms","unit":"Microbiology","points":["IE: infection of the endocardium and its valves (native or prosthetic) with septic vegetations; left-sided in over 95% of cases.","Acute IE: rapid (hours to days), mostly healthy valves, severe symptoms; S. aureus, S. pyogenes; mitral and aortic valves.","Subacute IE: slow (weeks to months), preexisting valve disease, low-grade fever, weight loss; viridans streptococci, enterococci, HACEK.","Prosthetic valve IE: early (within 12 months, intraoperative contamination) or late; mostly S. epidermidis and S. aureus.","IV drug use IE: mainly the tricuspid valve; S. aureus, Pseudomonas aeruginosa, Candida."],"source":"Microbiology L3 slides (infective endocarditis)","items":["q0","q1","q2","q3","q4"],"sec":[{"id":"micro-ie-types","title":"Infective endocarditis: classification and organisms","key":["IE: infection of the endocardium and its valves (native or prosthetic) with septic vegetations; left-sided in over 95% of cases.","Acute IE: rapid (hours to days), mostly healthy valves, severe symptoms; S. aureus, S. pyogenes; mitral and aortic valves.","Subacute IE: slow (weeks to months), preexisting valve disease, low-grade fever, weight loss; viridans streptococci, enterococci, HACEK.","Prosthetic valve IE: early (within 12 months, intraoperative contamination) or late; mostly S. epidermidis and S. aureus.","IV drug use IE: mainly the tricuspid valve; S. aureus, Pseudomonas aeruginosa, Candida."]}]},"micro-organisms":{"title":"Specific organisms and their associations","unit":"Microbiology","points":["S. aureus: most common overall, IV drug users and healthcare-associated IE; acute, rapid valve destruction.","Streptococcus bovis is associated with colorectal carcinoma or GI lesions.","Enterococcus faecalis: elderly and hospital-acquired IE, after genitourinary or gastrointestinal procedures.","HACEK (Haemophilus, Aggregatibacter, Cardiobacterium hominis, Eikenella corrodens, Kingella): slow-growing fastidious Gram-negative bacilli of pharyngeal flora; subacute IE with negative cultures unless special media are used.","Cardiac device IE (pacemaker, ICD) usually comes from skin contamination at implantation; mostly staphylococci."],"source":"Microbiology L3 slides (infective endocarditis)","items":["q5","q6","q7"],"sec":[{"id":"micro-organisms","title":"Specific organisms and their associations","key":["S. aureus: most common overall, IV drug users and healthcare-associated IE; acute, rapid valve destruction.","Streptococcus bovis is associated with colorectal carcinoma or GI lesions.","Enterococcus faecalis: elderly and hospital-acquired IE, after genitourinary or gastrointestinal procedures.","HACEK (Haemophilus, Aggregatibacter, Cardiobacterium hominis, Eikenella corrodens, Kingella): slow-growing fastidious Gram-negative bacilli of pharyngeal flora; subacute IE with negative cultures unless special media are used.","Cardiac device IE (pacemaker, ICD) usually comes from skin contamination at implantation; mostly staphylococci."]}]},"micro-patho":{"title":"Pathophysiology of infective endocarditis","unit":"Microbiology","points":["IE needs endothelial injury, bacteremia and microbial adherence leading to vegetation formation.","Damaged valvular endothelium collects platelets and fibrin, forming a sterile microthrombus (sterile vegetation).","Adherence factors: S. aureus clumping factor and fibronectin-binding protein; viridans streptococci dextran; E. faecalis teichoic acid; Gram-negatives pili.","Vegetations contain fibrin, platelets, bacteria and inflammatory cells; they are friable and embolize, and the bacteria are protected from phagocytes and antibiotics.","Consequences: valve destruction with regurgitation and heart failure, septic emboli with infarcts or abscesses, immune complex glomerulonephritis and vasculitis."],"source":"Microbiology L3 slides (infective endocarditis)","items":["q8","q9"],"sec":[{"id":"micro-patho","title":"Pathophysiology of infective endocarditis","key":["IE needs endothelial injury, bacteremia and microbial adherence leading to vegetation formation.","Damaged valvular endothelium collects platelets and fibrin, forming a sterile microthrombus (sterile vegetation).","Adherence factors: S. aureus clumping factor and fibronectin-binding protein; viridans streptococci dextran; E. faecalis teichoic acid; Gram-negatives pili.","Vegetations contain fibrin, platelets, bacteria and inflammatory cells; they are friable and embolize, and the bacteria are protected from phagocytes and antibiotics.","Consequences: valve destruction with regurgitation and heart failure, septic emboli with infarcts or abscesses, immune complex glomerulonephritis and vasculitis."]}]},"micro-signs":{"title":"Clinical features of infective endocarditis","unit":"Microbiology","points":["Acute: high fever and sepsis. Subacute: mild fever, headache, myalgia, weight loss, night sweats. Cardiac: murmur, heart failure.","Splinter hemorrhages: petechial hemorrhages under the fingernails.","Janeway lesions: small, nontender, erythematous lesions on palms and soles. Osler nodes: painful nodules on the pads of fingers and toes.","Roth spots: retinal hemorrhages."],"source":"Microbiology L3 slides (infective endocarditis)","items":["q10","q11"],"sec":[{"id":"micro-signs","title":"Clinical features of infective endocarditis","key":["Acute: high fever and sepsis. Subacute: mild fever, headache, myalgia, weight loss, night sweats. Cardiac: murmur, heart failure.","Splinter hemorrhages: petechial hemorrhages under the fingernails.","Janeway lesions: small, nontender, erythematous lesions on palms and soles. Osler nodes: painful nodules on the pads of fingers and toes.","Roth spots: retinal hemorrhages."]}]},"micro-dx-tx":{"title":"Diagnosis, treatment and prophylaxis","unit":"Microbiology","points":["Blood cultures are the gold standard: three sets from different venipuncture sites before treatment.","Culture-negative IE: prior antibiotics, fastidious bacteria (Coxiella burnetii, Bartonella, Brucella, HACEK; confirm by serology or PCR), fungal infection.","Empiric therapy once cultures are drawn: native valve vancomycin + cefepime; prosthetic valve vancomycin + cefepime + gentamicin + rifampin; then targeted therapy.","Prophylaxis before dental or invasive procedures in high-risk clients, 30-60 minutes before: amoxicillin, ampicillin or cefazolin; if penicillin-allergic, a macrolide (azithromycin) or doxycycline."],"source":"Microbiology L3 slides (infective endocarditis)","items":["q12","q13","q14","q15"],"sec":[{"id":"micro-dx-tx","title":"Diagnosis, treatment and prophylaxis","key":["Blood cultures are the gold standard: three sets from different venipuncture sites before treatment.","Culture-negative IE: prior antibiotics, fastidious bacteria (Coxiella burnetii, Bartonella, Brucella, HACEK; confirm by serology or PCR), fungal infection.","Empiric therapy once cultures are drawn: native valve vancomycin + cefepime; prosthetic valve vancomycin + cefepime + gentamicin + rifampin; then targeted therapy.","Prophylaxis before dental or invasive procedures in high-risk clients, 30-60 minutes before: amoxicillin, ampicillin or cefazolin; if penicillin-allergic, a macrolide (azithromycin) or doxycycline."]}]},"micro-lab-id":{"title":"Laboratory identification of IE organisms","unit":"Microbiology","points":["S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.","S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.","Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.","S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.","S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble."],"source":"Microbiology L3 slides (infective endocarditis)","items":["q16"],"sec":[{"id":"micro-lab-id","title":"Laboratory identification of IE organisms","key":["S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.","S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.","Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.","S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.","S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble."]}]}}};
+</script>
+<script>
+/* drill-core.js — pure drill logic (no DOM). Inlined into the drill page by
+ * build-drill.py and loaded by simulate.js, so the simulations test the exact
+ * code the page runs.
+ *
+ * Progress state S (saved in localStorage and synced to the account):
+ *   seq        global answer counter (rest periods are counted in answers)
+ *   p[id]      {h: recent results, ls: seq at last answer, lt: time, sid: session,
+ *               t: last change, n: answers, sc: last full-question score 0..1,
+ *               lp: last answer position (string)}
+ *              h characters: R right, W wrong, P partly right, G right but guessed,
+ *              r / w single-row practice right / wrong (r never counts toward solid)
+ *   stars[id]  {on: 0|1, t}
+ *   miss[]     {q, lab, t}  every wrong pick (misconception label when one exists)
+ *   lastSid    id of the most recent session started
+ */
+(function (root) {
+  'use strict';
+  var H18 = 18 * 3600 * 1000;
+
+  function rng(seed) {
+    var a = (seed >>> 0) || 1;
+    return function () {
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  function shuffle(a, r) {
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function range(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+
+  function newState() {
+    return { v: 1, seq: 0, p: {}, stars: {}, miss: [], pre: { last: null }, tsec: { s: 0, n: 0 },
+             lc: {}, ll: -1, lastSid: null, sidN: 0, t: 0 };
+  }
+
+  /* ------------------------------------------------------------ data context */
+  function makeCtx(DATA) {
+    var D = { cfg: DATA.cfg, items: DATA.items, concepts: DATA.concepts || {}, byId: {}, hiUnits: {} };
+    DATA.items.forEach(function (it) { D.byId[it.id] = it; });
+    (DATA.cfg.high_roi_units || []).forEach(function (u) { D.hiUnits[u] = 1; });
+    return D;
+  }
+  // a question id is "q12" or a single-row variant "q12r3"
+  function parseId(qid) {
+    var m = /^(q\d+)(?:r(\d+))?$/.exec(qid);
+    return m ? { base: m[1], row: m[2] === undefined ? -1 : +m[2] } : { base: qid, row: -1 };
+  }
+  function itemOf(D, qid) {
+    var p = parseId(qid), it = D.byId[p.base];
+    if (!it || p.row < 0) return it;
+    return { id: qid, base: it.id, row: p.row, u: it.u, t: 'row', k: it.k, lp: it.lp, src: it.src, kind: it.kind,
+             q: it.rs[p.row], o: it.o.choices, c: it.c[p.row], w: it.w, x: it.x, m: it.m, parent: it };
+  }
+
+  /* ------------------------------------------------------------ status */
+  function eff(h) { return (h || '').replace(/r/g, '').replace(/w/g, 'W'); }
+  function status(it, rec) {
+    if (!rec) return 'new';
+    var e = eff(rec.h);
+    if (!e) return 'new';
+    var last = e.charAt(e.length - 1);
+    if (last !== 'R') return 'shaky';
+    var need = it.t === 'tf' ? 3 : 2;
+    return e.slice(-need) === new Array(need + 1).join('R') ? 'solid' : 'once';
+  }
+  function trailingMiss(rec) {
+    var e = eff(rec && rec.h), n = 0;
+    for (var i = e.length - 1; i >= 0 && (e[i] === 'W' || e[i] === 'P'); i--) n++;
+    return n;
+  }
+  function lastIsMiss(rec) { var e = eff(rec && rec.h); var c = e.charAt(e.length - 1); return c === 'W' || c === 'P' || c === 'G'; }
+  function isStar(S, id) { var s = S.stars[id]; return !!(s && s.on); }
+  function isHi(D, S, it) { return isStar(S, it.id) || !!it.lp || !!D.hiUnits[it.u]; }
+
+  function restLen(D, S, it, rec, n) {
+    var e = eff(rec.h), last = e.charAt(e.length - 1);
+    if (last === 'W' || last === 'P') {
+      return trailingMiss(rec) >= 2 ? clamp(Math.round(0.10 * n), 6, 25) : clamp(Math.round(0.25 * n), 10, 60);
+    }
+    if (last === 'G') return clamp(Math.round(0.25 * n), 10, 60);
+    var b = clamp(Math.round(0.7 * n), 12, 300);
+    if (status(it, rec) === 'solid') b = Math.round(b * 1.5);
+    if (isHi(D, S, it)) b = clamp(Math.round(0.4 * b), 8, 120);
+    return b;
+  }
+  function isRested(D, S, it, n, now) {
+    var rec = S.p[it.id];
+    if (!rec || !eff(rec.h)) return true;
+    if (now - rec.lt >= H18) return true;
+    return (S.seq - rec.ls) >= restLen(D, S, it, rec, n);
+  }
+  // answered in the previous session and not allowed back yet
+  function prevBlocked(D, S, it) {
+    var rec = S.p[it.id], blk = S._block !== undefined ? S._block : S.lastSid;
+    if (!rec || !blk || rec.sid !== blk) return false;
+    return !(isHi(D, S, it) || trailingMiss(rec) >= 2);
+  }
+
+  /* ------------------------------------------------------------ pools */
+  function unitItems(D, units) {
+    var set = {}; units.forEach(function (u) { set[u] = 1; });
+    return D.items.filter(function (it) { return set[it.u]; });
+  }
+  var FILTERS = {
+    missed: function (D, S, it) { return status(it, S.p[it.id]) === 'shaky'; },
+    starred: function (D, S, it) { return isStar(S, it.id); },
+    lp: function (D, S, it) { return !!it.lp; },
+    never: function (D, S, it) { return status(it, S.p[it.id]) === 'new'; }
+  };
+  function pool(D, S, units, filters, overlap) {
+    var base = unitItems(D, units), act = Object.keys(FILTERS).filter(function (f) { return filters && filters[f]; });
+    if (!act.length) return base.map(function (it) { return it.id; });
+    return base.filter(function (it) {
+      var hits = act.map(function (f) { return FILTERS[f](D, S, it); });
+      return overlap ? hits.every(Boolean) : hits.some(Boolean);
+    }).map(function (it) { return it.id; });
+  }
+  function filterCounts(D, S, units) {
+    var base = unitItems(D, units), out = {};
+    Object.keys(FILTERS).forEach(function (f) { out[f] = base.filter(function (it) { return FILTERS[f](D, S, it); }).length; });
+    return out;
+  }
+
+  /* ------------------------------------------------------------ sequencing */
+  function tfTruth(it) { return it.t === 'tf' ? (it.c === 0) : null; }
+  function tfOK(it, tfh) {
+    if (it.t !== 'tf') return true;
+    var v = tfTruth(it), n = tfh.length;
+    return !(n >= 2 && tfh[n - 1] === v && tfh[n - 2] === v);
+  }
+  // Order a list so the same topic never comes twice in a row when that is
+  // possible, the same format is avoided, and no 3 identical true/false answers
+  // run together (three true/false questions back to back with the same answer;
+  // any other question in between breaks the run). prev = {u, t, tfh} carries
+  // the state across a session; tfh holds true/false/null for the last questions.
+  function arrangeSeq(D, ids, r, prev) {
+    prev = prev || {};
+    var groups = {}, order = [], total = ids.length;
+    ids.forEach(function (id) { var it = itemOf(D, id); (groups[it.u] = groups[it.u] || []).push(id); });
+    Object.keys(groups).forEach(function (u) { shuffle(groups[u], r); });
+    var lastU = prev.u, lastT = prev.t, tfh = (prev.tfh || []).slice(), out = [];
+    while (total > 0) {
+      var units = Object.keys(groups).filter(function (u) { return groups[u].length; });
+      var cand = units.filter(function (u) { return u !== lastU; });
+      if (!cand.length) cand = units;
+      var maxU = cand[0];
+      cand.forEach(function (u) { if (groups[u].length > groups[maxU].length) maxU = u; });
+      var pick;
+      if (groups[maxU].length * 2 >= total) pick = maxU;
+      else {
+        var sum = 0; cand.forEach(function (u) { sum += groups[u].length; });
+        var x = r() * sum; pick = cand[cand.length - 1];
+        for (var i = 0; i < cand.length; i++) { x -= groups[cand[i]].length; if (x < 0) { pick = cand[i]; break; } }
+      }
+      var hasOK = function (u) { return groups[u].some(function (q) { return tfOK(itemOf(D, q), tfh); }); };
+      if (!hasOK(pick)) {
+        var alt = cand.filter(hasOK);
+        if (!alt.length) alt = units.filter(function (u) { return u !== lastU && hasOK(u); });
+        if (alt.length && !(groups[pick].length * 2 > total + 1)) pick = alt[Math.floor(r() * alt.length)];
+      }
+      var g = groups[pick], j = -1;
+      for (var k = 0; k < g.length && j < 0; k++) { var a = itemOf(D, g[k]); if (a.t !== lastT && tfOK(a, tfh)) j = k; }
+      for (k = 0; k < g.length && j < 0; k++) { if (tfOK(itemOf(D, g[k]), tfh)) j = k; }
+      if (j < 0) j = 0;
+      var id = g.splice(j, 1)[0], it = itemOf(D, id);
+      out.push(id); total--; lastU = it.u; lastT = it.t;
+      tfh.push(tfTruth(it));
+    }
+    return repairTF(D, out, prev);
+  }
+  // Moves a true/false item that would make 3 identical answers in a row to the
+  // earliest place where it breaks no rule (true/false runs, topic adjacency).
+  function tfBad(D, seq, tfh0) {
+    var tfh = tfh0.slice();
+    for (var i = 0; i < seq.length; i++) {
+      var z = itemOf(D, seq[i]);
+      if (!tfOK(z, tfh)) return i;
+      tfh.push(tfTruth(z));
+    }
+    return -1;
+  }
+  function adj(D, seq, prevU) {
+    var n = 0, last = prevU;
+    seq.forEach(function (q) { var u = itemOf(D, q).u; if (u === last) n++; last = u; });
+    return n;
+  }
+  function repairTF(D, seq, prev) {
+    var tfh0 = (prev && prev.tfh) || [], guard = 0, i;
+    while ((i = tfBad(D, seq, tfh0)) >= 0 && guard++ < 50) {
+      var base = adj(D, seq, prev && prev.u), done = false;
+      for (var slack = 0; slack <= 2 && !done; slack++) {
+        for (var k = 0; k < seq.length && !done; k++) {
+          if (k === i) continue;
+          var t = seq.slice(), x = t.splice(i, 1)[0];
+          t.splice(k, 0, x);
+          var b = tfBad(D, t, tfh0);
+          if ((b < 0 || b > i) && adj(D, t, prev && prev.u) <= base + slack) { seq = t; done = true; }
+        }
+      }
+      if (!done) break;
+    }
+    return seq;
+  }
+
+  function info(D, S, it, n, now) {
+    var rec = S.p[it.id], st = status(it, rec);
+    return { id: it.id, it: it, rec: rec, st: st, hi: isHi(D, S, it), rested: isRested(D, S, it, n, now),
+             blocked: prevBlocked(D, S, it), miss: !!rec && st === 'shaky', cons: trailingMiss(rec) >= 2,
+             lt: rec ? rec.lt : 0 };
+  }
+
+  /* limited session: up to 1/4 rested misses, up to 1/5 rested review checks,
+     then never answered (high ROI first-ish), then more rested, then recent. */
+  function buildLimited(D, S, ids, N, nTopic, r, now) {
+    var all = ids.map(function (id) { return info(D, S, D.byId[id], nTopic, now); });
+    var elig = all.filter(function (x) { return !x.blocked; });
+    var taken = {}, pick = [], counts = { miss: 0, review: 0, fresh: 0, more: 0, recent: 0, prev: 0 };
+    function take(list, max, key) {
+      for (var i = 0; i < list.length && max > 0 && pick.length < N; i++) {
+        var x = list[i]; if (taken[x.id]) continue;
+        taken[x.id] = 1; pick.push(x.id); counts[key]++; max--;
+      }
+    }
+    var misses = elig.filter(function (x) { return x.miss && x.rested; })
+      .sort(function (a, b) { return (b.cons - a.cons) || (a.lt - b.lt); });
+    var rights = elig.filter(function (x) { return x.rec && !x.miss && x.st !== 'new' && x.rested; })
+      .sort(function (a, b) { return (b.hi - a.hi) || (a.lt - b.lt); });
+    var fresh = shuffle(elig.filter(function (x) { return x.st === 'new'; }), r)
+      .map(function (x) { return { x: x, k: r() - (x.hi ? 0.5 : 0) }; })
+      .sort(function (a, b) { return a.k - b.k; }).map(function (o) { return o.x; });
+    take(misses, Math.floor(N / 4), 'miss');
+    take(rights, Math.floor(N / 5), 'review');
+    take(fresh, N, 'fresh');
+    take(misses.concat(rights).sort(function (a, b) { return a.lt - b.lt; }), N, 'more');
+    var note = null;
+    if (pick.length < N) {
+      var recent = elig.filter(function (x) { return !taken[x.id]; }).sort(function (a, b) { return a.lt - b.lt; });
+      if (recent.length) { take(recent, N, 'recent'); note = 'recent'; }
+    }
+    if (pick.length < N) {
+      var blocked = all.filter(function (x) { return x.blocked && !taken[x.id]; }).sort(function (a, b) { return a.lt - b.lt; });
+      if (blocked.length) { take(blocked, N, 'prev'); note = 'prev'; }
+    }
+    return { ids: arrangeSeq(D, pick, r, { tfh: S.tfh || [] }), counts: counts, note: note };
+  }
+
+  function nextEndless(D, S, ids, nTopic, r, now, recent, prev) {
+    prev = prev || {};
+    var rec5 = {}; (recent || []).slice(-5).forEach(function (q) { rec5[parseId(q).base] = 1; });
+    var all = ids.map(function (id) { return info(D, S, D.byId[id], nTopic, now); })
+      .filter(function (x) { return !rec5[x.id]; });
+    var cand = all.filter(function (x) { return x.rested && !x.blocked; });
+    if (!cand.length) cand = all.slice().sort(function (a, b) { return a.lt - b.lt; }).slice(0, 10);
+    if (!cand.length) return null;
+    var tfh = prev.tfh || [], ws = cand.map(function (x) {
+      var w = (x.miss ? 3 : 1) * (x.hi ? 1.5 : 1);
+      if (x.it.u === prev.u) w *= 0.15;
+      if (x.it.t === prev.t) w *= 0.4;
+      if (!tfOK(x.it, tfh)) w *= 0.02;
+      return w;
+    });
+    var sum = ws.reduce(function (a, b) { return a + b; }, 0), y = r() * sum;
+    for (var i = 0; i < cand.length; i++) { y -= ws[i]; if (y < 0) return cand[i].id; }
+    return cand[cand.length - 1].id;
+  }
+
+  var ST_RANK = { shaky: 0, 'new': 1, once: 2, solid: 3 };
+  function buildLastPass(D, S, only20, r) {
+    var lp = D.items.filter(function (it) { return it.lp; });
+    var groups = [[], [], [], []];
+    lp.forEach(function (it) { groups[ST_RANK[status(it, S.p[it.id])]].push(it.id); });
+    var out = [], prev = { tfh: S.tfh || [] };
+    groups.forEach(function (g) {
+      var s = arrangeSeq(D, g, r, prev);
+      out = out.concat(s);
+      var tfh = prev.tfh.slice();
+      s.forEach(function (q) { tfh.push(tfTruth(itemOf(D, q))); });
+      if (s.length) { var it = itemOf(D, s[s.length - 1]); prev = { u: it.u, t: it.t, tfh: tfh }; }
+    });
+    return only20 ? out.slice(0, 20) : out;
+  }
+  function statusCounts(D, S, ids) {
+    var c = { solid: 0, once: 0, shaky: 0, 'new': 0 };
+    ids.forEach(function (id) { var it = D.byId[id]; c[status(it, S.p[id])]++; });
+    return c;
+  }
+
+  /* ------------------------------------------------------------ levels and pre-test */
+  function lastScore(rec) {
+    var e = eff(rec && rec.h); if (!e) return null;
+    var c = e.charAt(e.length - 1);
+    if (c === 'R' || c === 'G') return 1;
+    if (c === 'P') return typeof rec.sc === 'number' ? rec.sc : 0.5;
+    return 0;
+  }
+  function topicLevels(D, S) {
+    var out = {};
+    D.cfg.units.forEach(function (u) {
+      var sc = [];
+      D.items.forEach(function (it) { if (it.u === u) { var s = lastScore(S.p[it.id]); if (s !== null) sc.push(s); } });
+      if (!sc.length) { out[u] = { pct: null, n: 0, level: null }; return; }
+      var pct = Math.round(100 * sc.reduce(function (a, b) { return a + b; }, 0) / sc.length);
+      out[u] = { pct: pct, n: sc.length, level: pct >= 80 ? 'Strong' : pct >= 60 ? 'Okay' : 'Weak' };
+    });
+    return out;
+  }
+  function buildPretest(D, S, r) {
+    var units = D.cfg.units.slice(), k = D.cfg.pretest_per_topic || (units.length > 10 ? 2 : 3);
+    var hasStar = {}; D.items.forEach(function (it) { if (isStar(S, it.id)) hasStar[it.u] = 1; });
+    units.sort(function (a, b) {
+      return ((D.hiUnits[b] ? 2 : 0) + (hasStar[b] ? 1 : 0)) - ((D.hiUnits[a] ? 2 : 0) + (hasStar[a] ? 1 : 0))
+        || D.cfg.units.indexOf(a) - D.cfg.units.indexOf(b);
+    });
+    var picks = {};
+    units.forEach(function (u) {
+      var cand = shuffle(D.items.filter(function (it) { return it.u === u && !it.lp; }), r)
+        .sort(function (a, b) {
+          return (isStar(S, b.id) - isStar(S, a.id)) ||
+                 ((status(a, S.p[a.id]) === 'new' ? 0 : 1) - (status(b, S.p[b.id]) === 'new' ? 0 : 1));
+        });
+      var chosen = [], types = {};
+      var cons = {};
+      cand.forEach(function (it) { if (chosen.length < k && !types[it.t] && !cons[it.k]) { chosen.push(it.id); types[it.t] = 1; cons[it.k] = 1; } });
+      cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0 && !cons[it.k]) { chosen.push(it.id); cons[it.k] = 1; } });
+      cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0) chosen.push(it.id); });
+      picks[u] = chosen;
+    });
+    var out = [];
+    for (var i = 0; i < k; i++) units.forEach(function (u) { if (picks[u][i]) out.push(picks[u][i]); });
+    var tfh = (S.tfh || []).slice(), bad = false;
+    out.forEach(function (q) { var z = D.byId[q]; if (!tfOK(z, tfh)) bad = true; tfh.push(tfTruth(z)); });
+    return bad ? arrangeSeq(D, out, r, { tfh: S.tfh || [] }) : out;
+  }
+
+  /* ------------------------------------------------------------ timed mixed plan */
+  function avgSec(S) { return S.tsec && S.tsec.n >= 3 ? S.tsec.s / S.tsec.n : 45; }
+  function buildTimed(D, S, units, minutes, r, now) {
+    var avg = avgSec(S), count = Math.max(5, Math.floor(minutes * 60 / avg));
+    var items = unitItems(D, units), nTopic = items.length;
+    var inf = items.map(function (it) { return info(D, S, it, nTopic, now); }).filter(function (x) { return !x.blocked; });
+    count = Math.min(count, inf.length);
+    var lv = topicLevels(D, S), shaky = {}, tot = {};
+    inf.forEach(function (x) { tot[x.it.u] = (tot[x.it.u] || 0) + 1; if (x.miss) shaky[x.it.u] = (shaky[x.it.u] || 0) + 1; });
+    function weakScore(u) {
+      var p = lv[u] && lv[u].pct !== null ? lv[u].pct : 70;
+      return p - 40 * ((shaky[u] || 0) / (tot[u] || 1));
+    }
+    var ranked = units.filter(function (u) { return tot[u]; }).sort(function (a, b) { return weakScore(a) - weakScore(b); });
+    var weak = ranked.filter(function (u) { return (lv[u] && lv[u].level && lv[u].level !== 'Strong') || shaky[u]; }).slice(0, 3);
+    if (weak.length < Math.min(2, ranked.length)) weak = ranked.slice(0, Math.min(2, ranked.length));
+    var cap = units.length > 1 ? Math.ceil(count / 2) : count, perU = {}, taken = {}, pick = [], mix = { weak: 0, review: 0, fresh: 0, fill: 0 };
+    function ok(x) { return !taken[x.id] && (perU[x.it.u] || 0) < cap; }
+    function add(x, key) { taken[x.id] = 1; perU[x.it.u] = (perU[x.it.u] || 0) + 1; pick.push(x.id); mix[key]++; }
+    var nW = Math.round(0.5 * count), nR = Math.round(0.3 * count), nN = count - nW - nR;
+    // weak topics: shaky first, then never answered, then right once, then the rest; spread round-robin
+    var wl = {};
+    weak.forEach(function (u) {
+      wl[u] = shuffle(inf.filter(function (x) { return x.it.u === u; }), r).sort(function (a, b) {
+        function rank(x) { return x.miss ? (x.rested ? 0 : 1) : x.st === 'new' ? 2 : x.st === 'once' ? 3 : x.rested ? 4 : 5; }
+        return rank(a) - rank(b);
+      });
+    });
+    var guard = 0;
+    while (mix.weak < nW && guard++ < 5000) {
+      var moved = false;
+      weak.forEach(function (u) {
+        if (mix.weak >= nW) return;
+        while (wl[u].length && !ok(wl[u][0])) wl[u].shift();
+        if (wl[u].length) { add(wl[u].shift(), 'weak'); moved = true; }
+      });
+      if (!moved) break;
+    }
+    var review = inf.filter(function (x) { return x.rested && x.rec && x.st !== 'new'; })
+      .sort(function (a, b) { return (b.miss - a.miss) || (b.cons - a.cons) || (b.hi - a.hi) || (a.lt - b.lt); });
+    review.forEach(function (x) { if (mix.review < nR && ok(x)) add(x, 'review'); });
+    var fresh = shuffle(inf.filter(function (x) { return x.st === 'new' || x.st === 'once'; }), r)
+      .sort(function (a, b) { return (a.st === 'new' ? 0 : 1) - (b.st === 'new' ? 0 : 1); });
+    fresh.forEach(function (x) { if (mix.fresh < nN && ok(x)) add(x, 'fresh'); });
+    if (pick.length < count) {
+      var rest = inf.filter(function (x) { return !taken[x.id]; }).sort(function (a, b) { return (b.rested - a.rested) || (a.lt - b.lt); });
+      rest.forEach(function (x) { if (pick.length < count && ok(x)) add(x, 'fill'); });
+    }
+    return { ids: arrangeSeq(D, pick, r, { tfh: S.tfh || [] }), mix: mix, weak: weak, avg: avg, count: pick.length };
+  }
+
+  /* ------------------------------------------------------------ fix my misses */
+  function conceptMembers(D, cid) {
+    var c = D.concepts[cid]; if (!c) return [];
+    var out = c.items.slice();
+    c.items.forEach(function (id) { var it = D.byId[id]; if (it.t === 'cloze' && it.rs) Object.keys(it.rs).forEach(function (k) { out.push(id + 'r' + k); }); });
+    return out;
+  }
+  function followUp(D, S, missedId, used, r) {
+    var it = itemOf(D, missedId), cid = it && it.k; if (!cid) return null;
+    var base = parseId(missedId).base, usedB = {};
+    Object.keys(used).forEach(function (q) { usedB[q] = 1; usedB[parseId(q).base] = 1; });
+    var cand = conceptMembers(D, cid).filter(function (q) { var b = parseId(q).base; return b !== base && !usedB[q] && !usedB[b]; });
+    if (!cand.length) return null;
+    var full = cand.filter(function (q) { return parseId(q).row < 0; });
+    var list = full.length ? full : cand;
+    return list[Math.floor(r() * list.length)];
+  }
+
+  /* ------------------------------------------------------------ option arrangement */
+  function nOpts(it) { return it.t === 'tf' ? 2 : it.o.length; }
+  function arrange(D, S, qid, r) {
+    var it = itemOf(D, qid), rec = S.p[parseId(qid).base] || {}, t = it.t;
+    if (t === 'tf') return { perm: [0, 1] };
+    if (it.num) return { perm: null };
+    if (t === 'mc' || t === 'fill' || t === 'row') {
+      var n = it.o.length, key = 'n' + n, lc = S.lc[key] = S.lc[key] || range(n).map(function () { return 0; });
+      var allowed = range(n).filter(function (k) { return k !== S.ll && String(k) !== String(rec.lp); });
+      if (!allowed.length) allowed = range(n).filter(function (k) { return k !== S.ll; });
+      var min = Math.min.apply(null, allowed.map(function (k) { return lc[k]; }));
+      var best = allowed.filter(function (k) { return lc[k] === min; });
+      var target = best[Math.floor(r() * best.length)];
+      var others = shuffle(range(n).filter(function (k) { return k !== it.c; }), r), perm = [];
+      for (var i = 0, j = 0; i < n; i++) perm.push(i === target ? it.c : others[j++]);
+      lc[target]++; S.ll = target;
+      return { perm: perm, pos: String(target) };
+    }
+    if (t === 'sata') {
+      var p, sig, tries = 0;
+      do { p = shuffle(range(it.o.length), r); sig = p.map(function (o, i) { return it.c.indexOf(o) >= 0 ? i : -1; }).filter(function (x) { return x >= 0; }).join(','); }
+      while (sig === rec.lp && tries++ < 12);
+      return { perm: p, pos: sig };
+    }
+    if (t === 'order') {
+      var q, tries2 = 0;
+      do { q = shuffle(range(it.o.length), r); } while ((q.join() === range(it.o.length).join() || q.join() === rec.lp) && tries2++ < 20);
+      return { perm: q, pos: q.join() };
+    }
+    if (t === 'cloze') {
+      var ch = it.o.choices.length, cp, tries3 = 0, posSig;
+      do {
+        cp = shuffle(range(ch), r);
+        var pos = it.c.map(function (c) { return cp.indexOf(c); });
+        posSig = pos.join(',');
+        var allSame = pos.every(function (x) { return x === pos[0]; });
+      } while ((allSame || posSig === rec.lp) && tries3++ < 20);
+      return { perm: cp, pos: posSig };
+    }
+    if (t === 'blanks') {
+      var bp, tries4 = 0, bs;
+      do {
+        bp = it.o.map(function (opts) { return shuffle(range(opts.length), r); });
+        var bpos = bp.map(function (pp, b) { return pp.indexOf(it.c[b]); });
+        bs = bpos.join(',');
+        var same = bpos.length > 1 && bpos.every(function (x) { return x === bpos[0]; });
+      } while ((same || bs === rec.lp) && tries4++ < 30);
+      return { perm: bp, pos: bs };
+    }
+    return { perm: null };
+  }
+
+  /* ------------------------------------------------------------ grading */
+  function parseNum(s) {
+    s = String(s || '').trim().replace(/,/g, '').replace(/[a-z%/]+\s*$/i, function (m) { return /\d\/\d/.test(m) ? m : ''; }).trim();
+    var m;
+    if ((m = /^(-?\d+)\s+(\d+)\/(\d+)$/.exec(s))) return +m[1] + (+m[2]) / (+m[3]);
+    if ((m = /^(-?\d+)\/(\d+)$/.exec(s))) return (+m[1]) / (+m[2]);
+    if (/^-?(\d+\.?\d*|\.\d+)$/.test(s)) return parseFloat(s);
+    return NaN;
+  }
+  function grade(D, qid, perm, pick) {
+    var it = itemOf(D, qid), t = it.t;
+    if (it.num) {
+      var raw = String(pick || '').trim(), v = parseNum(raw), ans = it.num.answer;
+      var okv = !isNaN(v) && Math.abs(v - ans) <= 1e-6 * Math.max(1, Math.abs(ans));
+      var notes = [];
+      if (/^\.\d/.test(raw)) notes.push('Leading zero missing: write 0' + raw + ', never ' + raw + '.');
+      if (/\.\d*0$/.test(raw) && /\./.test(raw)) notes.push('Trailing zero: write ' + String(parseFloat(raw)) + ', not ' + raw + '.');
+      var near = null;
+      if (!okv && it.num.near) Object.keys(it.num.near).forEach(function (k) { if (!isNaN(v) && Math.abs(parseNum(k) - v) <= 1e-6 * Math.max(1, Math.abs(v))) near = it.num.near[k]; });
+      var acc = null; if (okv && it.num.accept && it.num.accept[raw]) acc = it.num.accept[raw];
+      return { sc: okv ? 1 : 0, full: okv, max: 1, right: okv ? 1 : 0, wrong: okv ? 0 : 1, notes: notes, near: near, accept: acc, value: v };
+    }
+    if (t === 'mc' || t === 'fill' || t === 'row' || t === 'tf') {
+      var o = pick === null || pick === undefined || pick < 0 ? -1 : perm[pick];
+      var f = o === it.c;
+      return { sc: f ? 1 : 0, full: f, max: 1, right: f ? 1 : 0, wrong: f ? 0 : 1, orig: o };
+    }
+    if (t === 'sata') {
+      var origs = (pick || []).map(function (d) { return perm[d]; });
+      var right = origs.filter(function (o) { return it.c.indexOf(o) >= 0; }).length, wrong = origs.length - right;
+      var score = Math.max(0, right - wrong);
+      return { sc: score / it.c.length, full: right === it.c.length && wrong === 0, max: it.c.length, right: right, wrong: wrong, score: score, origs: origs };
+    }
+    if (t === 'order') {
+      var seq = pick || [], fo = seq.length === it.o.length && seq.every(function (x, i) { return x === i; });
+      var inPlace = seq.filter(function (x, i) { return x === i; }).length;
+      return { sc: fo ? 1 : 0, full: fo, max: 1, right: fo ? 1 : 0, wrong: fo ? 0 : 1, inPlace: inPlace };
+    }
+    if (t === 'cloze' || t === 'blanks') {
+      var rows = it.c.length, okr = 0, origs2 = [];
+      for (var i = 0; i < rows; i++) {
+        var d = pick && pick[i] !== undefined ? pick[i] : -1;
+        var oo = d < 0 ? -1 : (t === 'cloze' ? perm[d] : perm[i][d]);
+        origs2.push(oo); if (oo === it.c[i]) okr++;
+      }
+      return { sc: okr / rows, full: okr === rows, max: rows, right: okr, wrong: rows - okr, score: okr, origs: origs2 };
+    }
+    return { sc: 0, full: false, max: 1, right: 0, wrong: 1 };
+  }
+  function missLabels(D, qid, res) {
+    var it = itemOf(D, qid), m = it.m || {}, out = [];
+    if (it.num) return out;
+    if (it.t === 'mc' || it.t === 'fill' || it.t === 'tf' || it.t === 'row') { if (m[res.orig]) out.push(m[res.orig]); }
+    else if (it.t === 'sata') (res.origs || []).forEach(function (o) { if (it.c.indexOf(o) < 0 && m[o]) out.push(m[o]); });
+    else if (it.t === 'cloze') (res.origs || []).forEach(function (o, i) { if (o >= 0 && o !== it.c[i] && m[o]) out.push(m[o]); });
+    else if (it.t === 'blanks') (res.origs || []).forEach(function (o, i) { var k = i + ':' + o; if (o >= 0 && o !== it.c[i] && m[k]) out.push(m[k]); });
+    return out;
+  }
+
+  /* ------------------------------------------------------------ recording */
+  function record(D, S, qid, res, sid, now, secs, pos) {
+    var p = parseId(qid), rec = S.p[p.base] = S.p[p.base] || { h: '', ls: 0, lt: 0, sid: null, t: 0, n: 0 };
+    var ch = p.row >= 0 ? (res.full ? 'r' : 'w') : (res.full ? 'R' : (res.sc > 0 ? 'P' : 'W'));
+    rec.h = (rec.h + ch).slice(-12);
+    S.seq++; rec.ls = S.seq; rec.lt = now; rec.sid = sid; rec.t = now; rec.n = (rec.n || 0) + 1;
+    if (p.row < 0) rec.sc = Math.round(res.sc * 100) / 100;
+    var itm = itemOf(D, qid);
+    if (itm) S.tfh = (S.tfh || []).concat([tfTruth(itm)]).slice(-2);
+    if (pos !== undefined && pos !== null) rec.lp = pos;
+    if (secs > 1 && secs < 600) { S.tsec.s += secs; S.tsec.n++; }
+    if (!res.full) {
+      var labs = missLabels(D, qid, res);
+      S.miss.push({ q: qid, lab: labs.join('; '), t: now });
+      if (S.miss.length > 400) S.miss = S.miss.slice(-400);
+    }
+    S.t = now;
+    return rec;
+  }
+  function markGuessed(S, qid, now) {
+    var rec = S.p[parseId(qid).base];
+    if (rec && /R$/.test(rec.h)) { rec.h = rec.h.slice(0, -1) + 'G'; rec.t = now; }
+  }
+
+  /* ------------------------------------------------------------ merge (sync) */
+  function merge(A, B) {
+    if (!B) return A;
+    var out = JSON.parse(JSON.stringify(A));
+    Object.keys(B.p || {}).forEach(function (id) {
+      var a = out.p[id], b = B.p[id];
+      if (!a || (b.lt || 0) > (a.lt || 0) || ((b.lt || 0) === (a.lt || 0) && (b.t || 0) > (a.t || 0))) out.p[id] = b;
+    });
+    Object.keys(B.stars || {}).forEach(function (id) {
+      var a = out.stars[id], b = B.stars[id];
+      if (!a || (b.t || 0) > (a.t || 0)) out.stars[id] = b;
+    });
+    var seen = {}, mm = [];
+    (out.miss || []).concat(B.miss || []).forEach(function (m) { var k = m.q + '@' + m.t; if (!seen[k]) { seen[k] = 1; mm.push(m); } });
+    out.miss = mm.sort(function (a, b) { return a.t - b.t; }).slice(-400);
+    if (B.pre && B.pre.last && (!out.pre.last || B.pre.last.t > out.pre.last.t)) out.pre.last = B.pre.last;
+    out.seq = Math.max(out.seq || 0, B.seq || 0);
+    if (B.tsec && B.tsec.n > (out.tsec.n || 0)) out.tsec = B.tsec;
+    if ((B.sidN || 0) > (out.sidN || 0)) { out.sidN = B.sidN; }
+    if ((B.t || 0) > (out.t || 0)) { out.lastSid = B.lastSid || out.lastSid; out.t = B.t; }
+    return out;
+  }
+
+  var Core = { rng: rng, shuffle: shuffle, clamp: clamp, newState: newState, makeCtx: makeCtx, parseId: parseId, itemOf: itemOf,
+    eff: eff, status: status, trailingMiss: trailingMiss, lastIsMiss: lastIsMiss, isHi: isHi, isStar: isStar, restLen: restLen,
+    isRested: isRested, prevBlocked: prevBlocked, unitItems: unitItems, pool: pool, filterCounts: filterCounts,
+    arrangeSeq: arrangeSeq, buildLimited: buildLimited, nextEndless: nextEndless, buildLastPass: buildLastPass,
+    statusCounts: statusCounts, topicLevels: topicLevels, buildPretest: buildPretest, buildTimed: buildTimed, avgSec: avgSec,
+    conceptMembers: conceptMembers, followUp: followUp, arrange: arrange, parseNum: parseNum, grade: grade,
+    missLabels: missLabels, record: record, markGuessed: markGuessed, merge: merge, tfOK: tfOK, H18: H18 };
+  if (typeof module !== 'undefined' && module.exports) module.exports = Core; else root.Core = Core;
+})(this);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var D = Core.makeCtx(DATA), CFG = DATA.cfg, KEY = CFG.storage_key, UNITS = CFG.units;
+  var LET = 'ABCDEF';
+  var app = document.getElementById('app'), hb = document.getElementById('hbtns');
+  var R = Core.rng((Date.now() ^ (Math.random() * 1e9)) >>> 0);
+
+  /* ------------------------------------------------------------ storage */
+  function lsGet(k) { try { var v = localStorage.getItem(KEY + ':' + k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function lsSet(k, v) { try { if (v === null) localStorage.removeItem(KEY + ':' + k); else localStorage.setItem(KEY + ':' + k, JSON.stringify(v)); } catch (e) {} }
+  var S = lsGet('p') || Core.newState();
+  ['p', 'stars', 'tsec', 'lc', 'pre'].forEach(function (k) { if (!S[k]) S[k] = Core.newState()[k]; });
+  if (!S.miss) S.miss = [];
+  var SESS = lsGet('s');
+  var UI = lsGet('ui') || {};
+  if (!UI.units) UI.units = UNITS.slice();
+  UI.units = UI.units.filter(function (u) { return UNITS.indexOf(u) >= 0; });
+  if (!UI.filters) UI.filters = {};
+  if (!UI.len) UI.len = '20';
+  if (UI.think === undefined) UI.think = true;
+  if (!UI.custom) UI.custom = 25;
+  if (!UI.seed) UI.seed = (Math.random() * 1e9) >>> 0;
+  var DEV = lsGet('dev') || ('d' + Math.random().toString(36).slice(2, 10)); lsSet('dev', DEV);
+  var LASTRES = lsGet('lastres');
+  var dirty = {}, dirtyMiss = false, dirtyStars = {};
+
+  function saveLocal() { var c = Object.assign({}, S); delete c._block; lsSet('p', c); lsSet('s', SESS); lsSet('ui', UI); }
+  function now() { return Date.now(); }
+
+  /* ------------------------------------------------------------ helpers */
+  function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function it(q) { return Core.itemOf(D, q); }
+  function unitsOn() { return UI.units.length ? UI.units : UNITS.slice(); }
+  function plural(n, a, b) { return n + ' ' + (n === 1 ? a : (b || a + 's')); }
+  function listText(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  function nTopic(units) { return Core.unitItems(D, units).length; }
+  function fmtDate(t) { try { return new Date(t).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); } catch (e) { return ''; } }
+  function topOfPage() { window.scrollTo(0, 0); }
+  function scrollUnderHeader(el) {
+    var hh = document.querySelector('header.top').offsetHeight;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - hh - 8;
+    window.scrollTo(0, Math.max(0, y));
+  }
+  function statusBar(c) {
+    var t = c.solid + c.once + c.shaky + c['new'] || 1;
+    function seg(k, cls) { return c[k] ? '<i class="' + cls + '" style="width:' + (100 * c[k] / t) + '%"></i>' : ''; }
+    return '<div class="sbar" role="img" aria-label="status">' + seg('solid', 's-solid') + seg('once', 's-once') + seg('shaky', 's-shaky') + seg('new', 's-new') + '</div>' +
+      '<div class="legend"><span style="--c:var(--right)">solid ' + c.solid + '</span><span style="--c:var(--right-soft)">right once ' + c.once +
+      '</span><span style="--c:var(--wrong)">shaky ' + c.shaky + '</span><span style="--c:#d5d8dc">not answered yet ' + c['new'] + '</span></div>';
+  }
+  function header(opts) {
+    opts = opts || {};
+    var b = '';
+    if (opts.clock) b += '<span class="clock" id="clock"></span>';
+    if (!opts.main) b += '<button class="btn small" data-act="home">Main screen</button>';
+    if (opts.main) b += '<button class="btn small ghost" data-act="fix">Fix my misses</button>';
+    b += '<button class="btn small ghost" data-act="readme">Read me</button>';
+    hb.innerHTML = b;
+  }
+
+  /* ------------------------------------------------------------ account sync (claude.ai db + user) */
+  var SY = { ref: null, busy: false, again: false, wv: 0, state: 'local' };
+  function sessStr() { return SESS ? JSON.stringify(SESS) : ''; }
+  function meta() { return { seq: S.seq, tsec: S.tsec, lastSid: S.lastSid || null, sidN: S.sidN || 0, t: S.t || 0 }; }
+  function fullDoc() {
+    return { p: S.p, stars: S.stars, miss: S.miss, pre: S.pre, meta: meta(), sess: sessStr(), sessT: SESS ? (SESS.t || 0) : now(), dev: DEV, wv: ++SY.wv };
+  }
+  function push(full) {
+    if (!SY.ref) return;
+    if (SY.busy) { SY.again = SY.again || (full ? 'full' : true); return; }
+    SY.busy = true;
+    var doc;
+    if (full) doc = fullDoc();
+    else {
+      var p = {}, st = {};
+      Object.keys(dirty).forEach(function (id) { if (S.p[id]) p[id] = S.p[id]; });
+      Object.keys(dirtyStars).forEach(function (id) { if (S.stars[id]) st[id] = S.stars[id]; });
+      doc = { meta: meta(), sess: sessStr(), sessT: SESS ? (SESS.t || 0) : now(), dev: DEV, wv: ++SY.wv };
+      if (Object.keys(p).length) doc.p = p;
+      if (Object.keys(st).length) doc.stars = st;
+      if (dirtyMiss) doc.miss = S.miss;
+      doc.pre = S.pre;
+    }
+    dirty = {}; dirtyStars = {}; dirtyMiss = false;
+    var pr = full ? SY.ref.set(doc) : SY.ref.update(doc);
+    pr.then(function () { SY.state = 'synced'; syncLine(); })
+      .catch(function () { SY.state = 'error'; syncLine(); })
+      .then(function () { SY.busy = false; if (SY.again) { var f = SY.again === 'full'; SY.again = false; push(f); } });
+  }
+  function mergeRemote(d) {
+    if (!d) return;
+    var m = d.meta || {};
+    var Rm = { p: d.p || {}, stars: d.stars || {}, miss: d.miss || [], pre: d.pre || { last: null }, seq: m.seq || 0,
+               tsec: m.tsec || { s: 0, n: 0 }, lastSid: m.lastSid || null, sidN: m.sidN || 0, t: m.t || 0 };
+    var keep = { lc: S.lc, ll: S.ll };
+    S = Core.merge(S, Rm); S.lc = keep.lc; S.ll = keep.ll;
+    var lt = SESS ? (SESS.t || 0) : 0;
+    if ((d.sessT || 0) > lt) {
+      if (d.sess) { try { SESS = JSON.parse(d.sess); } catch (e) {} }
+      else if (SESS) SESS = null;
+    }
+    saveLocal();
+  }
+  function syncLine() {
+    var el = document.getElementById('syncline'); if (!el) return;
+    el.textContent = SY.state === 'synced' ? 'Progress, stars and misses sync to your account.' :
+      SY.state === 'error' ? 'Could not reach your account just now; progress is saved on this device.' :
+      'Progress is saved on this device.';
+  }
+  function initSync() {
+    if (!window.claude || typeof window.claude.use !== 'function') return;
+    Promise.all([window.claude.use('db'), window.claude.use('user')]).then(function (r) {
+      var db = r[0], user = r[1];
+      if (!db || !user) return null;
+      return user.id().then(function (uid) {
+        if (!uid) return null;
+        SY.ref = db.doc('data/users/' + uid + '/' + KEY);
+        var timer = setTimeout(function () { SY.state = 'error'; syncLine(); }, 10000);
+        return SY.ref.get().then(function (snap) {
+          clearTimeout(timer);
+          if (snap.exists) mergeRemote(snap.data());
+          push(true);
+          SY.ref.onSnapshot(function (s) {
+            if (!s.exists || s.metadata.hasPendingWrites) return;
+            var d = s.data();
+            if (d.dev === DEV) return;
+            mergeRemote(d);
+            if (screen === 'main' || screen === 'fix') render();
+          }, function () {});
+          if (screen === 'main') render();
+        });
+      });
+    }).catch(function () { SY.state = 'error'; syncLine(); });
+  }
+  function syncSoon() { saveLocal(); push(false); }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') syncSoon(); });
+  window.addEventListener('pagehide', syncSoon);
+
+  /* ------------------------------------------------------------ screens */
+  var screen = 'main', thinkTimer = null, clockTimer = null;
+  function render() {
+    clearInterval(thinkTimer);
+    if (screen === 'main') return renderMain();
+    if (screen === 'q') return renderQuestion();
+    if (screen === 'review') return renderReview();
+    if (screen === 'submit') return renderSubmit();
+    if (screen === 'results') return renderResults();
+    if (screen === 'fix') return renderFix();
+    if (screen === 'readme') return renderReadme();
+  }
+  function go(s) { screen = s; render(); topOfPage(); }
+
+  /* ---------------- main */
+  function lenValue() { return UI.len === 'custom' ? Math.max(5, Math.min(500, +UI.custom || 25)) : UI.len; }
+  function previewLimited(N) {
+    var units = unitsOn(), ids = Core.pool(D, S, units, UI.filters, UI.overlap);
+    return { plan: Core.buildLimited(D, S, ids, Math.min(N, ids.length), nTopic(units), Core.rng(UI.seed), now()), poolN: ids.length, units: units };
+  }
+  function describe() {
+    var units = unitsOn(), L = lenValue(), uTxt = units.length === UNITS.length && UNITS.length > 1 ? 'all topics' : listText(units);
+    var act = Object.keys(UI.filters).filter(function (k) { return UI.filters[k]; });
+    var fTxt = act.length ? ' (' + (act.length > 1 ? (UI.overlap ? 'only the overlap of ' : 'mixed: ') : '') +
+      act.map(function (k) { return { missed: 'missed', starred: 'starred', lp: 'last pass', never: 'never practiced' }[k]; }).join(act.length > 1 && UI.overlap ? ' and ' : ' + ') + ')' : '';
+    if (L === 'endless') return 'Endless: rested questions from ' + uTxt + fTxt + ', weighted toward your misses, with high-ROI questions 1.5 times as likely. Stop whenever you like.';
+    if (L === '30m' || L === '45m') {
+      var mins = L === '30m' ? 30 : 45, t = Core.buildTimed(D, S, units, mins, Core.rng(UI.seed), now());
+      var per = {}; t.ids.forEach(function (q) { var u = it(q).u; if (t.weak.indexOf(u) >= 0) per[u] = (per[u] || 0) + 1; });
+      return 'Timed mixed plan: about ' + t.count + ' questions in ' + mins + ' min (' + Math.round(t.avg) + ' s each' + (S.tsec.n >= 3 ? ', from your history' : ' until there is history') + '). ' +
+        t.mix.weak + ' from your weakest topics (' + t.weak.map(function (u) { return u + ' ' + (per[u] || 0); }).join(', ') + '), ' +
+        t.mix.review + ' rested misses and review checks, ' + t.mix.fresh + ' never practiced or right once' + (t.mix.fill ? ', ' + t.mix.fill + ' others to fill' : '') +
+        '. Topics alternate; when time is up you finish the question on screen.';
+    }
+    var pv = previewLimited(+L), c = pv.plan.counts, n = pv.plan.ids.length;
+    if (!n) return 'No questions match these topics and filters. Untick a filter or add a topic.';
+    var parts = [];
+    if (c.miss) parts.push(plural(c.miss, 'rested miss', 'rested misses'));
+    if (c.review) parts.push(plural(c.review, 'review check'));
+    if (c.fresh) parts.push(c.fresh + ' never answered');
+    if (c.more) parts.push(c.more + ' more rested');
+    if (c.recent) parts.push(c.recent + ' recently answered');
+    if (c.prev) parts.push(c.prev + ' from your previous session');
+    var s = 'This session: ' + plural(n, 'question') + ' from ' + uTxt + fTxt + ', each asked once: ' + parts.join(', ') + '.';
+    if (pv.poolN < +L) s += ' Only ' + pv.poolN + ' questions match, so the session is shorter.';
+    if (pv.plan.note === 'recent') s += ' These topics have run out of rested questions, so ' + c.recent + ' recently answered ones are included, longest ago first.';
+    if (pv.plan.note === 'prev') s += ' There were not enough other questions, so ' + c.prev + ' from your previous session are included.';
+    return s;
+  }
+  function renderMain() {
+    header({ main: true });
+    var all = D.items.map(function (x) { return x.id; }), tot = Core.statusCounts(D, S, all);
+    var lpIds = D.items.filter(function (x) { return x.lp; }).map(function (x) { return x.id; }), lpc = Core.statusCounts(D, S, lpIds);
+    var any = Object.keys(S.p).length > 0, h = '';
+    h += '<p class="eyebrow">' + esc(CFG.eyebrow) + '</p><h1>' + esc(CFG.title) + '</h1>';
+    if (SESS) {
+      var done = SESS.ans.length, isPre = SESS.mode === 'pretest';
+      h += '<div class="card strong"><h2>' + (isPre ? 'Pre-test in progress' : 'A session was interrupted') + '</h2><p class="muted">' +
+        done + ' answered' + (SESS.mode !== 'endless' ? ' of ' + SESS.queue.filter(function (q) { return q.indexOf('card:') !== 0; }).length : '') + '.</p>' +
+        '<div class="row"><button class="btn primary" data-act="resume">Resume where I left off</button><button class="btn" data-act="fresh">Start fresh instead</button></div></div>';
+    }
+    // pre-test card
+    var preN = Core.buildPretest(D, S, Core.rng(1)).length;
+    h += '<div class="card' + (!any ? ' strong' : '') + '"><h2>Pre-test - ' + preN + ' questions' + (!any ? '<span class="badge">Start here</span>' : '') + '</h2>' +
+      '<p class="muted small">A level check: ' + (UNITS.length > 1 ? Math.round(preN / UNITS.length) + ' questions from every topic' : preN + ' questions across the concepts of this topic') + ', mixed formats, never a last-pass question. Each topic gets a level: Strong 80%+, Okay 60-79%, Weak under 60%.</p>';
+    if (SESS && SESS.mode === 'pretest') h += '<button class="btn primary" data-act="resume">Resume pre-test - ' + SESS.ans.length + ' of ' + SESS.queue.length + ' done</button>';
+    else if (S.pre.last) h += '<p>Last pre-test: ' + esc(fmtDate(S.pre.last.t)) + ', ' + S.pre.last.pct + '%. <button class="linkbtn" data-act="pretest">Retake pre-test</button></p>';
+    else h += '<button class="btn primary" data-act="pretest">Start pre-test</button>';
+    h += '</div>';
+    // last pass card
+    h += '<div class="card"><h2>Last pass - ' + lpIds.length + ' questions</h2><p class="muted small">' + esc(CFG.last_pass_note) + '</p>' + statusBar(lpc) +
+      '<div class="row" style="margin-top:10px"><button class="btn primary" data-act="lp">Start last pass - all ' + lpIds.length + '</button><button class="btn" data-act="lp20">Just the 20 weakest</button></div></div>';
+    // topics
+    h += '<div class="card"><h2>Topics</h2><div class="row small"><button class="linkbtn" data-act="uall">Tick all</button><button class="linkbtn" data-act="unone">Untick all</button></div><div class="grid2">';
+    UNITS.forEach(function (u) {
+      var n = D.items.filter(function (x) { return x.u === u; }).length;
+      h += '<label class="check"><input type="checkbox" data-unit="' + esc(u) + '"' + (UI.units.indexOf(u) >= 0 ? ' checked' : '') + '> ' + esc(u) + ' <span class="count">' + n + '</span></label>';
+    });
+    h += '</div>';
+    var fc = Core.filterCounts(D, S, unitsOn());
+    h += '<h3>Filters</h3><div class="grid2">' +
+      [['missed', 'Only what I\'ve missed'], ['starred', 'Only starred'], ['lp', 'Last pass only'], ['never', 'Only never practiced']].map(function (f) {
+        return '<label class="check"><input type="checkbox" data-filter="' + f[0] + '"' + (UI.filters[f[0]] ? ' checked' : '') + '> ' + f[1] + ' <span class="count">' + fc[f[0]] + '</span></label>';
+      }).join('') + '</div>';
+    var nf = Object.keys(UI.filters).filter(function (k) { return UI.filters[k]; }).length;
+    if (nf > 1) h += '<label class="switch"><input type="checkbox" data-act="overlap"' + (UI.overlap ? ' checked' : '') + '> Only the overlap (questions that match every ticked filter)</label>';
+    h += '</div>';
+    // length
+    h += '<div class="card"><h2>Session length</h2><div class="row">' +
+      [['5', '5'], ['10', '10'], ['20', '20'], ['40', '40'], ['endless', 'Endless'], ['30m', '30 min'], ['45m', '45 min'], ['custom', 'Custom']].map(function (o) {
+        return '<button class="chip' + (UI.len === o[0] ? ' on' : '') + '" data-len="' + o[0] + '">' + o[1] + '</button>';
+      }).join('') + '</div>';
+    if (UI.len === 'custom') h += '<p><label>Number of questions (5-500): <input id="custom" type="number" min="5" max="500" inputmode="numeric" value="' + esc(UI.custom) + '" style="width:90px;font:inherit;padding:6px;border:1.5px solid #111;border-radius:8px"></label></p>';
+    h += '<div class="desc" id="desc">' + esc(describe()) + '</div>' +
+      '<label class="switch"><input type="checkbox" data-act="think"' + (UI.think ? ' checked' : '') + '> Think first: hide the choices for 10-15 s so you recall before you recognise</label>' +
+      '<div class="actions"><button class="btn primary" data-act="start">Start</button></div></div>';
+    h += '<p class="small"><b>Totals:</b> ' + all.length + ' questions · ' + tot.solid + ' solid · ' + tot.once + ' right once · ' + tot.shaky + ' shaky · ' + tot['new'] + ' not answered yet</p>' + statusBar(tot);
+    h += '<div class="row" style="margin-top:14px">' + (CFG.hub_url ? '<a class="btn small ghost" href="' + esc(CFG.hub_url) + '" target="_blank" rel="noopener">All topics</a>' : '') + (CFG.guide_url ? '<a class="btn small ghost" href="' + esc(CFG.guide_url) + '" target="_blank" rel="noopener">Open the Mastery Guide</a>' : '') +
+      '<button class="btn small danger" id="reset" data-act="reset">Reset all progress</button></div>' +
+      '<p class="syncline" id="syncline"></p>';
+    app.innerHTML = h; syncLine();
+  }
+
+  /* ---------------- sessions */
+  function newSid() { return 's' + now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function startSession(mode, queue, extra) {
+    var sid = newSid();
+    var prevSid = S.lastSid || null;
+    S.lastSid = sid; S.sidN = (S.sidN || 0) + 1; S.t = now();
+    SESS = Object.assign({ sid: sid, prevSid: prevSid, mode: mode, queue: queue, pos: 0, planned: queue.length, fu: 0, ans: [], cur: null,
+      started: now(), t: now(), units: unitsOn(), nTopic: nTopic(unitsOn()), tfh: [], lastU: null, lastT: null, recent: [] }, extra || {});
+    UI.seed = (Math.random() * 1e9) >>> 0;
+    saveLocal(); push(false);
+    go('q');
+  }
+  function startFromSetup() {
+    var units = unitsOn(), L = lenValue();
+    if (L === 'endless') {
+      var ids = Core.pool(D, S, units, UI.filters, UI.overlap);
+      if (!ids.length) return;
+      return startSession('endless', [], { pool: ids });
+    }
+    if (L === '30m' || L === '45m') {
+      var mins = L === '30m' ? 30 : 45, t = Core.buildTimed(D, S, units, mins, Core.rng(UI.seed), now());
+      if (!t.ids.length) return;
+      return startSession('timed', t.ids, { deadline: now() + mins * 60000, minutes: mins, mix: t.mix });
+    }
+    var pv = previewLimited(+L);
+    if (!pv.plan.ids.length) return;
+    startSession('limited', pv.plan.ids);
+  }
+  function startLastPass(only20) { startSession(only20 ? 'lp20' : 'lastpass', Core.buildLastPass(D, S, only20, R), { units: UNITS.slice() }); }
+  function startPretest() { startSession('pretest', Core.buildPretest(D, S, R), { units: UNITS.slice(), nTopic: D.items.length }); }
+  function startFix(cids) {
+    var q = [];
+    cids.forEach(function (cid) {
+      var c = D.concepts[cid]; if (!c) return;
+      var members = c.items.slice(), shaky = members.filter(function (id) { return Core.status(D.byId[id], S.p[id]) === 'shaky'; });
+      var other = members.filter(function (id) { return shaky.indexOf(id) < 0 && q.indexOf(id) < 0; });
+      var pick = other.length ? other[Math.floor(R() * other.length)] : shaky[Math.floor(R() * shaky.length)];
+      if (!pick) return;
+      q.push('card:' + cid); q.push(pick);
+    });
+    if (q.length) startSession('fix', q, { units: UNITS.slice(), nTopic: D.items.length });
+  }
+
+  function curQid() { return SESS && SESS.queue[SESS.pos]; }
+  function ensureCur() {
+    if (SESS.mode === 'endless' && SESS.pos >= SESS.queue.length) {
+      S._block = SESS.prevSid;
+      var nx = Core.nextEndless(D, S, SESS.pool, SESS.nTopic, R, now(), SESS.recent, { u: SESS.lastU, t: SESS.lastT, tfh: S.tfh || [] });
+      delete S._block;
+      if (!nx) return false;
+      SESS.queue.push(nx);
+    }
+    var q = curQid();
+    if (!q) return false;
+    if (!SESS.cur || SESS.cur.q !== q) {
+      if (q.indexOf('card:') === 0) { SESS.cur = { q: q, card: true }; return true; }
+      var a = Core.arrange(D, S, q, R), x = it(q);
+      var init = x.t === 'sata' || x.t === 'order' ? [] : x.t === 'cloze' || x.t === 'blanks' ? x.c.map(function () { return -1; }) : x.num ? '' : -1;
+      var wait = 0;
+      if (UI.think && !x.num) wait = (x.t === 'tf' || (x.q.length < 170 && (x.t === 'mc' || x.t === 'fill' || x.t === 'row'))) ? 10 : 15;
+      SESS.cur = { q: q, perm: a.perm, pos: a.pos, pick: init, checked: false, shownAt: now(), wait: wait, revealed: wait === 0 };
+      saveLocal();
+    }
+    return true;
+  }
+
+  /* ---------------- question screen */
+  function sessCount() { return SESS.queue.filter(function (q) { return q.indexOf('card:') !== 0; }).length; }
+  function renderQuestion() {
+    if (!SESS) return go('main');
+    if (SESS.mode === 'timed' && SESS.timeUp && (!SESS.cur || SESS.cur.checked === 'done')) return finish();
+    if (!ensureCur()) return finish();
+    header({ clock: SESS.mode === 'timed' });
+    startClock();
+    var cur = SESS.cur;
+    if (cur.card) return renderCardStep(cur.q.slice(5));
+    var x = it(cur.q), h = '', num = SESS.ans.length + (cur.checked ? 0 : 1);
+    var star = Core.isStar(S, Core.parseId(cur.q).base);
+    var label = SESS.mode === 'endless' ? 'Question ' + num : SESS.mode === 'timed' ? 'Question ' + num + ' of about ' + sessCount() : 'Question ' + num + ' of ' + sessCount();
+    if (SESS.mode === 'pretest') label = 'Pre-test · ' + label;
+    h += '<div class="qmeta"><span>' + esc(label) + '</span><span>' + esc(x.u) + '</span>' + (x.lp ? '<span class="tag">Last pass</span>' : '') +
+      (x.t === 'row' ? '<span class="tag">Practice row</span>' : '') + '</div>';
+    h += renderStem(x, cur);
+    h += '<div id="answer">' + renderAnswerArea(x, cur) + '</div>';
+    h += '<div id="fb"></div>';
+    h += '<div class="actions" id="acts"></div>';
+    h += '<div class="row small" style="margin-top:8px">' +
+      '<button class="btn small ghost" data-act="star" aria-pressed="' + star + '">' + (star ? '★ Starred' : '☆ Star') + '</button>' +
+      '<button class="btn small ghost" data-act="timer">Timer: ' + (UI.think ? 'on' : 'off') + '</button>' +
+      (SESS.ans.length ? '<button class="btn small ghost" data-act="sofar">Check my answers so far</button>' : '') +
+      '<button class="btn small ghost" data-act="submit">' + (SESS.mode === 'pretest' ? 'Stop pre-test' : 'Submit session') + '</button></div>';
+    app.innerHTML = h;
+    drawActions();
+    if (cur.checked) drawFeedback(false);
+    else if (!cur.revealed) runThink();
+  }
+  function renderStem(x, cur) {
+    var q = esc(x.q);
+    if (x.t === 'fill') {
+      var w = cur.pick >= 0 && cur.revealed ? esc(x.o[cur.perm[cur.pick]]) : '&nbsp;';
+      q = q.replace(/_{3,}/, '<span class="fillblank">' + w + '</span>');
+    }
+    if (x.t === 'blanks') {
+      q = q.replace(/\{(\d)\}/g, function (m, d) {
+        var b = +d - 1;
+        if (!cur.revealed) return '<span class="fillblank">&nbsp;</span>';
+        var opts = cur.perm[b].map(function (o, i) { return '<option value="' + i + '"' + (cur.pick[b] === i ? ' selected' : '') + '>' + esc(x.o[b][o]) + '</option>'; }).join('');
+        var cls = '';
+        if (cur.checked) { var oo = cur.pick[b] >= 0 ? cur.perm[b][cur.pick[b]] : -1; cls = oo === x.c[b] ? ' r' : ' w'; }
+        return '<select class="inline' + cls + '" data-blank="' + b + '"' + (cur.checked ? ' disabled' : '') + ' aria-label="Blank ' + d + '"><option value="-1">Choose…</option>' + opts + '</select>';
+      });
+    }
+    return '<div class="stem">' + q + '</div>';
+  }
+  function renderAnswerArea(x, cur) {
+    if (!cur.revealed) {
+      return '<div class="think" id="think"><b>Think first.</b> Recall the answer before the choices appear.<div class="bar"><i id="thinkbar"></i></div><span class="muted small" id="thinkleft">' + cur.wait + ' s</span></div>';
+    }
+    if (x.num) {
+      return '<div class="numin"><input id="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" value="' + esc(cur.pick) + '"' + (cur.checked ? ' disabled' : '') + '><span>' + esc(x.num.unit) + '</span></div>' +
+        '<p class="muted small">Type the number. Fractions like 3/2 or 1 1/2 are fine.</p>';
+    }
+    var t = x.t;
+    if (t === 'mc' || t === 'fill' || t === 'row' || t === 'tf' || t === 'sata') {
+      var multi = t === 'sata', h = multi ? '<p class="muted small">Select all that apply.</p>' : '';
+      h += '<div class="opts" role="' + (multi ? 'group' : 'radiogroup') + '">';
+      var order = t === 'tf' ? [0, 1] : cur.perm.map(function (o, i) { return i; });
+      order.forEach(function (d) {
+        var o = t === 'tf' ? d : cur.perm[d], txt = x.o[o];
+        var sel = multi ? cur.pick.indexOf(d) >= 0 : cur.pick === d;
+        var cls = 'opt' + (multi ? ' multi' : '') + (sel ? ' sel' : '') + (cur.checked ? ' locked' : '');
+        if (cur.checked) {
+          var right = multi ? x.c.indexOf(o) >= 0 : o === x.c;
+          if (right) cls += ' is-right'; else if (sel) cls += ' is-wrong';
+        }
+        h += '<button class="' + cls + '" data-opt="' + d + '" ' + (multi ? 'aria-pressed="' + sel + '"' : 'role="radio" aria-checked="' + sel + '"') + '><span class="let">' + LET[d] + '</span><span class="txt">' + esc(txt) + '</span></button>';
+      });
+      return h + '</div>';
+    }
+    if (t === 'order') {
+      var hh = '<p class="muted small">Tap the steps in order. Tap a placed step to take it back.</p><div class="orderpick">';
+      for (var i = 0; i < x.o.length; i++) {
+        var o2 = cur.pick[i];
+        var mark = '';
+        if (cur.checked) mark = o2 === i ? ' <span class="ok">✓</span>' : ' <span class="no">✗</span>';
+        hh += '<button class="slot' + (o2 !== undefined ? ' filled' : '') + '" data-slot="' + i + '"' + (cur.checked ? ' disabled' : '') + '><span class="num">' + (i + 1) + '</span><span>' + (o2 !== undefined ? esc(x.o[o2]) : '<span class="muted">…</span>') + mark + '</span></button>';
+      }
+      hh += '</div>';
+      if (!cur.checked) {
+        hh += '<div class="opts">';
+        cur.perm.forEach(function (o, d) {
+          if (cur.pick.indexOf(o) >= 0) return;
+          hh += '<button class="opt" data-step="' + o + '"><span class="let">' + LET[d] + '</span><span class="txt">' + esc(x.o[o]) + '</span></button>';
+        });
+        hh += '</div>';
+      }
+      return hh;
+    }
+    if (t === 'cloze') {
+      var th = '<div class="tblwrap"><table class="match"><tbody>';
+      x.o.rows.forEach(function (rw, r) {
+        var cls = '';
+        if (cur.checked) { var oo = cur.pick[r] >= 0 ? cur.perm[cur.pick[r]] : -1; cls = oo === x.c[r] ? ' class="r"' : ' class="w"'; }
+        th += '<tr><td>' + esc(rw) + '</td><td><select data-row="' + r + '"' + cls + (cur.checked ? ' disabled' : '') + ' aria-label="' + esc(rw) + '"><option value="-1">Choose…</option>' +
+          cur.perm.map(function (o, d) { return '<option value="' + d + '"' + (cur.pick[r] === d ? ' selected' : '') + '>' + esc(x.o.choices[o]) + '</option>'; }).join('') + '</select></td></tr>';
+      });
+      return th + '</tbody></table></div>';
+    }
+    return '';
+  }
+  function canCheck(x, cur) {
+    if (!cur.revealed) return false;
+    if (x.num) return String(cur.pick).trim() !== '';
+    if (x.t === 'sata') return cur.pick.length > 0;
+    if (x.t === 'order') return cur.pick.length === x.o.length;
+    if (x.t === 'cloze' || x.t === 'blanks') return cur.pick.every(function (p) { return p >= 0; });
+    return cur.pick >= 0;
+  }
+  function drawActions() {
+    var cur = SESS.cur, x = it(cur.q), el = document.getElementById('acts'); if (!el) return;
+    if (!cur.checked) el.innerHTML = '<button class="btn primary" data-act="check"' + (canCheck(x, cur) ? '' : ' disabled') + '>Check</button>';
+    else if (cur.res.full && Core.parseId(cur.q).row < 0) el.innerHTML = '<button class="btn primary" data-act="next">Knew it - Next</button><button class="btn" data-act="guessed">I guessed</button>';
+    else el.innerHTML = '<button class="btn primary" data-act="next">Next</button>';
+  }
+  function runThink() {
+    var cur = SESS.cur, left = cur.wait - Math.floor((now() - cur.shownAt) / 1000);
+    var bar = document.getElementById('thinkbar'), lab = document.getElementById('thinkleft');
+    function tick() {
+      left = cur.wait - Math.floor((now() - cur.shownAt) / 1000);
+      if (bar) bar.style.width = Math.max(0, 100 * left / cur.wait) + '%';
+      if (lab) lab.textContent = Math.max(0, left) + ' s';
+      if (left <= 0) { clearInterval(thinkTimer); reveal(); }
+    }
+    tick(); thinkTimer = setInterval(tick, 250);
+  }
+  function reveal() {
+    var cur = SESS.cur; if (!cur || cur.revealed) return;
+    clearInterval(thinkTimer);
+    cur.revealed = true; saveLocal();
+    var y = window.pageYOffset; renderQuestion(); window.scrollTo(0, y);
+  }
+  function refreshAnswer() {
+    var cur = SESS.cur, x = it(cur.q);
+    if (x.t === 'fill' || x.t === 'blanks') { var st = document.querySelector('.stem'); st.outerHTML = renderStem(x, cur); }
+    document.getElementById('answer').innerHTML = renderAnswerArea(x, cur);
+    drawActions(); saveLocal();
+  }
+  function pickOption(d) {
+    var cur = SESS.cur, x = it(cur.q);
+    if (!cur || cur.checked || !cur.revealed) return;
+    if (x.t === 'sata') { var i = cur.pick.indexOf(d); if (i >= 0) cur.pick.splice(i, 1); else cur.pick.push(d); }
+    else if (x.t === 'order') { if (d < cur.perm.length) { var o = cur.perm[d]; if (cur.pick.indexOf(o) < 0) cur.pick.push(o); } }
+    else if (x.t === 'mc' || x.t === 'fill' || x.t === 'row' || x.t === 'tf') { if (d < (x.t === 'tf' ? 2 : cur.perm.length)) cur.pick = d; }
+    else return;
+    refreshAnswer();
+  }
+
+  /* ---------------- check / feedback */
+  function doCheck() {
+    var cur = SESS.cur, x = it(cur.q);
+    if (!cur || cur.checked || !canCheck(x, cur)) return;
+    var res = Core.grade(D, cur.q, cur.perm, cur.pick);
+    cur.checked = true; cur.res = res;
+    var secs = Math.max(0, (now() - cur.shownAt) / 1000 - (cur.wait || 0));
+    Core.record(D, S, cur.q, res, SESS.sid, now(), secs, cur.pos);
+    dirty[Core.parseId(cur.q).base] = 1; if (!res.full) dirtyMiss = true;
+    SESS.ans.push({ q: cur.q, perm: cur.perm, pick: cur.pick, sc: res.sc, full: res.full, t: now() });
+    SESS.lastU = x.u; SESS.lastT = x.t; SESS.recent.push(cur.q);
+    
+    if (!res.full) scheduleFollowUp(cur.q);
+    SESS.t = now();
+    saveLocal(); push(false);
+    var y = window.pageYOffset;
+    renderQuestion(); window.scrollTo(0, y);
+    var v = document.getElementById('verdict'); if (v) scrollUnderHeader(v);
+  }
+  function scheduleFollowUp(q) {
+    if (SESS.mode === 'pretest' || SESS.mode === 'lastpass' || SESS.mode === 'lp20') return;
+    var cap = Math.floor(Math.max(SESS.planned, SESS.mode === 'endless' ? SESS.ans.length + 6 : 0) / 3);
+    if (SESS.fu >= cap) return;
+    var used = {}; SESS.queue.forEach(function (z) { used[z] = 1; });
+    S._block = null;
+    var f = Core.followUp(D, S, q, used, R);
+    delete S._block;
+    if (!f) return;
+    var at = Math.min(SESS.pos + 3 + Math.floor(R() * 4), SESS.queue.length);
+    if (SESS.mode === 'endless') { SESS.pending = SESS.pending || []; SESS.pending.push({ q: f, at: SESS.ans.length + 3 + Math.floor(R() * 4) }); }
+    else SESS.queue.splice(at, 0, f);
+    SESS.fu++;
+  }
+  function choiceText(x, o) { return x.t === 'cloze' ? x.o.choices[o] : x.t === 'row' ? x.o[o] : x.o[o]; }
+  function feedbackHTML(q, perm, pick, res, withCard) {
+    var x = it(q), h = '', t = x.t, wrongs = [];
+    var parent = x.parent || x;
+    var cls = res.full ? 'v-right' : res.sc > 0 && (t === 'sata' || t === 'cloze' || t === 'blanks') ? 'v-part' : 'v-wrong';
+    var title = res.full ? 'Correct' : cls === 'v-part' ? 'Partly correct: ' + (t === 'sata' ? res.score : res.right) + ' of ' + res.max : 'Not quite';
+    h += '<div class="verdict ' + cls + '" id="verdict"><h2>' + esc(title) + '</h2>';
+    if (x.num) {
+      if (res.accept) h += '<p>' + esc(res.accept) + '</p>';
+      res.notes.forEach(function (n) { h += '<p><b>' + esc(n) + '</b></p>'; });
+      if (!res.full) {
+        h += '<div class="why"><b>Why ' + esc(pick) + ' is wrong:</b> ' + esc(res.near || 'It does not match the setup below; work through each step.') + '</div>';
+        h += '<p><b>Right answer:</b> ' + esc(x.num.answer) + ' ' + esc(x.num.unit) + '</p>';
+      }
+    } else if (t === 'mc' || t === 'fill' || t === 'row' || t === 'tf') {
+      if (!res.full) {
+        var o = res.orig, why = x.x && x.x[o];
+        if (t === 'row' && !why) { var ri = parent.c.indexOf(o); why = ri >= 0 ? 'That choice goes with "' + parent.o.rows[ri] + '".' : ''; }
+        h += '<div class="why"><b>Why "' + esc(choiceText(x, o)) + '" is wrong:</b> ' + esc(why || '') + '</div>';
+        h += '<p><b>Right answer:</b> ' + esc(choiceText(x, x.c)) + '</p>';
+      }
+    } else if (t === 'sata') {
+      var wrongPicked = res.origs.filter(function (o) { return x.c.indexOf(o) < 0; });
+      var missed = x.c.filter(function (o) { return res.origs.indexOf(o) < 0; });
+      wrongPicked.forEach(function (o) { h += '<div class="why"><b>Why "' + esc(x.o[o]) + '" is wrong:</b> ' + esc(x.x[o] || '') + '</div>'; });
+      if (missed.length) h += '<p><b>Right answers you left out:</b></p><ul>' + missed.map(function (o) { return '<li>' + esc(x.o[o]) + '</li>'; }).join('') + '</ul>';
+      if (!res.full) h += '<p><b>All right answers:</b> ' + esc(x.c.map(function (o) { return x.o[o]; }).join('; ')) + '</p>';
+    } else if (t === 'order') {
+      if (!res.full) h += '<p><b>Right order:</b></p><ol>' + x.o.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+    } else if (t === 'cloze') {
+      res.origs.forEach(function (o, r) {
+        if (o === x.c[r]) return;
+        var why = x.x[o];
+        if (!why) { var ri = x.c.indexOf(o); why = ri >= 0 ? 'That choice goes with "' + x.o.rows[ri] + '".' : ''; }
+        h += '<div class="why"><b>' + esc(x.o.rows[r]) + ': why "' + esc(x.o.choices[o]) + '" is wrong:</b> ' + esc(why) + ' Right: ' + esc(x.o.choices[x.c[r]]) + '.</div>';
+      });
+    } else if (t === 'blanks') {
+      res.origs.forEach(function (o, b) {
+        if (o === x.c[b]) return;
+        h += '<div class="why"><b>Blank ' + (b + 1) + ': why "' + esc(x.o[b][o]) + '" is wrong:</b> ' + esc(x.x[b + ':' + o] || '') + ' Right: ' + esc(x.o[b][x.c[b]]) + '.</div>';
+      });
+    }
+    h += '<div class="keyidea"><b>The key idea</b><p>' + esc(x.w) + '</p></div></div>';
+    if (withCard && !res.full) h += conceptCard(x.k);
+    return h;
+  }
+  function conceptCard(cid) {
+    var c = cid && D.concepts[cid]; if (!c) return '';
+    var inKey = {}; (c.sec || []).forEach(function (s) { s.key.forEach(function (k) { inKey[k] = 1; }); });
+    var extra = c.points.filter(function (p) { return !inKey[p]; });
+    var h = '<div class="ccard"><p class="eyebrow">Concept card · ' + esc(c.unit) + '</p><h3 style="margin-top:2px">' + esc(c.title) + '</h3>' +
+      (extra.length ? '<ul>' + extra.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') +
+      '<p class="muted small">Source: ' + esc(c.source) + '</p>';
+    (c.sec || []).forEach(function (s) {
+      h += '<h3>Key ideas</h3><ul>' + s.key.map(function (k) { return '<li>' + esc(k) + '</li>'; }).join('') + '</ul>';
+      if (CFG.guide_url) h += '<p><a href="' + esc(CFG.guide_url + '#' + s.id) + '" target="_blank" rel="noopener">Open in the guide: ' + esc(s.title) + '</a></p>';
+    });
+    return h + '</div>';
+  }
+  function drawFeedback() {
+    var cur = SESS.cur, el = document.getElementById('fb');
+    el.innerHTML = feedbackHTML(cur.q, cur.perm, cur.pick, cur.res, true);
+  }
+  function doNext(guessed) {
+    var cur = SESS.cur; if (!cur || !cur.checked) return;
+    if (guessed) { Core.markGuessed(S, cur.q, now()); dirty[Core.parseId(cur.q).base] = 1; SESS.ans[SESS.ans.length - 1].guessed = true; }
+    cur.checked = 'done';
+    SESS.pos++; SESS.cur = null; SESS.t = now();
+    if (SESS.mode === 'endless' && SESS.pending && SESS.pending.length) {
+      var due = SESS.pending.filter(function (p) { return p.at <= SESS.ans.length; });
+      if (due.length) { SESS.pending = SESS.pending.filter(function (p) { return due.indexOf(p) < 0; }); SESS.queue.splice(SESS.pos, 0, due[0].q); }
+    }
+    saveLocal(); push(false);
+    if (SESS.mode === 'timed' && SESS.timeUp) return finish();
+    if (SESS.mode !== 'endless' && SESS.pos >= SESS.queue.length) return finish();
+    go('q');
+  }
+  function startClock() {
+    clearInterval(clockTimer);
+    if (!SESS || SESS.mode !== 'timed') return;
+    function tick() {
+      var el = document.getElementById('clock'); if (!SESS) return clearInterval(clockTimer);
+      var left = Math.max(0, Math.round((SESS.deadline - now()) / 1000));
+      if (el) { el.textContent = (left <= 0 ? 'Time is up' : Math.floor(left / 60) + ':' + ('0' + left % 60).slice(-2)); el.className = 'clock' + (left < 120 ? ' low' : ''); }
+      if (left <= 0 && !SESS.timeUp) {
+        SESS.timeUp = true; saveLocal();
+        if (!SESS.cur || !SESS.cur.revealed && !SESS.cur.checked && SESS.ans.length) { /* let the person finish the question on screen */ }
+      }
+    }
+    tick(); clockTimer = setInterval(tick, 1000);
+  }
+
+  /* ---------------- concept-card step (Fix this) */
+  function renderCardStep(cid) {
+    var c = D.concepts[cid];
+    var h = '<p class="eyebrow">Fix my misses · re-teach</p>' + conceptCard(cid) +
+      '<p class="muted">Read the card, then answer a different question on this concept.</p><div class="actions"><button class="btn primary" data-act="cardnext">Ask me a question on this</button></div>';
+    app.innerHTML = h;
+  }
+
+  /* ---------------- review / submit */
+  function reviewList(ans) {
+    if (!ans.length) return '<p class="muted">No answers yet.</p>';
+    return ans.map(function (a, i) {
+      var x = it(a.q), res = Core.grade(D, a.q, a.perm, a.pick);
+      return '<div class="rv"><p class="eyebrow">' + (i + 1) + '. ' + esc(x.u) + (a.guessed ? ' · guessed' : '') + '</p><p><b>' + esc(x.q.replace(/\{\d\}/g, '____')) + '</b></p><p class="small">Your answer: ' + esc(pickText(x, a)) + '</p>' + feedbackHTML(a.q, a.perm, a.pick, res, false) + '</div>';
+    }).join('');
+  }
+  function pickText(x, a) {
+    if (x.num) return a.pick + ' ' + x.num.unit;
+    if (x.t === 'mc' || x.t === 'fill' || x.t === 'row') return a.pick >= 0 ? choiceText(x, a.perm[a.pick]) : '-';
+    if (x.t === 'tf') return a.pick === 0 ? 'True' : a.pick === 1 ? 'False' : '-';
+    if (x.t === 'sata') return a.pick.map(function (d) { return x.o[a.perm[d]]; }).join('; ') || '-';
+    if (x.t === 'order') return a.pick.map(function (o, i) { return (i + 1) + '. ' + x.o[o]; }).join('  ');
+    if (x.t === 'cloze') return a.pick.map(function (d, r) { return x.o.rows[r] + ' → ' + (d >= 0 ? x.o.choices[a.perm[d]] : '-'); }).join('; ');
+    if (x.t === 'blanks') return a.pick.map(function (d, b) { return d >= 0 ? x.o[b][a.perm[b][d]] : '-'; }).join(' / ');
+    return '';
+  }
+  function renderReview() {
+    header({});
+    var ans = SESS ? SESS.ans : (LASTRES ? LASTRES.ans : []);
+    app.innerHTML = '<h1>Your answers' + (SESS ? ' so far' : '') + '</h1><p class="muted">' + plural(ans.length, 'answer') + ', with your pick, the right answer and both explanations.</p>' +
+      '<div class="actions"><button class="btn primary" data-act="' + (SESS ? 'backq' : 'backres') + '">' + (SESS ? 'Back to the question' : 'Back to results') + '</button></div>' + reviewList(ans);
+  }
+  function renderSubmit() {
+    header({});
+    var n = SESS.ans.length, isPre = SESS.mode === 'pretest', left = SESS.mode === 'endless' ? 0 : Math.max(0, sessCount() - n);
+    app.innerHTML = '<h1>' + (isPre ? 'Stop the pre-test?' : 'Submit this session?') + '</h1>' +
+      '<div class="card strong"><p>You answered <b>' + n + '</b>' + (SESS.mode !== 'endless' ? ' of ' + sessCount() : '') + ' questions.</p>' +
+      (left ? '<p>The ' + plural(left, 'unanswered question') + ' will not be graded or count toward your progress.</p>' : '') +
+      (isPre ? '<p>Topics you did not reach get no level from this pre-test.</p>' : '') +
+      '<p><b>This cannot be undone.</b></p><div class="actions"><button class="btn primary" data-act="backq">Keep going</button><button class="btn" data-act="dosubmit">Submit now</button></div></div>';
+  }
+
+  /* ---------------- results */
+  var BANDS = [[90, 'Exam-ready', 'Keep it fresh: run the last pass once more the day before the exam.'],
+    [80, 'Strong', 'Drill your starred and missed questions, then do a 30-minute timed plan.'],
+    [70, 'Almost there', 'Open Fix my misses and fix your top two concepts, then drill 20 again.'],
+    [60, 'Shaky', 'Re-read the guide sections for your weakest topic, then drill only that topic.'],
+    [0, 'Needs work', 'Study the guide for your weakest topic first, then do 10-question sessions on it daily.']];
+  function finish() {
+    clearInterval(clockTimer);
+    if (!SESS) return go('main');
+    var ans = SESS.ans, res = { mode: SESS.mode, ans: ans, units: SESS.units, t: now(), sid: SESS.sid };
+    if (SESS.mode === 'pretest') {
+      var sc = ans.reduce(function (a, b) { return a + b.sc; }, 0);
+      S.pre.last = { t: now(), pct: ans.length ? Math.round(100 * sc / ans.length) : 0, n: ans.length };
+    }
+    LASTRES = res; lsSet('lastres', { mode: res.mode, ans: ans, units: res.units, t: res.t });
+    SESS = null; saveLocal(); push(false);
+    go('results');
+  }
+  function renderResults() {
+    header({});
+    var r = LASTRES; if (!r) return go('main');
+    var ans = r.ans, n = ans.length, sc = ans.reduce(function (a, b) { return a + b.sc; }, 0), pct = n ? Math.round(100 * sc / n) : 0;
+    var band = BANDS.filter(function (b) { return pct >= b[0]; })[0];
+    var per = {}; ans.forEach(function (a) { var u = it(a.q).u; per[u] = per[u] || { n: 0, s: 0 }; per[u].n++; per[u].s += a.sc; });
+    var weakest = Object.keys(per).filter(function (u) { return per[u].n >= 3 && per[u].s / per[u].n < 0.8; })
+      .sort(function (a, b) { return per[a].s / per[a].n - per[b].s / per[b].n; })[0];
+    var h = '';
+    if (r.mode === 'pretest') {
+      var lv = Core.topicLevels(D, S);
+      var weakU = UNITS.filter(function (u) { return lv[u].level; }).sort(function (a, b) { return lv[a].pct - lv[b].pct; }).filter(function (u) { return lv[u].level !== 'Strong'; }).slice(0, 3);
+      h += '<p class="eyebrow">Pre-test results</p><h1>Your level by topic</h1><p class="big">' + pct + '%</p><p class="muted">' + (Math.round(sc * 10) / 10) + ' of ' + n + ' right on the pre-test. Levels combine the pre-test with all your saved answers.</p>';
+      h += '<div class="card"><div class="tblwrap"><table class="rates"><tr><th>Topic</th><th>Level</th><th class="n">Score</th></tr>' + UNITS.map(function (u) {
+        var L = lv[u]; return '<tr><td>' + esc(u) + '</td><td>' + (L.level ? '<span class="lvl ' + L.level + '">' + L.level + '</span>' : '<span class="muted">No level yet</span>') + '</td><td class="n">' + (L.pct === null ? '-' : L.pct + '%') + '</td></tr>';
+      }).join('') + '</table></div></div>';
+      h += '<div class="card strong"><h2>Next step</h2><p>Do the last pass next' + (weakU.length ? ', then drill your weakest topics: <b>' + esc(listText(weakU)) + '</b>.' : '.') + '</p>' +
+        '<div class="actions"><button class="btn primary" data-act="lp">Start last pass</button>' + (weakU.length ? '<button class="btn" data-act="weakdrill" data-units="' + esc(weakU.join('|')) + '">Drill ' + esc(listText(weakU)) + '</button>' : '') + '</div></div>';
+    } else {
+      h += '<p class="eyebrow">Session results</p><h1>' + esc(band[1]) + '</h1><p class="big">' + pct + '%</p><p class="muted">' + (Math.round(sc * 10) / 10) + ' of ' + n + ' right' + (r.mode === 'timed' ? ' in the timed plan' : '') + '.</p>' +
+        '<p><b>Next step:</b> ' + esc(band[2]) + '</p>';
+      if (weakest) h += '<p>Weakest topic this session: <b>' + esc(weakest) + '</b> (' + Math.round(100 * per[weakest].s / per[weakest].n) + '% on ' + per[weakest].n + ').</p>';
+      if (n < 10) h += '<p class="muted small">This session had fewer than 10 questions, so the score is a rough guide.</p>';
+    }
+    var lpMode = r.mode === 'lastpass' || r.mode === 'lp20';
+    var ids = lpMode ? D.items.filter(function (x) { return x.lp; }).map(function (x) { return x.id; }) : Core.unitItems(D, r.units).map(function (x) { return x.id; });
+    h += '<div class="card"><h2>' + (lpMode ? 'Last pass status' : 'Status for these topics') + '</h2>' + statusBar(Core.statusCounts(D, S, ids)) +
+      '<p class="muted small">One session can only make a question "right once": it becomes solid after you get it right again in a later session, once it has rested.</p></div>';
+    h += '<div class="card"><h2>By topic this session</h2><div class="bars">' + Object.keys(per).sort(function (a, b) { return UNITS.indexOf(a) - UNITS.indexOf(b); }).map(function (u) {
+      var p = Math.round(100 * per[u].s / per[u].n);
+      return '<div class="b"><span>' + esc(u) + '</span><span class="track"><span class="fill' + (p < 60 ? ' low' : '') + '" style="display:block;width:' + p + '%"></span></span><span class="pct">' + p + '%</span></div>';
+    }).join('') + '</div></div>';
+    h += '<div class="actions"><button class="btn primary" data-act="again">Drill again</button><button class="btn" data-act="viewans">Check my answers</button><button class="btn" data-act="home">Change topics</button><button class="btn danger" id="reset" data-act="reset">Reset all progress</button></div>';
+    app.innerHTML = h;
+  }
+
+  /* ---------------- fix my misses */
+  function rates(keyFn) {
+    var out = {};
+    D.items.forEach(function (x) {
+      var rec = S.p[x.id]; if (!rec) return;
+      var e = Core.eff(rec.h); if (!e) return;
+      var k = keyFn(x); out[k] = out[k] || { a: 0, m: 0 };
+      out[k].a += e.length; out[k].m += (e.match(/[WP]/g) || []).length;
+    });
+    return out;
+  }
+  function rateTable(title, o) {
+    var ks = Object.keys(o).sort(function (a, b) { return o[b].m / o[b].a - o[a].m / o[a].a; });
+    if (!ks.length) return '';
+    return '<h3>' + esc(title) + '</h3><div class="tblwrap"><table class="rates"><tr><th>' + esc(title.replace('By ', '')) + '</th><th class="n">Answers</th><th class="n">Misses</th><th class="n">Miss rate</th></tr>' +
+      ks.map(function (k) { return '<tr><td>' + esc(k) + '</td><td class="n">' + o[k].a + '</td><td class="n">' + o[k].m + '</td><td class="n">' + Math.round(100 * o[k].m / o[k].a) + '%</td></tr>'; }).join('') + '</table></div>';
+  }
+  var FMT = { mc: 'Multiple choice', sata: 'Select all', cloze: 'Matching table', fill: 'Word bank', order: 'Put in order', tf: 'True/false', blanks: 'Sentence blanks' };
+  function renderFix() {
+    header({});
+    var labs = {};
+    S.miss.forEach(function (m) { (m.lab || '').split('; ').forEach(function (l) { if (!l) return; labs[l] = labs[l] || { n: 0, k: it(m.q) && it(m.q).k }; labs[l].n++; }); });
+    var lk = Object.keys(labs).sort(function (a, b) { return labs[b].n - labs[a].n; }).slice(0, 10);
+    var byC = {};
+    D.items.forEach(function (x) { if (Core.status(x, S.p[x.id]) === 'shaky' && x.k) (byC[x.k] = byC[x.k] || []).push(x.id); });
+    var cids = Object.keys(byC).sort(function (a, b) { return byC[b].length - byC[a].length; });
+    var h = '<h1>Fix my misses</h1><p class="muted">Each fix re-teaches the concept, then asks a different question on it. A missed question is fixed once you get it and its follow-up right.</p>';
+    h += '<div class="card"><h2>Mistakes I keep making</h2>' + (lk.length ? '<ul>' + lk.map(function (l) {
+      var c = labs[l].k && D.concepts[labs[l].k];
+      return '<li><b>' + esc(l) + '</b> <span class="count">× ' + labs[l].n + '</span>' + (c ? ' <span class="muted small">· ' + esc(c.title) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>' : '<p class="muted">No repeated mistakes yet.</p>') + '</div>';
+    h += '<div class="card"><h2>Shaky questions by concept</h2>' + (cids.length ? '<div class="actions"><button class="btn primary" data-act="fixall">Fix all (' + cids.length + ' concepts)</button></div>' +
+      cids.map(function (cid) {
+        var c = D.concepts[cid];
+        return '<div class="rv"><p class="eyebrow">' + esc(c.unit) + '</p><div class="row" style="justify-content:space-between"><span><b>' + esc(c.title) + '</b> <span class="count">' + plural(byC[cid].length, 'shaky question') + '</span></span><button class="btn small" data-act="fixone" data-cid="' + esc(cid) + '">Fix this</button></div></div>';
+      }).join('') : '<p class="muted">Nothing shaky right now.</p>') + '</div>';
+    h += '<details class="fold"><summary>Detailed miss rates</summary>' +
+      rateTable('By kind of question', rates(function (x) { return x.kind; })) +
+      rateTable('By topic', rates(function (x) { return x.u; })) +
+      rateTable('By format', rates(function (x) { return x.num ? 'Typed number' : FMT[x.t]; })) +
+      rateTable('By source', rates(function (x) { return x.src; })) + '</details>';
+    app.innerHTML = h;
+  }
+  function renderReadme() {
+    header({});
+    app.innerHTML = document.getElementById('readme-src').innerHTML +
+      (CFG.guide_url ? '<p><a class="btn small ghost" href="' + esc(CFG.guide_url) + '" target="_blank" rel="noopener">Open the Mastery Guide</a></p>' : '');
+  }
+
+  /* ------------------------------------------------------------ events */
+  var resetArmed = 0;
+  function toggleStar() {
+    var cur = SESS && SESS.cur; if (!cur || cur.card) return;
+    var id = Core.parseId(cur.q).base, on = !Core.isStar(S, id);
+    S.stars[id] = { on: on ? 1 : 0, t: now() }; dirtyStars[id] = 1; saveLocal(); push(false);
+    var b = document.querySelector('[data-act="star"]'); if (b) { b.textContent = on ? '★ Starred' : '☆ Star'; b.setAttribute('aria-pressed', on); }
+  }
+  function doReset() {
+    var b = document.getElementById('reset');
+    if (!resetArmed || now() - resetArmed > 6000) {
+      resetArmed = now(); if (b) { b.classList.add('armed'); b.textContent = 'Tap again to erase all progress (stars are kept)'; }
+      return;
+    }
+    resetArmed = 0;
+    var stars = S.stars; S = Core.newState(); S.stars = stars; SESS = null; LASTRES = null; lsSet('lastres', null);
+    saveLocal(); push(true); go('main');
+  }
+  app.addEventListener('click', onClick); hb.addEventListener('click', onClick);
+  function onClick(e) {
+    var t = e.target.closest('[data-act],[data-opt],[data-step],[data-slot],[data-len]');
+    if (!t) return;
+    if (t.hasAttribute('data-opt')) return pickOption(+t.getAttribute('data-opt'));
+    if (t.hasAttribute('data-step')) { var cur = SESS.cur; if (!cur.checked && cur.pick.indexOf(+t.getAttribute('data-step')) < 0) { cur.pick.push(+t.getAttribute('data-step')); refreshAnswer(); } return; }
+    if (t.hasAttribute('data-slot')) { var c2 = SESS.cur, i = +t.getAttribute('data-slot'); if (!c2.checked && c2.pick[i] !== undefined) { c2.pick.splice(i, 1); refreshAnswer(); } return; }
+    if (t.hasAttribute('data-len')) { UI.len = t.getAttribute('data-len'); saveLocal(); return renderMain(); }
+    var a = t.getAttribute('data-act');
+    if (a === 'overlap' || a === 'think') return;
+    if (a !== 'reset') { resetArmed = 0; }
+    switch (a) {
+      case 'home': clearInterval(clockTimer); if (SESS) { saveLocal(); push(false); } return go('main');
+      case 'readme': return go('readme');
+      case 'fix': return go('fix');
+      case 'resume': return go('q');
+      case 'fresh': SESS = null; saveLocal(); push(false); return renderMain();
+      case 'pretest': return startPretest();
+      case 'lp': return startLastPass(false);
+      case 'lp20': return startLastPass(true);
+      case 'uall': UI.units = UNITS.slice(); saveLocal(); return renderMain();
+      case 'unone': UI.units = []; saveLocal(); return renderMain();
+      case 'start': return startFromSetup();
+      case 'reset': return doReset();
+      case 'check': return doCheck();
+      case 'next': return doNext(false);
+      case 'guessed': return doNext(true);
+      case 'star': return toggleStar();
+      case 'timer': UI.think = !UI.think; saveLocal(); t.textContent = 'Timer: ' + (UI.think ? 'on' : 'off'); if (!UI.think && SESS.cur && !SESS.cur.revealed) reveal(); return;
+      case 'sofar': return go('review');
+      case 'submit': return go('submit');
+      case 'backq': return go('q');
+      case 'backres': return go('results');
+      case 'dosubmit': return finish();
+      case 'viewans': return go('review');
+      case 'again':
+        if (LASTRES && (LASTRES.mode === 'lastpass' || LASTRES.mode === 'lp20')) return startLastPass(LASTRES.mode === 'lp20');
+        if (LASTRES && LASTRES.mode === 'pretest') return startPretest();
+        return startFromSetup();
+      case 'weakdrill': UI.units = t.getAttribute('data-units').split('|'); UI.filters = {}; UI.len = '20'; saveLocal(); return startFromSetup();
+      case 'fixall': return startFix(Object.keys((function () { var o = {}; D.items.forEach(function (x) { if (x.k && Core.status(x, S.p[x.id]) === 'shaky') o[x.k] = 1; }); return o; })()).slice(0, 15));
+      case 'fixone': return startFix([t.getAttribute('data-cid')]);
+      case 'cardnext': SESS.pos++; SESS.cur = null; saveLocal(); push(false); if (SESS.pos >= SESS.queue.length) return finish(); return go('q');
+    }
+  }
+  app.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.hasAttribute('data-unit')) {
+      var u = t.getAttribute('data-unit'), i = UI.units.indexOf(u);
+      if (t.checked && i < 0) UI.units.push(u); if (!t.checked && i >= 0) UI.units.splice(i, 1);
+      UI.units.sort(function (a, b) { return UNITS.indexOf(a) - UNITS.indexOf(b); });
+      saveLocal(); var y = window.pageYOffset; renderMain(); window.scrollTo(0, y); return;
+    }
+    if (t.hasAttribute('data-filter')) { UI.filters[t.getAttribute('data-filter')] = t.checked; saveLocal(); var y2 = window.pageYOffset; renderMain(); window.scrollTo(0, y2); return; }
+    var a = t.getAttribute('data-act');
+    if (a === 'overlap') { UI.overlap = t.checked; saveLocal(); document.getElementById('desc').textContent = describe(); return; }
+    if (a === 'think') { UI.think = t.checked; saveLocal(); return; }
+    if (t.id === 'custom') { UI.custom = Math.max(5, Math.min(500, +t.value || 25)); t.value = UI.custom; saveLocal(); document.getElementById('desc').textContent = describe(); return; }
+    if (t.hasAttribute('data-row') && SESS && SESS.cur) { SESS.cur.pick[+t.getAttribute('data-row')] = +t.value; saveLocal(); drawActions(); return; }
+    if (t.hasAttribute('data-blank') && SESS && SESS.cur) { SESS.cur.pick[+t.getAttribute('data-blank')] = +t.value; saveLocal(); drawActions(); return; }
+  });
+  app.addEventListener('input', function (e) {
+    if (e.target.id === 'numin' && SESS && SESS.cur) { SESS.cur.pick = e.target.value; saveLocal(); drawActions(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (screen !== 'q' || !SESS || !SESS.cur || e.metaKey || e.ctrlKey || e.altKey) return;
+    var typing = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA');
+    var cur = SESS.cur;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (cur.card) return onClick({ target: document.querySelector('[data-act="cardnext"]') });
+      return cur.checked ? doNext(false) : doCheck();
+    }
+    if (typing || cur.card) return;
+    if (/^[1-6]$/.test(e.key)) { pickOption(+e.key - 1); return; }
+    if (e.key === 's' || e.key === 'S') return toggleStar();
+    if ((e.key === 'g' || e.key === 'G') && cur.checked && cur.res && cur.res.full) return doNext(true);
+  });
+
+  /* ------------------------------------------------------------ boot */
+  if (SESS && SESS.cur && SESS.cur.checked === 'done') { SESS.pos++; SESS.cur = null; }
+  render();
+  initSync();
+})();
+</script>
