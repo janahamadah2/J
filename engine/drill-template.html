@@ -184,6 +184,10 @@ table.rates td.n { text-align: right; }
   function unitsOn() { return UI.units.length ? UI.units : UNITS.slice(); }
   function plural(n, a, b) { return n + ' ' + (n === 1 ? a : (b || a + 's')); }
   function listText(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  var LECS = DATA.lectures || [], LECBY = {}; LECS.forEach(function (L) { LECBY[L.id] = L; });
+  function lecIds(lec) { return Core.lecItems(D, lec).map(function (x) { return x.id; }); }
+  function lecLP(lec) { return Core.lecItems(D, lec).filter(function (x) { return x.lp; }).map(function (x) { return x.id; }); }
+  function isPreMode(m) { return m === 'pretest' || m === 'lpre'; }
   function nTopic(units) { return Core.unitItems(D, units).length; }
   function fmtDate(t) { try { return new Date(t).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); } catch (e) { return ''; } }
   function topOfPage() { window.scrollTo(0, 0); }
@@ -343,8 +347,8 @@ table.rates td.n { text-align: right; }
     var any = Object.keys(S.p).length > 0, h = '';
     h += '<p class="eyebrow">' + esc(CFG.eyebrow) + '</p><h1>' + esc(CFG.title) + '</h1>';
     if (SESS) {
-      var done = SESS.ans.length, isPre = SESS.mode === 'pretest';
-      h += '<div class="card strong"><h2>' + (isPre ? 'Pre-test in progress' : 'A session was interrupted') + '</h2><p class="muted">' +
+      var done = SESS.ans.length, isPre = isPreMode(SESS.mode), lecT = SESS.lec && LECBY[SESS.lec] ? ' (' + LECBY[SESS.lec].short + ')' : '';
+      h += '<div class="card strong"><h2>' + esc((isPre ? 'Pre-test in progress' : 'A session was interrupted') + lecT) + '</h2><p class="muted">' +
         done + ' answered' + (SESS.mode !== 'endless' ? ' of ' + SESS.queue.filter(function (q) { return q.indexOf('card:') !== 0; }).length : '') + '.</p>' +
         '<div class="row"><button class="btn primary" data-act="resume">Resume where I left off</button><button class="btn" data-act="fresh">Start fresh instead</button></div></div>';
     }
@@ -359,6 +363,26 @@ table.rates td.n { text-align: right; }
     // last pass card
     h += '<div class="card"><h2>Last pass - ' + lpIds.length + ' questions</h2><p class="muted small">' + esc(CFG.last_pass_note) + '</p>' + statusBar(lpc) +
       '<div class="row" style="margin-top:10px"><button class="btn primary" data-act="lp">Start last pass - all ' + lpIds.length + '</button><button class="btn" data-act="lp20">Just the 20 weakest</button></div></div>';
+    if (LECS.length) {
+      var llv = Core.lectureLevels(D, S), prel = (S.pre && S.pre.lec) || {};
+      h += '<div class="card"><h2>By lecture</h2><p class="muted small">Each lecture has its own pre-test (up to 8 questions, one per concept first, never last-pass questions except in the past-paper groups, which have nothing else), its own last pass and its own guide section.</p>';
+      LECS.forEach(function (L) {
+        var all = lecIds(L.id), lp = lecLP(L.id), lv = llv[L.id], pre = prel[L.id];
+        var nonLP = Core.lecItems(D, L.id).filter(function (x) { return !x.lp; }).length;
+        var preN = Math.min(8, nonLP || all.length);
+        h += '<div class="rv"><p class="eyebrow">' + esc(L.short) + ' · ' + all.length + ' questions · ' + lp.length + ' last pass</p>' +
+          '<p style="margin:2px 0 4px"><b>' + esc(L.title) + '</b>' + (lv.level ? ' <span class="lvl ' + lv.level + '">' + lv.level + ' ' + lv.pct + '%</span>' : '') + '</p>' +
+          (pre ? '<p class="muted small" style="margin:0">Last pre-test: ' + esc(fmtDate(pre.t)) + ', ' + pre.pct + '%</p>' : '') +
+          statusBar(Core.statusCounts(D, S, all)) +
+          '<div class="row" style="margin-top:8px">' +
+          (preN ? '<button class="btn small" data-act="lpre" data-lec="' + L.id + '">' + (pre ? 'Retake pre-test' : 'Pre-test') + ' (' + preN + ')</button>' : '') +
+          '<button class="btn small" data-act="llp" data-lec="' + L.id + '"' + (lp.length ? '' : ' disabled') + '>Last pass (' + lp.length + ')</button>' +
+          '<button class="btn small" data-act="ldrill" data-lec="' + L.id + '">Drill ' + Math.min(20, all.length) + '</button>' +
+          (CFG.guide_url ? '<a class="btn small ghost" href="' + esc(CFG.guide_url + '#lec-' + L.id) + '" target="_blank" rel="noopener">Guide</a>' : '') +
+          '</div></div>';
+      });
+      h += '</div>';
+    }
     // topics
     h += '<div class="card"><h2>Topics</h2><div class="row small"><button class="linkbtn" data-act="uall">Tick all</button><button class="linkbtn" data-act="unone">Untick all</button></div><div class="grid2">';
     UNITS.forEach(function (u) {
@@ -418,6 +442,12 @@ table.rates td.n { text-align: right; }
     if (!pv.plan.ids.length) return;
     startSession('limited', pv.plan.ids);
   }
+  function startLecPretest(lec) { startSession('lpre', Core.buildLecturePretest(D, S, lec, R, 8), { lec: lec, units: [LECBY[lec].unit], nTopic: lecIds(lec).length }); }
+  function startLecLastPass(lec) { var q = Core.buildLastPass(D, S, false, R, lec); if (q.length) startSession('llp', q, { lec: lec, units: [LECBY[lec].unit] }); }
+  function startLecDrill(lec) {
+    var ids = lecIds(lec), plan = Core.buildLimited(D, S, ids, Math.min(20, ids.length), ids.length, R, now());
+    if (plan.ids.length) startSession('limited', plan.ids, { lec: lec, units: [LECBY[lec].unit], nTopic: ids.length });
+  }
   function startLastPass(only20) { startSession(only20 ? 'lp20' : 'lastpass', Core.buildLastPass(D, S, only20, R), { units: UNITS.slice() }); }
   function startPretest() { startSession('pretest', Core.buildPretest(D, S, R), { units: UNITS.slice(), nTopic: D.items.length }); }
   function startFix(cids) {
@@ -469,8 +499,8 @@ table.rates td.n { text-align: right; }
     var x = it(cur.q), h = '', num = SESS.ans.length + (cur.checked ? 0 : 1);
     var star = Core.isStar(S, Core.parseId(cur.q).base);
     var label = SESS.mode === 'endless' ? 'Question ' + num : SESS.mode === 'timed' ? 'Question ' + num + ' of about ' + sessCount() : 'Question ' + num + ' of ' + sessCount();
-    if (SESS.mode === 'pretest') label = 'Pre-test · ' + label;
-    h += '<div class="qmeta"><span>' + esc(label) + '</span><span>' + esc(x.u) + '</span>' + (x.lp ? '<span class="tag">Last pass</span>' : '') +
+    if (isPreMode(SESS.mode)) label = 'Pre-test · ' + label;
+    h += '<div class="qmeta"><span>' + esc(label) + '</span><span>' + esc(x.lec && LECBY[x.lec] ? LECBY[x.lec].short : x.u) + '</span>' + (x.lp ? '<span class="tag">Last pass</span>' : '') +
       (x.t === 'row' ? '<span class="tag">Practice row</span>' : '') + '</div>';
     h += renderStem(x, cur);
     h += '<div id="answer">' + renderAnswerArea(x, cur) + '</div>';
@@ -480,7 +510,7 @@ table.rates td.n { text-align: right; }
       '<button class="btn small ghost" data-act="star" aria-pressed="' + star + '">' + (star ? '★ Starred' : '☆ Star') + '</button>' +
       '<button class="btn small ghost" data-act="timer">Timer: ' + (UI.think ? 'on' : 'off') + '</button>' +
       (SESS.ans.length ? '<button class="btn small ghost" data-act="sofar">Check my answers so far</button>' : '') +
-      '<button class="btn small ghost" data-act="submit">' + (SESS.mode === 'pretest' ? 'Stop pre-test' : 'Submit session') + '</button></div>';
+      '<button class="btn small ghost" data-act="submit">' + (isPreMode(SESS.mode) ? 'Stop pre-test' : 'Submit session') + '</button></div>';
     app.innerHTML = h;
     drawActions();
     if (cur.checked) drawFeedback(false);
@@ -628,7 +658,7 @@ table.rates td.n { text-align: right; }
     var v = document.getElementById('verdict'); if (v) scrollUnderHeader(v);
   }
   function scheduleFollowUp(q) {
-    if (SESS.mode === 'pretest' || SESS.mode === 'lastpass' || SESS.mode === 'lp20') return;
+    if (SESS.mode === 'pretest' || SESS.mode === 'lastpass' || SESS.mode === 'lp20' || SESS.mode === 'lpre' || SESS.mode === 'llp') return;
     var cap = Math.floor(Math.max(SESS.planned, SESS.mode === 'endless' ? SESS.ans.length + 6 : 0) / 3);
     if (SESS.fu >= cap) return;
     var used = {}; SESS.queue.forEach(function (z) { used[z] = 1; });
@@ -767,7 +797,7 @@ table.rates td.n { text-align: right; }
   }
   function renderSubmit() {
     header({});
-    var n = SESS.ans.length, isPre = SESS.mode === 'pretest', left = SESS.mode === 'endless' ? 0 : Math.max(0, sessCount() - n);
+    var n = SESS.ans.length, isPre = isPreMode(SESS.mode), left = SESS.mode === 'endless' ? 0 : Math.max(0, sessCount() - n);
     app.innerHTML = '<h1>' + (isPre ? 'Stop the pre-test?' : 'Submit this session?') + '</h1>' +
       '<div class="card strong"><p>You answered <b>' + n + '</b>' + (SESS.mode !== 'endless' ? ' of ' + sessCount() : '') + ' questions.</p>' +
       (left ? '<p>The ' + plural(left, 'unanswered question') + ' will not be graded or count toward your progress.</p>' : '') +
@@ -784,12 +814,17 @@ table.rates td.n { text-align: right; }
   function finish() {
     clearInterval(clockTimer);
     if (!SESS) return go('main');
-    var ans = SESS.ans, res = { mode: SESS.mode, ans: ans, units: SESS.units, t: now(), sid: SESS.sid };
+    var ans = SESS.ans, res = { mode: SESS.mode, ans: ans, units: SESS.units, t: now(), sid: SESS.sid, lec: SESS.lec || null };
+    if (SESS.mode === 'lpre') {
+      var scl = ans.reduce(function (a, b) { return a + b.sc; }, 0);
+      S.pre.lec = S.pre.lec || {};
+      S.pre.lec[SESS.lec] = { t: now(), pct: ans.length ? Math.round(100 * scl / ans.length) : 0, n: ans.length };
+    }
     if (SESS.mode === 'pretest') {
       var sc = ans.reduce(function (a, b) { return a + b.sc; }, 0);
       S.pre.last = { t: now(), pct: ans.length ? Math.round(100 * sc / ans.length) : 0, n: ans.length };
     }
-    LASTRES = res; lsSet('lastres', { mode: res.mode, ans: ans, units: res.units, t: res.t });
+    LASTRES = res; lsSet('lastres', { mode: res.mode, ans: ans, units: res.units, t: res.t, lec: res.lec });
     SESS = null; saveLocal(); push(false);
     go('results');
   }
@@ -802,7 +837,16 @@ table.rates td.n { text-align: right; }
     var weakest = Object.keys(per).filter(function (u) { return per[u].n >= 3 && per[u].s / per[u].n < 0.8; })
       .sort(function (a, b) { return per[a].s / per[a].n - per[b].s / per[b].n; })[0];
     var h = '';
-    if (r.mode === 'pretest') {
+    if (r.mode === 'lpre' && LECBY[r.lec]) {
+      var LL = LECBY[r.lec], lvl = Core.lectureLevels(D, S)[r.lec], nlp = lecLP(r.lec).length;
+      h += '<p class="eyebrow">Pre-test results · ' + esc(LL.short) + '</p><h1>' + esc(LL.title) + '</h1><p class="big">' + pct + '%</p><p class="muted">' + (Math.round(sc * 10) / 10) + ' of ' + n + ' right on this lecture&#39;s pre-test.</p>' +
+        '<p>Lecture level (pre-test plus all your saved answers on this lecture): ' + (lvl.level ? '<span class="lvl ' + lvl.level + '">' + lvl.level + ' ' + lvl.pct + '%</span>' : 'no level yet') + '</p>';
+      h += '<div class="card strong"><h2>Next step</h2><p>' + (nlp ? 'Do this lecture&#39;s last pass (' + nlp + ' questions), then drill it.' : 'This lecture has no last-pass questions, so drill it next.') +
+        (lvl.level && lvl.level !== 'Strong' ? ' Re-read its guide section first.' : '') + '</p><div class="actions">' +
+        (nlp ? '<button class="btn primary" data-act="llp" data-lec="' + r.lec + '">Start last pass for ' + esc(LL.short) + '</button>' : '') +
+        '<button class="btn' + (nlp ? '' : ' primary') + '" data-act="ldrill" data-lec="' + r.lec + '">Drill ' + esc(LL.short) + '</button>' +
+        (CFG.guide_url ? '<a class="btn ghost" href="' + esc(CFG.guide_url + '#lec-' + r.lec) + '" target="_blank" rel="noopener">Open its guide</a>' : '') + '</div></div>';
+    } else if (r.mode === 'pretest') {
       var lv = Core.topicLevels(D, S);
       var weakU = UNITS.filter(function (u) { return lv[u].level; }).sort(function (a, b) { return lv[a].pct - lv[b].pct; }).filter(function (u) { return lv[u].level !== 'Strong'; }).slice(0, 3);
       h += '<p class="eyebrow">Pre-test results</p><h1>Your level by topic</h1><p class="big">' + pct + '%</p><p class="muted">' + (Math.round(sc * 10) / 10) + ' of ' + n + ' right on the pre-test. Levels combine the pre-test with all your saved answers.</p>';
@@ -817,9 +861,11 @@ table.rates td.n { text-align: right; }
       if (weakest) h += '<p>Weakest topic this session: <b>' + esc(weakest) + '</b> (' + Math.round(100 * per[weakest].s / per[weakest].n) + '% on ' + per[weakest].n + ').</p>';
       if (n < 10) h += '<p class="muted small">This session had fewer than 10 questions, so the score is a rough guide.</p>';
     }
-    var lpMode = r.mode === 'lastpass' || r.mode === 'lp20';
-    var ids = lpMode ? D.items.filter(function (x) { return x.lp; }).map(function (x) { return x.id; }) : Core.unitItems(D, r.units).map(function (x) { return x.id; });
-    h += '<div class="card"><h2>' + (lpMode ? 'Last pass status' : 'Status for these topics') + '</h2>' + statusBar(Core.statusCounts(D, S, ids)) +
+    var lpMode = r.mode === 'lastpass' || r.mode === 'lp20' || r.mode === 'llp';
+    var ids = r.lec ? (r.mode === 'llp' ? lecLP(r.lec) : lecIds(r.lec)) :
+      lpMode ? D.items.filter(function (x) { return x.lp; }).map(function (x) { return x.id; }) : Core.unitItems(D, r.units).map(function (x) { return x.id; });
+    var stTitle = r.lec && LECBY[r.lec] ? (r.mode === 'llp' ? 'Last pass status: ' : 'Status: ') + LECBY[r.lec].short : (lpMode ? 'Last pass status' : 'Status for these topics');
+    h += '<div class="card"><h2>' + esc(stTitle) + '</h2>' + statusBar(Core.statusCounts(D, S, ids)) +
       '<p class="muted small">One session can only make a question "right once": it becomes solid after you get it right again in a later session, once it has rested.</p></div>';
     h += '<div class="card"><h2>By topic this session</h2><div class="bars">' + Object.keys(per).sort(function (a, b) { return UNITS.indexOf(a) - UNITS.indexOf(b); }).map(function (u) {
       var p = Math.round(100 * per[u].s / per[u].n);
@@ -916,6 +962,9 @@ table.rates td.n { text-align: right; }
       case 'pretest': return startPretest();
       case 'lp': return startLastPass(false);
       case 'lp20': return startLastPass(true);
+      case 'lpre': return startLecPretest(t.getAttribute('data-lec'));
+      case 'llp': return startLecLastPass(t.getAttribute('data-lec'));
+      case 'ldrill': return startLecDrill(t.getAttribute('data-lec'));
       case 'uall': UI.units = UNITS.slice(); saveLocal(); return renderMain();
       case 'unone': UI.units = []; saveLocal(); return renderMain();
       case 'start': return startFromSetup();
@@ -934,6 +983,7 @@ table.rates td.n { text-align: right; }
       case 'again':
         if (LASTRES && (LASTRES.mode === 'lastpass' || LASTRES.mode === 'lp20')) return startLastPass(LASTRES.mode === 'lp20');
         if (LASTRES && LASTRES.mode === 'pretest') return startPretest();
+        if (LASTRES && LASTRES.lec && LECBY[LASTRES.lec]) return LASTRES.mode === 'lpre' ? startLecPretest(LASTRES.lec) : LASTRES.mode === 'llp' ? startLecLastPass(LASTRES.lec) : startLecDrill(LASTRES.lec);
         return startFromSetup();
       case 'weakdrill': UI.units = t.getAttribute('data-units').split('|'); UI.filters = {}; UI.len = '20'; saveLocal(); return startFromSetup();
       case 'fixall': return startFix(Object.keys((function () { var o = {}; D.items.forEach(function (x) { if (x.k && Core.status(x, S.p[x.id]) === 'shaky') o[x.k] = 1; }); return o; })()).slice(0, 15));

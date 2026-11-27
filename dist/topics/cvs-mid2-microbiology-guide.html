@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,18 +93,22 @@ a { color: var(--fg); }
     <p class="eyebrow">CVS block · Mid 2 · Microbiology only · Sunday 29 November 2026</p>
     <h1>CVS Mid 2 Microbiology Guide</h1>
     <p class="lede">7 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button><button class="chip" data-lec="micro-l3">Microbiology L3</button><button class="chip" data-lec="micro-pp">Microbiology past papers</button></nav>
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Microbiology</li>
+<li class="toc-lec"><a href="#lec-micro-l3">Microbiology L3: Infective endocarditis</a></li>
 <li><a href="#micro-ie-types">Infective endocarditis: classification and organisms</a></li>
 <li><a href="#micro-organisms">Specific organisms and their associations</a></li>
 <li><a href="#micro-patho">Pathophysiology of infective endocarditis</a></li>
 <li><a href="#micro-signs">Clinical features of infective endocarditis</a></li>
 <li><a href="#micro-dx-tx">Diagnosis, treatment and prophylaxis</a></li>
 <li><a href="#micro-lab-id">Laboratory identification of IE organisms</a></li>
+<li class="toc-lec"><a href="#lec-micro-pp">Microbiology past papers: Myocarditis and other CVS infections (past papers)</a></li>
 <li><a href="#micro-past">Myocarditis and other CVS infections (past papers)</a></li></ul></details>
-    <h2 class="unit-h" id="unit-microbiology">Microbiology</h2>
+    <div class="lec" id="lec-micro-l3" data-lec="micro-l3"><p class="lec-eyebrow">Microbiology L3 · 6 sections</p><h2 class="lec-h">Infective endocarditis</h2>
 
 <section class="sec" id="micro-ie-types" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 1</p>
+  <p class="sec-eyebrow">Microbiology L3 · 1</p>
   <h3>Infective endocarditis: classification and organisms</h3>
   <div class="block mech"><h4>How it works</h4><p>Infective endocarditis is classified by speed (acute vs subacute), by the valve (native, prosthetic, device) and by the route (IV drug use). Virulent organisms attack healthy valves fast; less virulent ones need a damaged valve and take weeks.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Match setting to organism: IV drug use = tricuspid, S. aureus; prosthetic valve = S. epidermidis or S. aureus; damaged valve after dental work = viridans.</li></ol></div>
@@ -107,7 +121,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-organisms" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 2</p>
+  <p class="sec-eyebrow">Microbiology L3 · 2</p>
   <h3>Specific organisms and their associations</h3>
   <div class="block mech"><h4>How it works</h4><p>Each organism hints at its source: skin and devices (staphylococci), mouth (viridans), bowel (S. bovis), urinary or GI tract (enterococci), pharynx (HACEK).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>After S. bovis endocarditis, expect evaluation of the colon.</li><li>Think HACEK when cultures stay negative without special media.</li></ol></div>
@@ -120,7 +134,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-patho" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 3</p>
+  <p class="sec-eyebrow">Microbiology L3 · 3</p>
   <h3>Pathophysiology of infective endocarditis</h3>
   <div class="block mech"><h4>How it works</h4><p>Three things must meet: a damaged valve surface with a sterile platelet-fibrin clot, bacteria in the blood, and bacteria able to stick. Inside the vegetation bacteria hide from phagocytes and antibiotics, shed into the blood and break off as emboli.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Ask about recent dental, skin or invasive procedures (transient bacteremia).</li><li>Watch for embolic infarcts and abscesses in brain, kidney, spleen and lung.</li></ol></div>
@@ -133,7 +147,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-signs" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 4</p>
+  <p class="sec-eyebrow">Microbiology L3 · 4</p>
   <h3>Clinical features of infective endocarditis</h3>
   <div class="block mech"><h4>How it works</h4><p>The extracardiac signs come from septic emboli and immune-mediated injury: small hemorrhages and lesions in nails, skin and retina.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Inspect nails, palms, soles, finger pads and retina in suspected IE.</li><li>Separate IE signs from rheumatic fever signs (erythema marginatum, extensor nodules, chorea).</li></ol></div>
@@ -146,7 +160,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-dx-tx" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 5</p>
+  <p class="sec-eyebrow">Microbiology L3 · 5</p>
   <h3>Diagnosis, treatment and prophylaxis</h3>
   <div class="block mech"><h4>How it works</h4><p>Organisms shed continuously from the vegetation, so blood cultures catch them, but only if taken before antibiotics. Empiric treatment starts right after cultures and is narrowed when results arrive. Prophylaxis protects high-risk valves before procedures.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Draw three sets of blood cultures from different sites before the first antibiotic.</li><li>Anticipate vancomycin + cefepime for native valves; add gentamicin + rifampin for prosthetic valves.</li><li>Give prophylaxis 30-60 minutes before the procedure; use azithromycin or doxycycline if penicillin-allergic.</li></ol></div>
@@ -159,7 +173,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-lab-id" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 6</p>
+  <p class="sec-eyebrow">Microbiology L3 · 6</p>
   <h3>Laboratory identification of IE organisms</h3>
   <div class="block mech"><h4>How it works</h4><p>Shape and arrangement split staphylococci (clusters) from streptococci (chains). Then catalase, coagulase, hemolysis, optochin and bile solubility separate the species.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Coagulase positive = S. aureus; coagulase negative = S. epidermidis.</li><li>Alpha hemolytic: optochin sensitive and bile soluble = pneumococcus; resistant and insoluble = viridans.</li></ol></div>
@@ -170,9 +184,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.</li><li>S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.</li><li>Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.</li><li>S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.</li><li>S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble.</li></ul></div>
   <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
 </section>
+</div>
+<div class="lec" id="lec-micro-pp" data-lec="micro-pp"><p class="lec-eyebrow">Microbiology past papers · 1 sections</p><h2 class="lec-h">Myocarditis and other CVS infections (past papers)</h2>
 
 <section class="sec" id="micro-past" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 7</p>
+  <p class="sec-eyebrow">Microbiology past papers · 1</p>
   <h3>Myocarditis and other CVS infections (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Past papers include infections of the heart muscle and vessels beyond endocarditis. Coxsackievirus B causes myocarditis; T. cruzi causes Chagas disease with acute nonspecific symptoms and chronic megaorgans and cardiomyopathy; Ixodes ticks transmit Borrelia and Babesia; Trichinella larvae encyst in muscle with eosinophilia; gut organisms cause portal pyemia. Your uploaded lecture covers only endocarditis.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Viral myocarditis: Coxsackievirus B.</li><li>Separate acute Chagas (loss of appetite) from chronic Chagas (megacolon, megaesophagus, cardiomyopathy).</li><li>Portal pyemia after abdominal infection: Enterococcus and anaerobes.</li></ol></div>
@@ -183,6 +199,7 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Coxsackievirus B causes myocarditis; Coxsackievirus also causes pleurodynia.</li><li>Trypanosoma cruzi (Chagas disease) is a flagellated protozoan seen in Giemsa stain in South America; acute symptoms include loss of appetite, chronic ones megacolon, megaesophagus and dilated cardiomyopathy.</li><li>Ixodes ticks transmit Borrelia and Babesia; Trichinella spiralis gives eosinophilia with encysted larvae.</li><li>Portal pyemia (pylephlebitis) after intra-abdominal abscess or enteric infection is caused by Enterococcus and anaerobic bacteria.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
+</div>
   </div>
   <div id="view-readme" hidden><div class="readme">
   <h2>Read me</h2>
@@ -191,6 +208,7 @@ a { color: var(--fg); }
   <h3>How to use the Drill</h3>
   <ol>
     <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Or go lecture by lecture.</b> The "By lecture" card gives every lecture its own pre-test (up to 8 questions), its own last pass, a level, and a Guide button that opens only that lecture's sections.</li>
     <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
     <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
     <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
@@ -201,6 +219,7 @@ a { color: var(--fg); }
 
   <h3>How to use the Mastery Guide</h3>
   <ol>
+    <li>Use the lecture bar at the top to show one lecture at a time, or "All lectures" for everything.</li>
     <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
     <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
     <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
@@ -235,11 +254,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

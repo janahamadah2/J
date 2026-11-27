@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,7 +93,10 @@ a { color: var(--fg); }
     <p class="eyebrow">CVS block · Mid 2 · Pharmacology only · Sunday 29 November 2026</p>
     <h1>CVS Mid 2 Pharmacology Guide</h1>
     <p class="lede">10 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button><button class="chip" data-lec="pharm-l2-4">Pharmacology L2-L4</button><button class="chip" data-lec="pharm-pp">Pharmacology past papers</button></nav>
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Pharmacology</li>
+<li class="toc-lec"><a href="#lec-pharm-l2-4">Pharmacology L2-L4: Treatment of hypertension</a></li>
 <li><a href="#pharm-classes">Hypertension: definition and drug classes</a></li>
 <li><a href="#pharm-diuretics">Diuretics in hypertension</a></li>
 <li><a href="#pharm-ccb">Calcium channel blockers</a></li>
@@ -91,13 +104,14 @@ a { color: var(--fg); }
 <li><a href="#pharm-central">Centrally acting sympatholytics</a></li>
 <li><a href="#pharm-alpha-beta">Alpha blockers, beta blockers and alpha-beta blockers</a></li>
 <li><a href="#pharm-vasodilators">Direct vasodilators</a></li>
+<li class="toc-lec"><a href="#lec-pharm-pp">Pharmacology past papers: Antiarrhythmics, lipid-lowering drugs and antianginals (past papers)</a></li>
 <li><a href="#pharm-antiarrhythmic">Antiarrhythmic drugs (past papers)</a></li>
 <li><a href="#pharm-lipid">Lipid-lowering drugs (past papers)</a></li>
 <li><a href="#pharm-antianginal">Nitrates and beta blockers in angina (past papers)</a></li></ul></details>
-    <h2 class="unit-h" id="unit-pharmacology">Pharmacology</h2>
+    <div class="lec" id="lec-pharm-l2-4" data-lec="pharm-l2-4"><p class="lec-eyebrow">Pharmacology L2-L4 · 7 sections</p><h2 class="lec-h">Treatment of hypertension</h2>
 
 <section class="sec" id="pharm-classes" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 1</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 1</p>
   <h3>Hypertension: definition and drug classes</h3>
   <div class="block mech"><h4>How it works</h4><p>Blood pressure is cardiac output times peripheral resistance, kept up by volume, the sympathetic system and the renin-angiotensin system. Each drug class removes one of these supports: diuretics (volume), sympatholytics (nerves), RAS drugs (angiotensin), CCBs and vasodilators (vessel tone).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Classify every drug on a client's list before giving it.</li><li>Use the current threshold: 130/80 mm Hg or higher is hypertension.</li></ol></div>
@@ -110,7 +124,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-diuretics" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 2</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 2</p>
   <h3>Diuretics in hypertension</h3>
   <div class="block mech"><h4>How it works</h4><p>Diuretics lower pressure first by shrinking plasma volume and cardiac output. Over 4-8 weeks the volume recovers but resistance falls: sodium depletion lowers smooth muscle Na+, which lowers intracellular Ca++ through the Na/Ca exchanger, relaxing arterioles.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Use thiazides first in normal renal function; loop diuretics in CKD or malignant hypertension.</li><li>Add a potassium-sparing diuretic to a thiazide to counteract hypokalemia; spironolactone for hyperaldosteronism.</li></ol></div>
@@ -123,7 +137,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-ccb" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 3</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 3</p>
   <h3>Calcium channel blockers</h3>
   <div class="block mech"><h4>How it works</h4><p>CCBs block L-type Ca++ channels, so less calcium enters smooth muscle (and, for verapamil and diltiazem, heart muscle). Dihydropyridines act on vessels only, so heart rate may rise; verapamil and diltiazem also slow the heart.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect a possible rise in heart rate with nifedipine and a fall with verapamil or diltiazem.</li><li>Use nicardipine for hypertensive emergencies; avoid short-acting nifedipine.</li></ol></div>
@@ -136,7 +150,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-ras" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 4</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 4</p>
   <h3>Renin inhibitors, ACE inhibitors and ARBs</h3>
   <div class="block mech"><h4>How it works</h4><p>Renin turns angiotensinogen into angiotensin I, ACE turns angiotensin I into angiotensin II (and breaks down bradykinin), and angiotensin II acts on AT1 receptors. Blocking any step lowers angiotensin II effects; the step blocked decides the side effects: ACE inhibitors raise bradykinin (cough, angioedema), ARBs do not.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Monitor potassium, renal function, first-dose blood pressure and the airway (angioedema).</li><li>Question ACE inhibitors and ARBs in pregnancy and bilateral renal artery stenosis.</li><li>Switch to an ARB when an ACE inhibitor causes cough.</li></ol></div>
@@ -149,7 +163,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-central" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 5</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 5</p>
   <h3>Centrally acting sympatholytics</h3>
   <div class="block mech"><h4>How it works</h4><p>Clonidine and methyldopa act in the brain: they stimulate central alpha-2 (and, for clonidine, imidazoline) receptors that turn down sympathetic outflow. Methyldopa first has to be converted to methylnorepinephrine inside neurons.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Teach clients on clonidine never to stop it suddenly.</li><li>Prefer methyldopa in pregnancy.</li><li>Expect sedation; check for a positive Coombs' test with methyldopa.</li></ol></div>
@@ -162,7 +176,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-alpha-beta" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 6</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 6</p>
   <h3>Alpha blockers, beta blockers and alpha-beta blockers</h3>
   <div class="block mech"><h4>How it works</h4><p>Alpha-1 blockers dilate arterioles and veins, so standing can drop the pressure, especially after the first dose. Beta blockers lower cardiac output and renin release and leave veins alone, so they do not cause postural hypotension but can slow the heart, narrow airways and mask or cause low glucose.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>After a first prazosin dose, monitor for postural hypotension.</li><li>Choose a beta-1 selective drug (atenolol, bisoprolol, metoprolol) when airways are a concern.</li><li>Never stop a beta blocker abruptly: rebound hypertension.</li></ol></div>
@@ -175,7 +189,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-vasodilators" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 7</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 7</p>
   <h3>Direct vasodilators</h3>
   <div class="block mech"><h4>How it works</h4><p>Direct vasodilators relax vessel smooth muscle by different routes: NO (nitroprusside), K+ channel opening (minoxidil, diazoxide), D1 activation (fenoldopam) or an uncertain mechanism (hydralazine). Their toxicities are drug-specific and well worth memorizing.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>During nitroprusside infusion, watch for cyanide toxicity.</li><li>Check glucose with diazoxide, hair growth with minoxidil, lupus-like symptoms with high-dose hydralazine.</li><li>Question fenoldopam in glaucoma, angina or hypokalemia.</li></ol></div>
@@ -186,9 +200,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Nitroprusside: arterioles and veins, nitric oxide; metabolized by red cells releasing cyanide (to thiocyanate); half-life about 2 minutes, continuous infusion; for emergencies, severe heart failure, controlled hypotension.</li><li>Hydralazine: arterioles, uncertain mechanism; headache, palpitations, flushing; immunological lupoid syndrome (up to 20% at very high doses).</li><li>Minoxidil: arteriolar K+ channel opener, a prodrug; salt and water retention, tachycardia, hypertrichosis; also used for baldness.</li><li>Diazoxide: K+ channel opener without diuresis (lacks a sulfonamide group); salt and water retention, hyperglycemia; for hypertensive emergencies.</li><li>Fenoldopam: IV D1 agonist, renal and mesenteric vasodilation and natriuresis; reflex tachycardia, raised intraocular pressure, low potassium; contraindicated in angina, glaucoma and hypokalemia.</li></ul></div>
   <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
 </section>
+</div>
+<div class="lec" id="lec-pharm-pp" data-lec="pharm-pp"><p class="lec-eyebrow">Pharmacology past papers · 3 sections</p><h2 class="lec-h">Antiarrhythmics, lipid-lowering drugs and antianginals (past papers)</h2>
 
 <section class="sec" id="pharm-antiarrhythmic" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 8</p>
+  <p class="sec-eyebrow">Pharmacology past papers · 1</p>
   <h3>Antiarrhythmic drugs (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Antiarrhythmics are grouped by the channel or receptor they block: class I sodium channels, class II beta receptors, class III potassium channels and class IV calcium channels. Many questions test one signature adverse effect per drug. This lecture is not among your uploads; the facts come from the past-paper keys.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Classify first: Na+ = I, beta = II, K+ = III, Ca++ = IV.</li><li>Match adverse effects: quinidine = cinchonism (headache, tinnitus); amiodarone = pulmonary fibrosis and blue-gray skin.</li><li>PSVT: adenosine. Intraoperative rate control: esmolol.</li></ol></div>
@@ -201,7 +217,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-lipid" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 9</p>
+  <p class="sec-eyebrow">Pharmacology past papers · 2</p>
   <h3>Lipid-lowering drugs (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Lipid-lowering drugs attack different steps: statins block cholesterol synthesis at HMG CoA reductase, ezetimibe blocks intestinal absorption, cholestyramine traps bile acids in the gut, fibrates lower triglycerides, and niacin lowers triglycerides while raising HDL. Your slides cover only the statin effect size (30-40% LDL reduction) and large-dose vitamin B3 as a cholesterol-lowering factor.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Muscle pain or rhabdomyolysis on a lipid drug: suspect a statin.</li><li>High triglycerides: fenofibrate; high TG with low HDL despite a statin: niacin.</li><li>Warn about flushing and hyperuricemia with niacin.</li></ol></div>
@@ -214,7 +230,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-antianginal" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 10</p>
+  <p class="sec-eyebrow">Pharmacology past papers · 3</p>
   <h3>Nitrates and beta blockers in angina (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Your coronary circulation slides list nitrates and beta blockers as treatments for ischemic heart disease. Past papers add how: beta blockers lower heart rate and contractility and so the heart's O2 demand, and continuous nitrate exposure causes tolerance, prevented by a nitrate-free interval.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Schedule a daily nitrate-free interval to avoid tolerance.</li><li>Explain beta blockers in angina as lowering O2 demand.</li></ol></div>
@@ -225,6 +241,7 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Nitrate tolerance is treated by a nitrate-free interval (no therapy for a brief time).</li><li>Beta blockers relieve angina by decreasing myocardial O2 demand.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); nitrates and beta blockers for IHD are on Physiology L9 slides</p>
 </section>
+</div>
   </div>
   <div id="view-readme" hidden><div class="readme">
   <h2>Read me</h2>
@@ -233,6 +250,7 @@ a { color: var(--fg); }
   <h3>How to use the Drill</h3>
   <ol>
     <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Or go lecture by lecture.</b> The "By lecture" card gives every lecture its own pre-test (up to 8 questions), its own last pass, a level, and a Guide button that opens only that lecture's sections.</li>
     <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
     <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
     <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
@@ -243,6 +261,7 @@ a { color: var(--fg); }
 
   <h3>How to use the Mastery Guide</h3>
   <ol>
+    <li>Use the lecture bar at the top to show one lecture at a time, or "All lectures" for everything.</li>
     <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
     <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
     <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
@@ -277,11 +296,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,51 +93,67 @@ a { color: var(--fg); }
     <p class="eyebrow">CVS block · Mid 2 · Sunday 29 November 2026 · 40 questions</p>
     <h1>CVS Mid 2 Mastery Guide</h1>
     <p class="lede">71 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button><button class="chip" data-lec="anat-l4">Anatomy L4</button><button class="chip" data-lec="anat-l5">Anatomy L5</button><button class="chip" data-lec="anat-pp">Anatomy past papers</button><button class="chip" data-lec="phys-l6">Physiology L6</button><button class="chip" data-lec="phys-l7">Physiology L7</button><button class="chip" data-lec="phys-l8">Physiology L8</button><button class="chip" data-lec="phys-l9">Physiology L9</button><button class="chip" data-lec="phys-pp">Physiology past papers</button><button class="chip" data-lec="path-l1">Pathology L1</button><button class="chip" data-lec="path-l2">Pathology L2</button><button class="chip" data-lec="path-l3">Pathology L3</button><button class="chip" data-lec="path-l4">Pathology L4</button><button class="chip" data-lec="path-pp">Pathology past papers</button><button class="chip" data-lec="pharm-l2-4">Pharmacology L2-L4</button><button class="chip" data-lec="pharm-pp">Pharmacology past papers</button><button class="chip" data-lec="bio-l5">Biochemistry L5</button><button class="chip" data-lec="bio-l6">Biochemistry L6</button><button class="chip" data-lec="bio-pp">Biochemistry past papers</button><button class="chip" data-lec="micro-l3">Microbiology L3</button><button class="chip" data-lec="micro-pp">Microbiology past papers</button><button class="chip" data-lec="emb-l3">Embryology L3</button><button class="chip" data-lec="emb-pp">Embryology past papers</button></nav>
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Anatomy</li>
+<li class="toc-lec"><a href="#lec-anat-l4">Anatomy L4: Blood supply and surface anatomy of the heart</a></li>
 <li><a href="#anat-coronary">Coronary arteries: origin, course and territories</a></li>
 <li><a href="#anat-dominance">Coronary dominance</a></li>
 <li><a href="#anat-cardiac-veins">Venous drainage of the heart</a></li>
 <li><a href="#anat-surface">Surface anatomy of the heart and valves</a></li>
 <li><a href="#anat-pci">Coronary angiography and PCI</a></li>
+<li class="toc-lec"><a href="#lec-anat-l5">Anatomy L5: Blood supply of the head and neck</a></li>
 <li><a href="#anat-carotid">Common, external and internal carotid arteries</a></li>
 <li><a href="#anat-subclavian">Subclavian artery</a></li>
 <li><a href="#anat-facial-veins">Facial veins and the dangerous area of the face</a></li>
 <li><a href="#anat-neck-veins">Jugular, subclavian and brachiocephalic veins</a></li>
+<li class="toc-lec"><a href="#lec-anat-pp">Anatomy past papers: Limb vessels (past papers, no lecture uploaded)</a></li>
 <li><a href="#anat-limb-vessels">Upper and lower limb vessels (past papers)</a></li>
 <li class="toc-unit">Physiology</li>
+<li class="toc-lec"><a href="#lec-phys-l6">Physiology L6: Electrocardiogram I: basic principles</a></li>
 <li><a href="#phys-ecg-leads">ECG leads and what they record</a></li>
 <li><a href="#phys-ecg-waves">ECG paper, waves and intervals</a></li>
+<li class="toc-lec"><a href="#lec-phys-l7">Physiology L7: Electrocardiogram II: analysis</a></li>
 <li><a href="#phys-ecg-rate">Rhythm analysis and heart rate</a></li>
 <li><a href="#phys-sinus">Normal sinus rhythm and its variations</a></li>
 <li><a href="#phys-arrhythmia">Atrial fibrillation and atrial flutter</a></li>
 <li><a href="#phys-av-block">AV nodal blocks</a></li>
 <li><a href="#phys-axis">Mean QRS axis</a></li>
+<li class="toc-lec"><a href="#lec-phys-l8">Physiology L8: Cardiac output and venous return</a></li>
 <li><a href="#phys-co">Cardiac output, stroke volume and ejection fraction</a></li>
 <li><a href="#phys-autonomic">Autonomic control of heart rate and contractility</a></li>
 <li><a href="#phys-starling">Frank-Starling law, preload and afterload</a></li>
 <li><a href="#phys-venous-return">Factors controlling venous return</a></li>
 <li><a href="#phys-co-measure">Measuring cardiac output and conditions that change it</a></li>
+<li class="toc-lec"><a href="#lec-phys-l9">Physiology L9: Coronary circulation</a></li>
 <li><a href="#phys-coronary-flow">Coronary blood flow and oxygen extraction</a></li>
 <li><a href="#phys-phasic-flow">Phasic changes in coronary flow</a></li>
 <li><a href="#phys-coronary-control">Chemical and neural control of coronary flow</a></li>
 <li><a href="#phys-ihd">Ischemic heart disease and myocardial infarction</a></li>
+<li class="toc-lec"><a href="#lec-phys-pp">Physiology past papers: Resistance, baroreceptors and cardiac markers (past papers)</a></li>
 <li><a href="#phys-past">Resistance, blood pressure regulation and cardiac markers (past papers)</a></li>
 <li class="toc-unit">Pathology</li>
+<li class="toc-lec"><a href="#lec-path-l1">Pathology L1: Hemodynamic disorders I: hyperemia, edema, ischemia, infarction</a></li>
 <li><a href="#path-congestion">Hyperemia and congestion</a></li>
 <li><a href="#path-edema">Edema: causes and classification</a></li>
 <li><a href="#path-ischemia-infarct">Ischemia and infarction</a></li>
+<li class="toc-lec"><a href="#lec-path-l2">Pathology L2: Hemodynamic disorders II: thrombosis and embolism</a></li>
 <li><a href="#path-virchow">Thrombosis and Virchow&#x27;s triad</a></li>
 <li><a href="#path-thrombus-types">Sites, types and fate of thrombi</a></li>
 <li><a href="#path-embolism">Embolism and pulmonary embolism</a></li>
 <li><a href="#path-systemic-emboli">Systemic, fat, air and amniotic fluid emboli</a></li>
+<li class="toc-lec"><a href="#lec-path-l3">Pathology L3: Rheumatic fever and rheumatic heart disease</a></li>
 <li><a href="#path-arf">Acute rheumatic fever: pathogenesis and lesions</a></li>
 <li><a href="#path-jones">Jones criteria</a></li>
 <li><a href="#path-rhd">Chronic rheumatic heart disease and mitral stenosis</a></li>
+<li class="toc-lec"><a href="#lec-path-l4">Pathology L4: Atherosclerosis</a></li>
 <li><a href="#path-arteriosclerosis">Arteriosclerosis patterns</a></li>
 <li><a href="#path-athero">Atherosclerosis: risk factors, pathogenesis and plaque</a></li>
 <li><a href="#path-athero-complications">Complications and sites of atherosclerosis</a></li>
+<li class="toc-lec"><a href="#lec-path-pp">Pathology past papers: Endocarditis types, pyemia and MI healing (past papers)</a></li>
 <li><a href="#path-past">Endocarditis types, pyemia and MI healing (past papers)</a></li>
 <li class="toc-unit">Pharmacology</li>
+<li class="toc-lec"><a href="#lec-pharm-l2-4">Pharmacology L2-L4: Treatment of hypertension</a></li>
 <li><a href="#pharm-classes">Hypertension: definition and drug classes</a></li>
 <li><a href="#pharm-diuretics">Diuretics in hypertension</a></li>
 <li><a href="#pharm-ccb">Calcium channel blockers</a></li>
@@ -135,36 +161,44 @@ a { color: var(--fg); }
 <li><a href="#pharm-central">Centrally acting sympatholytics</a></li>
 <li><a href="#pharm-alpha-beta">Alpha blockers, beta blockers and alpha-beta blockers</a></li>
 <li><a href="#pharm-vasodilators">Direct vasodilators</a></li>
+<li class="toc-lec"><a href="#lec-pharm-pp">Pharmacology past papers: Antiarrhythmics, lipid-lowering drugs and antianginals (past papers)</a></li>
 <li><a href="#pharm-antiarrhythmic">Antiarrhythmic drugs (past papers)</a></li>
 <li><a href="#pharm-lipid">Lipid-lowering drugs (past papers)</a></li>
 <li><a href="#pharm-antianginal">Nitrates and beta blockers in angina (past papers)</a></li>
 <li class="toc-unit">Biochemistry</li>
+<li class="toc-lec"><a href="#lec-bio-l5">Biochemistry L5: Diet fat and coronary heart disease</a></li>
 <li><a href="#bio-lipids-chd">Blood lipids and coronary heart disease</a></li>
 <li><a href="#bio-fats">Types of dietary fat and their effects</a></li>
 <li><a href="#bio-cholesterol-sterols">Dietary cholesterol, plant sterols and cholesterol-lowering factors</a></li>
+<li class="toc-lec"><a href="#lec-bio-l6">Biochemistry L6: Oxidative stress and atherosclerosis</a></li>
 <li><a href="#bio-ros">Free radicals, ROS and RNS</a></li>
 <li><a href="#bio-burst-no">Respiratory burst, nitric oxide and antioxidants</a></li>
 <li><a href="#bio-oxldl">Oxidized LDL and the stages of atherosclerosis</a></li>
+<li class="toc-lec"><a href="#lec-bio-pp">Biochemistry past papers: Lipoproteins and eicosanoids (past papers)</a></li>
 <li><a href="#bio-lipoproteins">Lipoproteins and cholesterol metabolism (past papers)</a></li>
 <li><a href="#bio-eicosanoids">Eicosanoids: COX-2 and prostacyclin (past papers)</a></li>
 <li class="toc-unit">Microbiology</li>
+<li class="toc-lec"><a href="#lec-micro-l3">Microbiology L3: Infective endocarditis</a></li>
 <li><a href="#micro-ie-types">Infective endocarditis: classification and organisms</a></li>
 <li><a href="#micro-organisms">Specific organisms and their associations</a></li>
 <li><a href="#micro-patho">Pathophysiology of infective endocarditis</a></li>
 <li><a href="#micro-signs">Clinical features of infective endocarditis</a></li>
 <li><a href="#micro-dx-tx">Diagnosis, treatment and prophylaxis</a></li>
 <li><a href="#micro-lab-id">Laboratory identification of IE organisms</a></li>
+<li class="toc-lec"><a href="#lec-micro-pp">Microbiology past papers: Myocarditis and other CVS infections (past papers)</a></li>
 <li><a href="#micro-past">Myocarditis and other CVS infections (past papers)</a></li>
 <li class="toc-unit">Embryology</li>
+<li class="toc-lec"><a href="#lec-emb-l3">Embryology L3: Development of the aortic arches and veins</a></li>
 <li><a href="#emb-arches">Formation and derivatives of the aortic arches</a></li>
 <li><a href="#emb-sac-dorsal">Aortic sac, dorsal aorta and the origin of the great arteries</a></li>
 <li><a href="#emb-anomalies">Anomalies of the aortic arches</a></li>
 <li><a href="#emb-veins">Development of the veins</a></li>
+<li class="toc-lec"><a href="#lec-emb-pp">Embryology past papers: Septum intermedium and umbilical ligaments (past papers)</a></li>
 <li><a href="#emb-past">Other embryology from past papers</a></li></ul></details>
-    <h2 class="unit-h" id="unit-anatomy">Anatomy</h2>
+    <div class="lec" id="lec-anat-l4" data-lec="anat-l4"><p class="lec-eyebrow">Anatomy L4 · 5 sections</p><h2 class="lec-h">Blood supply and surface anatomy of the heart</h2>
 
 <section class="sec" id="anat-coronary" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 1</p>
+  <p class="sec-eyebrow">Anatomy L4 · 1</p>
   <h3>Coronary arteries: origin, course and territories</h3>
   <div class="block mech"><h4>How it works</h4><p>The two coronary arteries leave the ascending aorta from sinuses just above the aortic valve cusps. The <b>RCA</b> runs in the coronary groove between right atrium and right ventricle, then posteriorly, and ends as the posterior interventricular artery. The short <b>left main</b> runs between the pulmonary trunk and the left auricle and divides into the <b>circumflex</b> and the <b>LAD</b>. Which artery feeds which wall follows from which groove it runs in.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Read the stenosed artery on the angiogram, then name the wall it feeds: LAD = front (sternocostal surface, anterior 2/3 of the septum, A-V bundle).</li><li>Occlusion of the RCA can threaten the SA node (65%) and the AV node (80%): watch the rhythm.</li><li>The septum is split: anterior 2/3 LAD, posterior 1/3 posterior interventricular artery.</li></ol></div>
@@ -177,7 +211,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-dominance" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 2</p>
+  <p class="sec-eyebrow">Anatomy L4 · 2</p>
   <h3>Coronary dominance</h3>
   <div class="block mech"><h4>How it works</h4><p>Dominance is named after the artery that gives the posterior interventricular artery to the diaphragmatic surface. The slide gives three patterns with their frequencies.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>When a report says left dominant, expect the posterior interventricular artery from the circumflex.</li><li>Note the slide's frequencies (70 / 15 / 15) and check with your instructor: many textbooks give right dominance as the most common pattern.</li></ol></div>
@@ -190,7 +224,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-cardiac-veins" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 3</p>
+  <p class="sec-eyebrow">Anatomy L4 · 3</p>
   <h3>Venous drainage of the heart</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac veins run with the arteries in the same grooves and drain three ways: most into the <b>coronary sinus</b>, which empties into the right atrium; some straight into the right atrium (anterior cardiac veins); and some straight into any chamber (venae cordis minimi).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Pair each vein with its artery: great cardiac vein with the LAD, middle cardiac vein with the posterior interventricular artery.</li><li>Remember the coronary sinus ends in the posterior wall of the RIGHT atrium.</li></ol></div>
@@ -203,7 +237,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-surface" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 4</p>
+  <p class="sec-eyebrow">Anatomy L4 · 4</p>
   <h3>Surface anatomy of the heart and valves</h3>
   <div class="block mech"><h4>How it works</h4><p>Four points 0.5 inch from the sternum (and the apex 3.5 inches from the midline) outline the heart on the chest wall; joining them in order gives the four borders. The valves lie in a diagonal line behind the sternum, PAMT from top left to bottom middle.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Mark A (left 2nd costal cartilage, lower border), B (right 3rd costal cartilage, upper border), C (right 6th costal cartilage), D (left 5th intercostal space).</li><li>Join A-B (upper), B-C (right), C-D (lower), D-A (left).</li><li>Place the valves in order: pulmonary 3rd costal cartilage, aortic 3rd space, mitral 4th cartilage, tricuspid 4th space.</li></ol></div>
@@ -216,7 +250,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-pci" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 5</p>
+  <p class="sec-eyebrow">Anatomy L4 · 5</p>
   <h3>Coronary angiography and PCI</h3>
   <div class="block mech"><h4>How it works</h4><p>Coronary angiography and PCI reach the coronary orifices from the ascending aorta by passing a catheter backwards (retrograde) up the arterial tree from the wrist or groin.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect local anesthesia, catheter entry through the radial or femoral artery, contrast injected into each coronary orifice, then a stent if a vessel is narrowed by plaque.</li></ol></div>
@@ -227,9 +261,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>A catheter is passed retrograde from the radial or femoral artery into the ascending aorta under local anesthesia.</li><li>Radiopaque contrast is injected into the orifice of each coronary artery to photograph all segments of each vessel.</li><li>A stent may be placed to open vessels narrowed by plaque buildup (atherosclerosis).</li></ul></div>
   <p class="src">Source: Anatomy L4 slides</p>
 </section>
+</div>
+<div class="lec" id="lec-anat-l5" data-lec="anat-l5"><p class="lec-eyebrow">Anatomy L5 · 4 sections</p><h2 class="lec-h">Blood supply of the head and neck</h2>
 
 <section class="sec" id="anat-carotid" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 6</p>
+  <p class="sec-eyebrow">Anatomy L5 · 1</p>
   <h3>Common, external and internal carotid arteries</h3>
   <div class="block mech"><h4>How it works</h4><p>The common carotid arteries start differently on each side, climb inside the carotid sheath and divide at the upper border of the thyroid cartilage. The external carotid gives the face and neck their branches and ends in the parotid gland; the internal carotid gives nothing in the neck and goes straight into the skull.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Find the bifurcation at the upper border of the thyroid cartilage (C3-4).</li><li>Before a jugular puncture, remember the IJV lies lateral to the artery in the sheath.</li><li>Feel the superficial temporal pulse just in front of the tragus.</li></ol></div>
@@ -242,7 +278,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-subclavian" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 7</p>
+  <p class="sec-eyebrow">Anatomy L5 · 2</p>
   <h3>Subclavian artery</h3>
   <div class="block mech"><h4>How it works</h4><p>Scalenus anterior crosses in front of the subclavian artery and so divides it into three parts. Each part has its own branches, and the artery ends at the outer border of the 1st rib by becoming the axillary artery.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Sort branches by part: 1st = vertebral, internal thoracic, thyrocervical trunk; 2nd = costocervical trunk; 3rd = dorsal scapular.</li><li>Remember the thyrocervical trunk gives the inferior thyroid, transverse cervical and suprascapular arteries.</li></ol></div>
@@ -255,7 +291,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-facial-veins" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 8</p>
+  <p class="sec-eyebrow">Anatomy L5 · 3</p>
   <h3>Facial veins and the dangerous area of the face</h3>
   <div class="block mech"><h4>How it works</h4><p>The facial veins join and divide around the parotid gland. The anterior facial vein links to the cavernous sinus inside the skull through the ophthalmic veins and through the deep facial vein and pterygoid plexus, which is why the nose and upper lip are the dangerous area.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Teach clients not to squeeze lesions on the nose and upper lip: infection can reach the cavernous sinus.</li><li>Trace formation: supraorbital + supratrochlear = anterior facial; maxillary + superficial temporal = retromandibular; anterior facial + anterior division of retromandibular = common facial (to IJV).</li></ol></div>
@@ -268,7 +304,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-neck-veins" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 9</p>
+  <p class="sec-eyebrow">Anatomy L5 · 4</p>
   <h3>Jugular, subclavian and brachiocephalic veins</h3>
   <div class="block mech"><h4>How it works</h4><p>Blood from the head reaches the heart by two jugular veins. The external jugular is superficial and drains into the subclavian vein; the internal jugular is deep, begins at the jugular foramen and joins the subclavian to form the brachiocephalic vein. Both brachiocephalic veins form the SVC.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Sort tributaries: EJV = transverse cervical, suprascapular, anterior jugular; IJV = pharyngeal, common facial, lingual, superior and middle thyroid.</li><li>Trace face to heart: anterior facial, common facial, IJV, brachiocephalic, SVC.</li></ol></div>
@@ -279,9 +315,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>External jugular vein: formed by the posterior division of the retromandibular vein and the posterior auricular vein; descends superficial to sternomastoid; ends in the subclavian vein.</li><li>External jugular tributaries: transverse cervical, suprascapular and anterior jugular veins.</li><li>Internal jugular vein: begins as the continuation of the sigmoid sinus at the jugular foramen; joins the subclavian vein to form the brachiocephalic vein.</li><li>Internal jugular tributaries: pharyngeal, common facial, lingual, superior thyroid and middle thyroid veins.</li><li>Right and left brachiocephalic veins unite to form the SVC.</li></ul></div>
   <p class="src">Source: Anatomy L5 slides</p>
 </section>
+</div>
+<div class="lec" id="lec-anat-pp" data-lec="anat-pp"><p class="lec-eyebrow">Anatomy past papers · 1 sections</p><h2 class="lec-h">Limb vessels (past papers, no lecture uploaded)</h2>
 
 <section class="sec" id="anat-limb-vessels" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 10</p>
+  <p class="sec-eyebrow">Anatomy past papers · 1</p>
   <h3>Upper and lower limb vessels (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>These limb vessels appear in past Mid 2 papers but not in your uploaded slides, so this section only restates the bank's answers. The subclavian artery continues as the axillary artery beyond the 1st rib; in the hand the radial and ulnar arteries join in two palmar arches; in the foot the anterior tibial continues as the dorsalis pedis.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Pair each palmar arch with its main artery: deep = radial, superficial = ulnar.</li><li>Trace superficial veins to their endings: cephalic to axillary, lesser saphenous to popliteal.</li><li>Ask for the lecture on limb vessels if it is part of your exam, so this section can be taught from it.</li></ol></div>
@@ -292,10 +330,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>The subclavian artery becomes the axillary artery at the outer border of the 1st rib.</li><li>Axillary artery: the anterior circumflex humeral artery is one of its branches; the lateral thoracic artery comes from its 2nd part.</li><li>The deep palmar arch is formed mainly by the radial artery, joined by the deep branch of the ulnar artery; the superficial palmar arch is formed mainly by the ulnar artery.</li><li>The dorsalis pedis artery is the continuation of the anterior tibial artery.</li><li>The cephalic vein drains into the axillary vein; the lesser (small) saphenous vein drains into the popliteal vein; blood tests are drawn from the median cubital vein.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
-<h2 class="unit-h" id="unit-physiology">Physiology</h2>
+</div>
+<div class="lec" id="lec-phys-l6" data-lec="phys-l6"><p class="lec-eyebrow">Physiology L6 · 2 sections</p><h2 class="lec-h">Electrocardiogram I: basic principles</h2>
 
 <section class="sec" id="phys-ecg-leads" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 1</p>
+  <p class="sec-eyebrow">Physiology L6 · 1</p>
   <h3>ECG leads and what they record</h3>
   <div class="block mech"><h4>How it works</h4><p>The heart's electrical activity creates potential differences that the body, a good conductor, carries to the skin. Each lead is a picture of that activity from one direction: limb leads in the frontal plane, chest leads in the horizontal plane. Einthoven's triangle is formed by the axes of the limb leads around the heart.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Check electrode placement before recording: wrong leads give wrong pictures.</li><li>Read a deflection by direction: toward the electrode = up, away = down.</li><li>Localize changes by lead group: inferior II, III, aVF; lateral I, aVL, V5, V6; septal V1, V2; anterior V3, V4.</li></ol></div>
@@ -308,7 +347,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-ecg-waves" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 2</p>
+  <p class="sec-eyebrow">Physiology L6 · 2</p>
   <h3>ECG paper, waves and intervals</h3>
   <div class="block mech"><h4>How it works</h4><p>Paper speed converts time to distance: at 25 mm/s each 1 mm is 0.04 s. Each wave marks a step in the conduction sequence SA node, AV node, bundle of His, bundle branches, Purkinje fibers.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Measure intervals horizontally: small box 0.04 s, large box 0.20 s.</li><li>Check PR 0.12-0.20 s, QRS 0.08-0.10 s, QT 0.40-0.43 s.</li><li>Remember the PR includes the AV-junction delay that lets the atria finish contracting.</li></ol></div>
@@ -319,9 +358,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Paper speed is 25 mm/sec: one small box = 0.04 s, one large box = 0.20 s; vertically one large box = 0.5 mV.</li><li>P wave = atrial depolarization; QRS = ventricular depolarization; T wave = ventricular repolarization.</li><li>PR interval = atrial depolarization + delay in the AV junction; the delay lets the atria contract before the ventricles.</li><li>PR 0.12-0.20 s; QRS 0.08-0.10 s; QT 0.40-0.43 s.</li></ul></div>
   <p class="src">Source: Physiology L6 slides (ECG I)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-l7" data-lec="phys-l7"><p class="lec-eyebrow">Physiology L7 · 5 sections</p><h2 class="lec-h">Electrocardiogram II: analysis</h2>
 
 <section class="sec" id="phys-ecg-rate" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 3</p>
+  <p class="sec-eyebrow">Physiology L7 · 1</p>
   <h3>Rhythm analysis and heart rate</h3>
   <div class="block mech"><h4>How it works</h4><p>Because paper runs at a fixed speed, the R-R distance gives the rate: there are 1500 small squares or 300 large squares in a minute. Dividing by the squares between beats gives beats per minute.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Analyze in order: regularity, rate, P waves, PR interval, QRS duration.</li><li>Use 1500 with small squares and 300 with large squares.</li><li>Quick count from an R on a heavy line: 300, 150, 100, 75.</li></ol></div>
@@ -334,7 +375,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-sinus" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 4</p>
+  <p class="sec-eyebrow">Physiology L7 · 2</p>
   <h3>Normal sinus rhythm and its variations</h3>
   <div class="block mech"><h4>How it works</h4><p>A sinus rhythm starts in the SA node and conducts normally, so every P is normal and followed by a QRS. Only the rate (or its variation with breathing) changes in the sinus variants.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>If P, PR and QRS are normal, name the rhythm by rate: slow = sinus bradycardia, fast = sinus tachycardia.</li><li>If the rate rises with inspiration and falls with expiration, call it sinus arrhythmia.</li></ol></div>
@@ -347,7 +388,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-arrhythmia" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 5</p>
+  <p class="sec-eyebrow">Physiology L7 · 3</p>
   <h3>Atrial fibrillation and atrial flutter</h3>
   <div class="block mech"><h4>How it works</h4><p>In atrial fibrillation the atria have no organized depolarization because impulses are not coming from the sinus node, so there are no P waves and the ventricles respond irregularly. In atrial flutter, flutter waves replace the P waves.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Look for P waves first: none and irregularly irregular = atrial fibrillation.</li><li>Flutter waves with a regular rhythm = atrial flutter.</li></ol></div>
@@ -360,7 +401,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-av-block" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 6</p>
+  <p class="sec-eyebrow">Physiology L7 · 4</p>
   <h3>AV nodal blocks</h3>
   <div class="block mech"><h4>How it works</h4><p>AV blocks grade how much gets through the AV junction: all but slowly (1st degree), progressively slower until one fails (Mobitz I), all or nothing (Mobitz II, usually in the bundle of His), or nothing at all (3rd degree). When the ventricles must pace themselves, the impulse starts in a ventricle and the QRS is wide.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Measure the PR on every beat: constant and long = 1st degree; lengthening then dropped = Mobitz I; constant with sudden drops = Mobitz II.</li><li>If P waves have no relation to QRS and the rate is 30-45 with wide QRS, think 3rd degree.</li></ol></div>
@@ -373,7 +414,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-axis" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 7</p>
+  <p class="sec-eyebrow">Physiology L7 · 5</p>
   <h3>Mean QRS axis</h3>
   <div class="block mech"><h4>How it works</h4><p>The mean QRS axis is the sum of all ventricular depolarization vectors. Normally it points left and down because the left ventricle has most of the mass. On the hexaxial circle, 0 degrees points to the client's left and degrees increase clockwise, so +90 points down.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Check lead I and aVF: + + normal; + - left; - + right; - - right superior (indeterminate).</li><li>Report an abnormal axis: it can suggest disease such as pulmonary hypertension from pulmonary embolism.</li></ol></div>
@@ -384,9 +425,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Normal ventricular depolarization flows leftward and downward because most of the ventricular mass is in the left ventricle.</li><li>Normal QRS axis: -30 to +110 degrees. Left axis deviation: -30 to -90. Right axis deviation: +110 to +180. Indeterminate (extreme right): +180 to -90.</li><li>Lead I and aVF: + + normal; + - left axis deviation; - + right axis deviation; - - right superior / indeterminate.</li><li>An abnormal axis can suggest disease such as pulmonary hypertension from a pulmonary embolism.</li></ul></div>
   <p class="src">Source: Physiology L7 slides (ECG II)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-l8" data-lec="phys-l8"><p class="lec-eyebrow">Physiology L8 · 5 sections</p><h2 class="lec-h">Cardiac output and venous return</h2>
 
 <section class="sec" id="phys-co" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 8</p>
+  <p class="sec-eyebrow">Physiology L8 · 1</p>
   <h3>Cardiac output, stroke volume and ejection fraction</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac output is how much each ventricle pumps per minute: rate times stroke volume. Stroke volume is the difference between how full the ventricle gets (EDV) and how much is left (ESV); ejection fraction expresses it as a percentage of EDV and is a good index of ventricular function.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Calculate CO = HR x SV and convert mL to L.</li><li>Calculate SV = EDV - ESV, then EF = SV / EDV x 100.</li><li>Flag an EF of 30% or less as consistent with a failing heart.</li></ol></div>
@@ -399,7 +442,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-autonomic" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 9</p>
+  <p class="sec-eyebrow">Physiology L8 · 2</p>
   <h3>Autonomic control of heart rate and contractility</h3>
   <div class="block mech"><h4>How it works</h4><p>The vagus reaches mainly the atria (SA and AV nodes), so it can slow the rate and AV conduction but cannot touch ventricular contractility. Sympathetic fibers reach the nodes AND the ventricles, so they speed the rate and conduction and strengthen both atria and ventricles; they also release adrenal epinephrine.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Predict vagal effects: slower rate, longer AV delay, weaker atria, ventricles unchanged.</li><li>Predict sympathetic effects: faster rate, shorter AV delay, stronger atria and ventricles.</li></ol></div>
@@ -412,7 +455,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-starling" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 10</p>
+  <p class="sec-eyebrow">Physiology L8 · 3</p>
   <h3>Frank-Starling law, preload and afterload</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac fibers at rest are shorter than their optimum length. More filling stretches them toward optimum, so the next contraction is stronger: the Frank-Starling law (intrinsic control). Sympathetic stimulation is extrinsic: it raises contractility at any filling by increasing Ca2+ influx, shifting the curve to the left.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link a rise in EDV (preload) to a stronger contraction through Frank-Starling.</li><li>Link sympathetic stimulation to a left shift of the curve.</li><li>Keep the loads apart: preload = EDV; afterload = arterial pressure.</li></ol></div>
@@ -425,7 +468,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-venous-return" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 11</p>
+  <p class="sec-eyebrow">Physiology L8 · 4</p>
   <h3>Factors controlling venous return</h3>
   <div class="block mech"><h4>How it works</h4><p>Veins are capacitance vessels holding 60-70% of the blood. Anything that squeezes them or pulls blood toward the chest moves blood back to the heart and raises EDV.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Encourage leg exercise (muscle pump) and deep breathing (respiratory pump) in clients on bed rest.</li><li>Remember sympathetic venoconstriction, cardiac suction and venous valves also help.</li></ol></div>
@@ -438,7 +481,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-co-measure" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 12</p>
+  <p class="sec-eyebrow">Physiology L8 · 5</p>
   <h3>Measuring cardiac output and conditions that change it</h3>
   <div class="block mech"><h4>How it works</h4><p>The Fick principle says the oxygen the lungs take up equals blood flow times the oxygen each liter picks up. So flow (cardiac output) = O2 uptake / arterial-venous O2 difference, with venous blood taken from the pulmonary artery.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Set up Fick: O2 uptake (mL/min) / (arterial - venous O2, mL/L).</li><li>Recognize conditions that raise CO (hyperthyroidism, anemia, fever) and lower it (hypothyroidism, failure, valve disease, arrhythmias, hemorrhage).</li></ol></div>
@@ -449,9 +492,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Fick principle: cardiac output = O2 uptake by the lungs / (arterial O2 - venous O2), e.g. 200 / (200 - 160) = 5 L/min.</li><li>Cardiac output rises in hyperthyroidism, anemia and fever; falls in hypothyroidism, myocardial damage and failure, valvular disease, arrhythmias, hemorrhage and shock.</li><li>Most common causes of heart failure: myocardial infarction, then working against increased afterload (hypertension, aortic stenosis).</li></ul></div>
   <p class="src">Source: Physiology L8 slides (cardiac output)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-l9" data-lec="phys-l9"><p class="lec-eyebrow">Physiology L9 · 4 sections</p><h2 class="lec-h">Coronary circulation</h2>
 
 <section class="sec" id="phys-coronary-flow" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 13</p>
+  <p class="sec-eyebrow">Physiology L9 · 1</p>
   <h3>Coronary blood flow and oxygen extraction</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac muscle is packed with mitochondria and works aerobically, so it already takes 60-70% of the oxygen it receives. With so little left to extract, more oxygen can reach it only by more flow.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect symptoms when demand rises and flow cannot: angina on effort.</li><li>Link ischemic pain to lactic acid from anaerobic glycolysis.</li></ol></div>
@@ -464,7 +509,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-phasic-flow" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 14</p>
+  <p class="sec-eyebrow">Physiology L9 · 2</p>
   <h3>Phasic changes in coronary flow</h3>
   <div class="block mech"><h4>How it works</h4><p>The left ventricle squeezes its own coronary vessels in systole and the open aortic valve partly covers their openings, so left ventricular flow happens mainly in diastole. The right ventricle's lower pressure leaves a large aorta-RV gradient in systole, so its flow is preserved.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Treat tachycardia as a threat to coronary flow because diastole shortens.</li><li>Expect the LV subendocardium to be hit first in ischemia.</li><li>Remember aortic stenosis and low aortic diastolic pressure reduce LV flow.</li></ol></div>
@@ -477,7 +522,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-coronary-control" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 15</p>
+  <p class="sec-eyebrow">Physiology L9 · 3</p>
   <h3>Chemical and neural control of coronary flow</h3>
   <div class="block mech"><h4>How it works</h4><p>Coronary flow follows metabolism: working muscle produces CO2, H+, K+, lactate, adenosine and other metabolites, and lack of oxygen itself dilates the vessels. Sympathetic nerves act two ways: directly they constrict (alpha), but indirectly, by making the heart work harder (beta-1), they release dilating metabolites, which wins in the intact body.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect coronary dilation in hypoxia and with local metabolites (adenosine).</li><li>Explain that beta blockade unmasks the direct constrictor effect of norepinephrine.</li></ol></div>
@@ -490,7 +535,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-ihd" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 16</p>
+  <p class="sec-eyebrow">Physiology L9 · 4</p>
   <h3>Ischemic heart disease and myocardial infarction</h3>
   <div class="block mech"><h4>How it works</h4><p>Atherosclerotic plaque narrows the coronary lumen. When demand rises, flow cannot keep up and the client gets angina; when a thrombus blocks at least 75% of the lumen, myocardium dies (MI). The ECG separates them: ST depression in ischemia, ST elevation in infarction.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Ask about effort-related retrosternal pain relieved by rest.</li><li>Report ST elevation in a client with chest pain as consistent with MI.</li><li>Expect investigations: ECG, cardiac enzymes (CK, LDH, troponin), echo, treadmill, thallium, angiography.</li></ol></div>
@@ -501,9 +546,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Risk factors of IHD: cigarette smoking, hypertension, diabetes mellitus, increased lipids (cholesterol), lack of exercise, anxiety.</li><li>Angina: retrosternal tightness or pain for a few minutes, often radiating to the inner side of the left arm, precipitated by effort and relieved by rest.</li><li>MI: at least 75% of the coronary lumen blocked by thrombus.</li><li>ECG: ST depression in IHD; ST elevation in MI, in the respective leads.</li><li>Treatment: coronary dilators (nitrates), beta-blockers, angioplasty, stent, bypass surgery.</li></ul></div>
   <p class="src">Source: Physiology L9 slides (coronary circulation)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-pp" data-lec="phys-pp"><p class="lec-eyebrow">Physiology past papers · 1 sections</p><h2 class="lec-h">Resistance, baroreceptors and cardiac markers (past papers)</h2>
 
 <section class="sec" id="phys-past" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 17</p>
+  <p class="sec-eyebrow">Physiology past papers · 1</p>
   <h3>Resistance, blood pressure regulation and cardiac markers (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Past papers add a few facts beyond your slides. Arterioles are the main resistance vessels, while veins are the capacitance vessels. Standing up lowers blood pressure briefly and the baroreceptor reflex restores it. After an MI, troponin stays raised for about 10 days, longer than myoglobin or CK-MB.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Answer resistance questions with arterioles and compliance questions with veins.</li><li>For a late presentation after MI, pick troponin I.</li></ol></div>
@@ -514,10 +561,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Arterioles are the vessels with maximum resistance.</li><li>Blood pressure on standing up from lying down is regulated through the baroreceptors.</li><li>Troponin I (cTnI) stays elevated about 10 days after a myocardial infarction.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
-<h2 class="unit-h" id="unit-pathology">Pathology</h2>
+</div>
+<div class="lec" id="lec-path-l1" data-lec="path-l1"><p class="lec-eyebrow">Pathology L1 · 3 sections</p><h2 class="lec-h">Hemodynamic disorders I: hyperemia, edema, ischemia, infarction</h2>
 
 <section class="sec" id="path-congestion" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 1</p>
+  <p class="sec-eyebrow">Pathology L1 · 1</p>
   <h3>Hyperemia and congestion</h3>
   <div class="block mech"><h4>How it works</h4><p>Both hyperemia and congestion mean more blood in a tissue, with dilated capillaries and a risk of edema. The difference is the direction of the problem: hyperemia is active arterial inflow (red, oxygenated), congestion is passive venous outflow failure (blue, deoxygenated). Chronic left failure or mitral stenosis congests the lungs, producing heart failure cells and brown induration.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Use color to tell them apart: red = hyperemia, dusky blue = congestion.</li><li>Link chronic right-sided failure to generalized congestion and cardiac edema.</li><li>Link chronic left-sided failure and mitral stenosis to pulmonary congestion.</li></ol></div>
@@ -530,7 +578,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-edema" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 2</p>
+  <p class="sec-eyebrow">Pathology L1 · 2</p>
   <h3>Edema: causes and classification</h3>
   <div class="block mech"><h4>How it works</h4><p>Fluid leaves capillaries when the pushing force rises (hydrostatic pressure), the holding force falls (colloid osmotic pressure), the wall leaks (permeability) or the drain is blocked (lymphatics). Edema fluid may be a transudate, an exudate or lymph.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Match the cause to the mechanism before choosing a treatment focus.</li><li>Press the skin: pitting suggests generalized or venous edema; non-pitting suggests inflammatory or lymphatic edema.</li></ol></div>
@@ -543,7 +591,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-ischemia-infarct" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 3</p>
+  <p class="sec-eyebrow">Pathology L1 · 3</p>
   <h3>Ischemia and infarction</h3>
   <div class="block mech"><h4>How it works</h4><p>Ischemia is too little arterial supply. Whether it kills tissue depends on speed and collaterals: sudden complete occlusion in an organ with poor collaterals gives an infarct. Infarct color depends on whether blood can seep in: loose tissue, dual supply, venous occlusion or reperfusion give red infarcts; dense end-arterial organs give white ones.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Predict red vs white from the organ: lung, liver, intestine, ovary red; heart, spleen, kidney white.</li><li>Think venous infarction in organs with a single venous outflow (testis, ovary).</li></ol></div>
@@ -554,9 +602,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Ischemia: deficient arterial blood supply due to partial or complete occlusion of the artery; acute (sudden complete) or chronic (gradual partial).</li><li>Organs with good collateral circulation show no effect; poor collateral circulation leads to infarction (acute) or chronic ischemic changes.</li><li>Infarct: an area of ischemic necrosis from occlusion of the arterial supply or venous drainage; 99% from thrombosis or embolism.</li><li>Red infarct: venous occlusion (ovary), loose tissue (lung), dual circulation (lung, liver, small intestine), reperfusion after angioplasty.</li><li>White infarct: arterial occlusion in solid organs with end-arterial circulation (heart, spleen, kidney); tissue density limits seepage of blood.</li></ul></div>
   <p class="src">Source: Pathology L1 slides (hemodynamic disorders I)</p>
 </section>
+</div>
+<div class="lec" id="lec-path-l2" data-lec="path-l2"><p class="lec-eyebrow">Pathology L2 · 4 sections</p><h2 class="lec-h">Hemodynamic disorders II: thrombosis and embolism</h2>
 
 <section class="sec" id="path-virchow" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 4</p>
+  <p class="sec-eyebrow">Pathology L2 · 1</p>
   <h3>Thrombosis and Virchow&#x27;s triad</h3>
   <div class="block mech"><h4>How it works</h4><p>Hemostasis depends on the vessel wall, platelets and coagulation factors. Virchow's triad names the three ways it tips into thrombosis: damaged or dysfunctional endothelium, abnormal flow (stasis or turbulence), and blood that clots too easily.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Screen surgical and immobile clients for all three triad factors.</li><li>Separate hereditary (factor V, prothrombin gene, antithrombin III deficiency) from acquired hypercoagulability.</li></ol></div>
@@ -569,7 +619,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-thrombus-types" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 5</p>
+  <p class="sec-eyebrow">Pathology L2 · 2</p>
   <h3>Sites, types and fate of thrombi</h3>
   <div class="block mech"><h4>How it works</h4><p>Where a thrombus forms depends on local conditions: slow venous flow plus hypercoagulability gives venous (red) thrombi; atherosclerotic arteries give arterial thrombi; stasis in a dilated atrium or over an infarct gives cardiac thrombi. Once formed, a thrombus can dissolve, grow, break off or be organized.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Monitor a client with DVT for pulmonary embolism.</li><li>Watch for propagation: a tail makes detachment more likely.</li></ol></div>
@@ -582,7 +632,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-embolism" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 6</p>
+  <p class="sec-eyebrow">Pathology L2 · 3</p>
   <h3>Embolism and pulmonary embolism</h3>
   <div class="block mech"><h4>How it works</h4><p>An embolus is anything solid, liquid or gas carried away from where it formed. Almost all are thromboemboli, and almost all pulmonary emboli come from leg DVT. What happens next depends on embolus size and the state of the lung.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Suspect PE in a postoperative or immobile client with sudden dyspnea.</li><li>Expect a saddle embolus to cause sudden death from acute right-sided failure.</li></ol></div>
@@ -595,7 +645,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-systemic-emboli" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 7</p>
+  <p class="sec-eyebrow">Pathology L2 · 4</p>
   <h3>Systemic, fat, air and amniotic fluid emboli</h3>
   <div class="block mech"><h4>How it works</h4><p>Systemic emboli travel in arteries, so they come from the left heart or arteries. A venous embolus reaches the systemic side only through a septal defect (paradoxical). Fat, air and amniotic fluid emboli each have a typical setting.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>After a large MI, check limb pulses: most systemic emboli lodge in the legs.</li><li>Two days after a long bone fracture, watch for fat embolism syndrome.</li><li>During delivery, sudden dyspnea, shock, seizures and bleeding suggest amniotic fluid embolism.</li></ol></div>
@@ -606,9 +656,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Systemic emboli: 80% from intracardiac thrombi (2/3 left ventricular wall infarcts, 1/3 dilated left atria or vegetations); also aortic aneurysm, ulcerated plaques, paradoxical emboli.</li><li>Paradoxical emboli start as venous emboli but pass through an interatrial or interventricular defect into the systemic circulation.</li><li>Site of arrest: 75% lower extremities, 10% brain.</li><li>Fat embolism: long bone fracture is the most common cause; the syndrome begins 1-3 days after injury with tachypnea, dyspnea, tachycardia, neurologic symptoms, thrombocytopenia and anemia.</li><li>Air embolism needs more than 100 cc of air for a pulmonary effect; causes include neck vein injury, chest wall injury, obstetric or laparoscopic procedures, bypass surgery and decompression sickness.</li><li>Amniotic fluid embolism: 1 in 40,000 deliveries, mortality 80%; sudden dyspnea, cyanosis, shock, seizures, pulmonary edema and DIC.</li></ul></div>
   <p class="src">Source: Pathology L2 slides (hemodynamic disorders II)</p>
 </section>
+</div>
+<div class="lec" id="lec-path-l3" data-lec="path-l3"><p class="lec-eyebrow">Pathology L3 · 3 sections</p><h2 class="lec-h">Rheumatic fever and rheumatic heart disease</h2>
 
 <section class="sec" id="path-arf" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 8</p>
+  <p class="sec-eyebrow">Pathology L3 · 1</p>
   <h3>Acute rheumatic fever: pathogenesis and lesions</h3>
   <div class="block mech"><h4>How it works</h4><p>Weeks after strep throat, antibodies and T cells made against streptococcal M proteins cross-react with heart antigens. Complement and macrophages are activated and Aschoff bodies form in every layer of the heart, giving pancarditis.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Ask about a sore throat 10 days to 6 weeks before.</li><li>Recognize Aschoff bodies and Anitschkow cells as pathognomonic.</li><li>Prompt antibiotic treatment of strep pharyngitis prevents disease.</li></ol></div>
@@ -621,7 +673,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-jones" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 9</p>
+  <p class="sec-eyebrow">Pathology L3 · 2</p>
   <h3>Jones criteria</h3>
   <div class="block mech"><h4>How it works</h4><p>Because no single test proves rheumatic fever, the Jones criteria combine clinical features with evidence of a recent group A strep infection.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Count majors and minors, then check for strep evidence.</li><li>Diagnose with 2 major, or 1 major + 2 minor, plus strep evidence.</li></ol></div>
@@ -634,7 +686,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-rhd" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 10</p>
+  <p class="sec-eyebrow">Pathology L3 · 3</p>
   <h3>Chronic rheumatic heart disease and mitral stenosis</h3>
   <div class="block mech"><h4>How it works</h4><p>Each attack of rheumatic endocarditis heals by fibrosis; repeated infections reactivate it, scarring the valves over decades. A scarred mitral valve narrows (fish mouth), blood dams up behind it in the left atrium and lungs, and the right heart eventually fails.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>In mitral stenosis, monitor for atrial fibrillation, thromboembolism and right heart failure.</li><li>Remember surgery (repair or replacement) has greatly improved the outlook.</li></ol></div>
@@ -645,9 +697,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Endocarditis of ARF heals by fibrosis; repeated pharyngeal infections reactivate the disease and scar the valves.</li><li>Mitral valve most commonly affected, then aortic; fibrosis of the leaflets leads to stenosis ("fish mouth" or "buttonhole").</li><li>Usually becomes clinically manifest decades after ARF.</li><li>Mitral stenosis: left atrial dilatation (with thrombi), chronic pulmonary venous congestion, lung fibrosis, pulmonary hypertension, chronic right-sided failure; the left ventricle is largely unaffected.</li><li>Other complications: arrhythmias (especially atrial fibrillation), thromboembolism, infective endocarditis.</li></ul></div>
   <p class="src">Source: Pathology L3 slides (rheumatic fever)</p>
 </section>
+</div>
+<div class="lec" id="lec-path-l4" data-lec="path-l4"><p class="lec-eyebrow">Pathology L4 · 3 sections</p><h2 class="lec-h">Atherosclerosis</h2>
 
 <section class="sec" id="path-arteriosclerosis" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 11</p>
+  <p class="sec-eyebrow">Pathology L4 · 1</p>
   <h3>Arteriosclerosis patterns</h3>
   <div class="block mech"><h4>How it works</h4><p>Arteriosclerosis is the umbrella term for stiff, thick arteries. Its three patterns differ in which vessel layer and size they hit: intima of large arteries (atherosclerosis), media of muscular arteries (Mönckeberg) or small arteries and arterioles (arteriolosclerosis).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link arteriolosclerosis to hypertension and diabetes.</li><li>Recognize onion-skinning as hyperplastic arteriolosclerosis.</li></ol></div>
@@ -660,7 +714,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-athero" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 12</p>
+  <p class="sec-eyebrow">Pathology L4 · 2</p>
   <h3>Atherosclerosis: risk factors, pathogenesis and plaque</h3>
   <div class="block mech"><h4>How it works</h4><p>In the response-to-injury view, atherosclerosis is chronic inflammation started by endothelial injury. Monocytes enter the intima, smooth muscle cells are recruited, both swallow lipid as foam cells, and smooth muscle proliferation and collagen turn the lesion into a fibrofatty plaque.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Target modifiable risk factors: hyperlipidemia, hypertension, smoking, diabetes.</li><li>Know the lesion sequence: fatty spot, fatty streak, atheroma.</li></ol></div>
@@ -673,7 +727,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="path-athero-complications" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 13</p>
+  <p class="sec-eyebrow">Pathology L4 · 3</p>
   <h3>Complications and sites of atherosclerosis</h3>
   <div class="block mech"><h4>How it works</h4><p>A plaque causes disease by narrowing a lumen slowly or by changing suddenly: rupture, ulceration or erosion exposes material that triggers thrombosis, and hemorrhage into a plaque can expand or rupture it. Pressure atrophy of the media leads to aneurysm.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Suspect acute plaque change behind a sudden MI or stroke.</li><li>Link each site to its disease: coronary IHD, cerebral stroke, aorta aneurysm, legs gangrene.</li></ol></div>
@@ -684,9 +738,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Common sites: lower abdominal aorta, coronary, popliteal and internal carotid arteries, and the circle of Willis.</li><li>Acute plaque changes: rupture, ulceration or erosion (induces thrombosis), and fissure with hemorrhage into the plaque.</li><li>Other complications: atheroembolism, aneurysm from weakened media, calcification.</li><li>Consequences: ischemic heart disease (coronary), stroke (cerebral), aortic aneurysm (aorta), peripheral vascular disease with gangrene (leg arteries).</li></ul></div>
   <p class="src">Source: Pathology L4 slides (atherosclerosis)</p>
 </section>
+</div>
+<div class="lec" id="lec-path-pp" data-lec="path-pp"><p class="lec-eyebrow">Pathology past papers · 1 sections</p><h2 class="lec-h">Endocarditis types, pyemia and MI healing (past papers)</h2>
 
 <section class="sec" id="path-past" data-unit="Pathology">
-  <p class="sec-eyebrow">Pathology · 14</p>
+  <p class="sec-eyebrow">Pathology past papers · 1</p>
   <h3>Endocarditis types, pyemia and MI healing (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Not all vegetations are infected. Your slides list SLE among the causes of valve vegetations; past papers call these sterile verrucous vegetations Libman-Sacks endocarditis, and link nonbacterial thrombotic endocarditis to mucinous adenocarcinoma. Acute infective endocarditis is suppurative, and its septic emboli cause pyemic abscesses. Stable angina reflects an uncomplicated atheroma; an infarct shows granulation tissue at about 7 days.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Sterile vegetations + SLE: Libman-Sacks. Sterile vegetations + cancer: NBTE.</li><li>Pyemic abscesses point back to acute infective endocarditis.</li></ol></div>
@@ -697,10 +753,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Libman-Sacks endocarditis: sterile, wart-like (verrucous) vegetations on the valves in systemic lupus erythematosus.</li><li>Nonbacterial thrombotic endocarditis (NBTE) is associated with mucinous adenocarcinoma.</li><li>Acute infective endocarditis is a suppurative inflammation and can cause systemic pyemic abscesses.</li><li>Stable angina is caused by an uncomplicated atheroma; granulation tissue appears in an infarct at about 7 days.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); vegetations in SLE are on Pathology L2 slides</p>
 </section>
-<h2 class="unit-h" id="unit-pharmacology">Pharmacology</h2>
+</div>
+<div class="lec" id="lec-pharm-l2-4" data-lec="pharm-l2-4"><p class="lec-eyebrow">Pharmacology L2-L4 · 7 sections</p><h2 class="lec-h">Treatment of hypertension</h2>
 
 <section class="sec" id="pharm-classes" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 1</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 1</p>
   <h3>Hypertension: definition and drug classes</h3>
   <div class="block mech"><h4>How it works</h4><p>Blood pressure is cardiac output times peripheral resistance, kept up by volume, the sympathetic system and the renin-angiotensin system. Each drug class removes one of these supports: diuretics (volume), sympatholytics (nerves), RAS drugs (angiotensin), CCBs and vasodilators (vessel tone).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Classify every drug on a client's list before giving it.</li><li>Use the current threshold: 130/80 mm Hg or higher is hypertension.</li></ol></div>
@@ -713,7 +770,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-diuretics" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 2</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 2</p>
   <h3>Diuretics in hypertension</h3>
   <div class="block mech"><h4>How it works</h4><p>Diuretics lower pressure first by shrinking plasma volume and cardiac output. Over 4-8 weeks the volume recovers but resistance falls: sodium depletion lowers smooth muscle Na+, which lowers intracellular Ca++ through the Na/Ca exchanger, relaxing arterioles.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Use thiazides first in normal renal function; loop diuretics in CKD or malignant hypertension.</li><li>Add a potassium-sparing diuretic to a thiazide to counteract hypokalemia; spironolactone for hyperaldosteronism.</li></ol></div>
@@ -726,7 +783,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-ccb" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 3</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 3</p>
   <h3>Calcium channel blockers</h3>
   <div class="block mech"><h4>How it works</h4><p>CCBs block L-type Ca++ channels, so less calcium enters smooth muscle (and, for verapamil and diltiazem, heart muscle). Dihydropyridines act on vessels only, so heart rate may rise; verapamil and diltiazem also slow the heart.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect a possible rise in heart rate with nifedipine and a fall with verapamil or diltiazem.</li><li>Use nicardipine for hypertensive emergencies; avoid short-acting nifedipine.</li></ol></div>
@@ -739,7 +796,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-ras" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 4</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 4</p>
   <h3>Renin inhibitors, ACE inhibitors and ARBs</h3>
   <div class="block mech"><h4>How it works</h4><p>Renin turns angiotensinogen into angiotensin I, ACE turns angiotensin I into angiotensin II (and breaks down bradykinin), and angiotensin II acts on AT1 receptors. Blocking any step lowers angiotensin II effects; the step blocked decides the side effects: ACE inhibitors raise bradykinin (cough, angioedema), ARBs do not.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Monitor potassium, renal function, first-dose blood pressure and the airway (angioedema).</li><li>Question ACE inhibitors and ARBs in pregnancy and bilateral renal artery stenosis.</li><li>Switch to an ARB when an ACE inhibitor causes cough.</li></ol></div>
@@ -752,7 +809,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-central" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 5</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 5</p>
   <h3>Centrally acting sympatholytics</h3>
   <div class="block mech"><h4>How it works</h4><p>Clonidine and methyldopa act in the brain: they stimulate central alpha-2 (and, for clonidine, imidazoline) receptors that turn down sympathetic outflow. Methyldopa first has to be converted to methylnorepinephrine inside neurons.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Teach clients on clonidine never to stop it suddenly.</li><li>Prefer methyldopa in pregnancy.</li><li>Expect sedation; check for a positive Coombs' test with methyldopa.</li></ol></div>
@@ -765,7 +822,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-alpha-beta" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 6</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 6</p>
   <h3>Alpha blockers, beta blockers and alpha-beta blockers</h3>
   <div class="block mech"><h4>How it works</h4><p>Alpha-1 blockers dilate arterioles and veins, so standing can drop the pressure, especially after the first dose. Beta blockers lower cardiac output and renin release and leave veins alone, so they do not cause postural hypotension but can slow the heart, narrow airways and mask or cause low glucose.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>After a first prazosin dose, monitor for postural hypotension.</li><li>Choose a beta-1 selective drug (atenolol, bisoprolol, metoprolol) when airways are a concern.</li><li>Never stop a beta blocker abruptly: rebound hypertension.</li></ol></div>
@@ -778,7 +835,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-vasodilators" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 7</p>
+  <p class="sec-eyebrow">Pharmacology L2-L4 · 7</p>
   <h3>Direct vasodilators</h3>
   <div class="block mech"><h4>How it works</h4><p>Direct vasodilators relax vessel smooth muscle by different routes: NO (nitroprusside), K+ channel opening (minoxidil, diazoxide), D1 activation (fenoldopam) or an uncertain mechanism (hydralazine). Their toxicities are drug-specific and well worth memorizing.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>During nitroprusside infusion, watch for cyanide toxicity.</li><li>Check glucose with diazoxide, hair growth with minoxidil, lupus-like symptoms with high-dose hydralazine.</li><li>Question fenoldopam in glaucoma, angina or hypokalemia.</li></ol></div>
@@ -789,9 +846,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Nitroprusside: arterioles and veins, nitric oxide; metabolized by red cells releasing cyanide (to thiocyanate); half-life about 2 minutes, continuous infusion; for emergencies, severe heart failure, controlled hypotension.</li><li>Hydralazine: arterioles, uncertain mechanism; headache, palpitations, flushing; immunological lupoid syndrome (up to 20% at very high doses).</li><li>Minoxidil: arteriolar K+ channel opener, a prodrug; salt and water retention, tachycardia, hypertrichosis; also used for baldness.</li><li>Diazoxide: K+ channel opener without diuresis (lacks a sulfonamide group); salt and water retention, hyperglycemia; for hypertensive emergencies.</li><li>Fenoldopam: IV D1 agonist, renal and mesenteric vasodilation and natriuresis; reflex tachycardia, raised intraocular pressure, low potassium; contraindicated in angina, glaucoma and hypokalemia.</li></ul></div>
   <p class="src">Source: Pharmacology L2-L4 slides (treatment of hypertension)</p>
 </section>
+</div>
+<div class="lec" id="lec-pharm-pp" data-lec="pharm-pp"><p class="lec-eyebrow">Pharmacology past papers · 3 sections</p><h2 class="lec-h">Antiarrhythmics, lipid-lowering drugs and antianginals (past papers)</h2>
 
 <section class="sec" id="pharm-antiarrhythmic" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 8</p>
+  <p class="sec-eyebrow">Pharmacology past papers · 1</p>
   <h3>Antiarrhythmic drugs (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Antiarrhythmics are grouped by the channel or receptor they block: class I sodium channels, class II beta receptors, class III potassium channels and class IV calcium channels. Many questions test one signature adverse effect per drug. This lecture is not among your uploads; the facts come from the past-paper keys.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Classify first: Na+ = I, beta = II, K+ = III, Ca++ = IV.</li><li>Match adverse effects: quinidine = cinchonism (headache, tinnitus); amiodarone = pulmonary fibrosis and blue-gray skin.</li><li>PSVT: adenosine. Intraoperative rate control: esmolol.</li></ol></div>
@@ -804,7 +863,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-lipid" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 9</p>
+  <p class="sec-eyebrow">Pharmacology past papers · 2</p>
   <h3>Lipid-lowering drugs (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Lipid-lowering drugs attack different steps: statins block cholesterol synthesis at HMG CoA reductase, ezetimibe blocks intestinal absorption, cholestyramine traps bile acids in the gut, fibrates lower triglycerides, and niacin lowers triglycerides while raising HDL. Your slides cover only the statin effect size (30-40% LDL reduction) and large-dose vitamin B3 as a cholesterol-lowering factor.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Muscle pain or rhabdomyolysis on a lipid drug: suspect a statin.</li><li>High triglycerides: fenofibrate; high TG with low HDL despite a statin: niacin.</li><li>Warn about flushing and hyperuricemia with niacin.</li></ol></div>
@@ -817,7 +876,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="pharm-antianginal" data-unit="Pharmacology">
-  <p class="sec-eyebrow">Pharmacology · 10</p>
+  <p class="sec-eyebrow">Pharmacology past papers · 3</p>
   <h3>Nitrates and beta blockers in angina (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Your coronary circulation slides list nitrates and beta blockers as treatments for ischemic heart disease. Past papers add how: beta blockers lower heart rate and contractility and so the heart's O2 demand, and continuous nitrate exposure causes tolerance, prevented by a nitrate-free interval.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Schedule a daily nitrate-free interval to avoid tolerance.</li><li>Explain beta blockers in angina as lowering O2 demand.</li></ol></div>
@@ -828,10 +887,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Nitrate tolerance is treated by a nitrate-free interval (no therapy for a brief time).</li><li>Beta blockers relieve angina by decreasing myocardial O2 demand.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); nitrates and beta blockers for IHD are on Physiology L9 slides</p>
 </section>
-<h2 class="unit-h" id="unit-biochemistry">Biochemistry</h2>
+</div>
+<div class="lec" id="lec-bio-l5" data-lec="bio-l5"><p class="lec-eyebrow">Biochemistry L5 · 3 sections</p><h2 class="lec-h">Diet fat and coronary heart disease</h2>
 
 <section class="sec" id="bio-lipids-chd" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 1</p>
+  <p class="sec-eyebrow">Biochemistry L5 · 1</p>
   <h3>Blood lipids and coronary heart disease</h3>
   <div class="block mech"><h4>How it works</h4><p>Cholesterol travels in blood packed in lipoproteins. LDL carries it to tissues and raises coronary risk; HDL is associated with lower risk. Lowering LDL by diet or drugs lowers risk.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Encourage diet control and expect a 10-20% fall; expect 30-40% with statins.</li><li>Read a high HDL as protective.</li></ol></div>
@@ -844,7 +904,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-fats" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 2</p>
+  <p class="sec-eyebrow">Biochemistry L5 · 2</p>
   <h3>Types of dietary fat and their effects</h3>
   <div class="block mech"><h4>How it works</h4><p>A fat's effect depends on its fatty acids: saturation, the number and position of double bonds, and cis or trans shape. Omega numbers count from the methyl end to the first double bond.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Advise limiting saturated and trans fats.</li><li>Suggest olive oil (MUFA) and fatty fish (omega-3).</li><li>Teach the label clue "partially hydrogenated".</li></ol></div>
@@ -857,7 +917,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-cholesterol-sterols" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 3</p>
+  <p class="sec-eyebrow">Biochemistry L5 · 3</p>
   <h3>Dietary cholesterol, plant sterols and cholesterol-lowering factors</h3>
   <div class="block mech"><h4>How it works</h4><p>Dietary cholesterol matters less than the fat mix. Plant sterols compete with cholesterol in the gut, so less is absorbed and LDL falls.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Correct a client who focuses only on dietary cholesterol.</li><li>Suggest plant-sterol margarines, fiber and MUFA.</li></ol></div>
@@ -868,9 +928,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Dietary cholesterol is found only in animal products; its effect on blood cholesterol is less important than the amount and type of fatty acids.</li><li>Plant sterols reduce LDL-cholesterol by inhibiting intestinal absorption of cholesterol.</li><li>Dietary factors that decrease blood cholesterol: omega-6 PUFA, MUFA, antioxidants (beta carotene, vitamins E and C), plant sterols, vegetable fiber, large-dose vitamin B3.</li></ul></div>
   <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
 </section>
+</div>
+<div class="lec" id="lec-bio-l6" data-lec="bio-l6"><p class="lec-eyebrow">Biochemistry L6 · 3 sections</p><h2 class="lec-h">Oxidative stress and atherosclerosis</h2>
 
 <section class="sec" id="bio-ros" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 4</p>
+  <p class="sec-eyebrow">Biochemistry L6 · 1</p>
   <h3>Free radicals, ROS and RNS</h3>
   <div class="block mech"><h4>How it works</h4><p>A free radical has an unpaired outer electron and steals one from the nearest molecule, starting chain damage to lipids, proteins and DNA. Non-radicals have no unpaired electron but are strong oxidants. Damage occurs when oxidants outrun antioxidants.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Classify each species as radical or non-radical.</li><li>Separate endogenous (metabolism, phagocytosis) from exogenous (drugs, radiation, smoke) sources.</li></ol></div>
@@ -883,7 +945,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-burst-no" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 5</p>
+  <p class="sec-eyebrow">Biochemistry L6 · 2</p>
   <h3>Respiratory burst, nitric oxide and antioxidants</h3>
   <div class="block mech"><h4>How it works</h4><p>Reactive species are also tools. Neutrophils make superoxide, H2O2 and hypochlorous acid to kill bacteria. Endothelial NO dilates vessels. Antioxidant enzymes and nutrients keep the balance.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link sepsis and inflammation to large iNOS output.</li><li>Explain nitroglycerin works by becoming NO.</li></ol></div>
@@ -896,7 +958,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-oxldl" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 6</p>
+  <p class="sec-eyebrow">Biochemistry L6 · 3</p>
   <h3>Oxidized LDL and the stages of atherosclerosis</h3>
   <div class="block mech"><h4>How it works</h4><p>Oxidation turns LDL into a danger signal. Oxidized LDL in the intima activates endothelium to recruit monocytes; macrophages take it up by scavenger receptors and become foam cells. Smooth muscle cells build a cap, dead cells pile up into a necrotic core, and a vulnerable plaque can rupture.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Trace the stages in order from endothelial dysfunction to thrombosis.</li><li>Link impaired efferocytosis to the necrotic core.</li></ol></div>
@@ -907,9 +969,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Free radicals oxidize LDL cholesterol; oxidized LDL triggers inflammation and plaque buildup.</li><li>Stages: endothelial dysfunction, LDL retention and oxidation in the intima, recruitment of monocytes and T cells by VCAM-1, ICAM-1 and MCP-1, foam cell formation (fatty streak), SMC migration and fibrous cap, necrotic core and calcification, rupture or erosion with thrombosis.</li><li>Macrophages engulf oxidized LDL via scavenger receptors and become lipid-laden foam cells.</li><li>Failure to clear dead macrophages and SMCs (impaired efferocytosis) enlarges an acellular necrotic core.</li></ul></div>
   <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
 </section>
+</div>
+<div class="lec" id="lec-bio-pp" data-lec="bio-pp"><p class="lec-eyebrow">Biochemistry past papers · 2 sections</p><h2 class="lec-h">Lipoproteins and eicosanoids (past papers)</h2>
 
 <section class="sec" id="bio-lipoproteins" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 7</p>
+  <p class="sec-eyebrow">Biochemistry past papers · 1</p>
   <h3>Lipoproteins and cholesterol metabolism (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Lipoproteins carry fat in the blood: the intestine makes chylomicrons (apo B-48) and the liver makes VLDL (apo B-100). HDL donates apo C-II and apo E to them; apo C-II activates lipoprotein lipase to unload triglyceride, and apo A-I activates LCAT to esterify cholesterol on HDL. Cholesterol synthesis is controlled at HMG CoA reductase (activated by insulin, blocked by statins), and cholesterol leaves the body as bile acids. Your uploaded lectures do not cover this; the facts come from the past-paper keys.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Match each apo to its job: B-100 VLDL structure, B-48 chylomicron, C-II activates LPL, A-I activates LCAT.</li><li>Hypothyroidism with high cholesterol: less conversion to bile acids.</li><li>Fatty liver: triglyceride made faster than VLDL can export it.</li></ol></div>
@@ -922,7 +986,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-eicosanoids" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 8</p>
+  <p class="sec-eyebrow">Biochemistry past papers · 2</p>
   <h3>Eicosanoids: COX-2 and prostacyclin (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Eicosanoids are made from fatty acids. COX-2 is induced in inflammation and makes inflammatory prostaglandins; prostacyclin (PGI2) from the vessel wall dilates vessels. Your slides list prostaglandin synthesis as a source of free radicals; the rest comes from the past-paper keys.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link COX-2 to inflammation and PGI2 to vasodilation.</li></ol></div>
@@ -933,10 +997,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>COX-2 makes the prostaglandins of the inflammatory response.</li><li>Prostacyclin (PGI2) is a vasodilator.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
-<h2 class="unit-h" id="unit-microbiology">Microbiology</h2>
+</div>
+<div class="lec" id="lec-micro-l3" data-lec="micro-l3"><p class="lec-eyebrow">Microbiology L3 · 6 sections</p><h2 class="lec-h">Infective endocarditis</h2>
 
 <section class="sec" id="micro-ie-types" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 1</p>
+  <p class="sec-eyebrow">Microbiology L3 · 1</p>
   <h3>Infective endocarditis: classification and organisms</h3>
   <div class="block mech"><h4>How it works</h4><p>Infective endocarditis is classified by speed (acute vs subacute), by the valve (native, prosthetic, device) and by the route (IV drug use). Virulent organisms attack healthy valves fast; less virulent ones need a damaged valve and take weeks.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Match setting to organism: IV drug use = tricuspid, S. aureus; prosthetic valve = S. epidermidis or S. aureus; damaged valve after dental work = viridans.</li></ol></div>
@@ -949,7 +1014,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-organisms" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 2</p>
+  <p class="sec-eyebrow">Microbiology L3 · 2</p>
   <h3>Specific organisms and their associations</h3>
   <div class="block mech"><h4>How it works</h4><p>Each organism hints at its source: skin and devices (staphylococci), mouth (viridans), bowel (S. bovis), urinary or GI tract (enterococci), pharynx (HACEK).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>After S. bovis endocarditis, expect evaluation of the colon.</li><li>Think HACEK when cultures stay negative without special media.</li></ol></div>
@@ -962,7 +1027,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-patho" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 3</p>
+  <p class="sec-eyebrow">Microbiology L3 · 3</p>
   <h3>Pathophysiology of infective endocarditis</h3>
   <div class="block mech"><h4>How it works</h4><p>Three things must meet: a damaged valve surface with a sterile platelet-fibrin clot, bacteria in the blood, and bacteria able to stick. Inside the vegetation bacteria hide from phagocytes and antibiotics, shed into the blood and break off as emboli.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Ask about recent dental, skin or invasive procedures (transient bacteremia).</li><li>Watch for embolic infarcts and abscesses in brain, kidney, spleen and lung.</li></ol></div>
@@ -975,7 +1040,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-signs" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 4</p>
+  <p class="sec-eyebrow">Microbiology L3 · 4</p>
   <h3>Clinical features of infective endocarditis</h3>
   <div class="block mech"><h4>How it works</h4><p>The extracardiac signs come from septic emboli and immune-mediated injury: small hemorrhages and lesions in nails, skin and retina.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Inspect nails, palms, soles, finger pads and retina in suspected IE.</li><li>Separate IE signs from rheumatic fever signs (erythema marginatum, extensor nodules, chorea).</li></ol></div>
@@ -988,7 +1053,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-dx-tx" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 5</p>
+  <p class="sec-eyebrow">Microbiology L3 · 5</p>
   <h3>Diagnosis, treatment and prophylaxis</h3>
   <div class="block mech"><h4>How it works</h4><p>Organisms shed continuously from the vegetation, so blood cultures catch them, but only if taken before antibiotics. Empiric treatment starts right after cultures and is narrowed when results arrive. Prophylaxis protects high-risk valves before procedures.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Draw three sets of blood cultures from different sites before the first antibiotic.</li><li>Anticipate vancomycin + cefepime for native valves; add gentamicin + rifampin for prosthetic valves.</li><li>Give prophylaxis 30-60 minutes before the procedure; use azithromycin or doxycycline if penicillin-allergic.</li></ol></div>
@@ -1001,7 +1066,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="micro-lab-id" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 6</p>
+  <p class="sec-eyebrow">Microbiology L3 · 6</p>
   <h3>Laboratory identification of IE organisms</h3>
   <div class="block mech"><h4>How it works</h4><p>Shape and arrangement split staphylococci (clusters) from streptococci (chains). Then catalase, coagulase, hemolysis, optochin and bile solubility separate the species.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Coagulase positive = S. aureus; coagulase negative = S. epidermidis.</li><li>Alpha hemolytic: optochin sensitive and bile soluble = pneumococcus; resistant and insoluble = viridans.</li></ol></div>
@@ -1012,9 +1077,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>S. aureus: Gram-positive cocci in clusters; golden yellow colonies, beta hemolysis, ferments mannitol; catalase and coagulase positive.</li><li>S. epidermidis: Gram-positive cocci in clusters; catalase positive, coagulase negative.</li><li>Viridans streptococci (S. mutans): Gram-positive cocci in chains; alpha hemolysis; optochin resistant; insoluble in bile.</li><li>S. pyogenes: Gram-positive cocci in chains; beta hemolysis; catalase negative.</li><li>S. pneumoniae: lancet-shaped capsulated diplococci; alpha hemolysis; optochin sensitive; bile soluble.</li></ul></div>
   <p class="src">Source: Microbiology L3 slides (infective endocarditis)</p>
 </section>
+</div>
+<div class="lec" id="lec-micro-pp" data-lec="micro-pp"><p class="lec-eyebrow">Microbiology past papers · 1 sections</p><h2 class="lec-h">Myocarditis and other CVS infections (past papers)</h2>
 
 <section class="sec" id="micro-past" data-unit="Microbiology">
-  <p class="sec-eyebrow">Microbiology · 7</p>
+  <p class="sec-eyebrow">Microbiology past papers · 1</p>
   <h3>Myocarditis and other CVS infections (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Past papers include infections of the heart muscle and vessels beyond endocarditis. Coxsackievirus B causes myocarditis; T. cruzi causes Chagas disease with acute nonspecific symptoms and chronic megaorgans and cardiomyopathy; Ixodes ticks transmit Borrelia and Babesia; Trichinella larvae encyst in muscle with eosinophilia; gut organisms cause portal pyemia. Your uploaded lecture covers only endocarditis.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Viral myocarditis: Coxsackievirus B.</li><li>Separate acute Chagas (loss of appetite) from chronic Chagas (megacolon, megaesophagus, cardiomyopathy).</li><li>Portal pyemia after abdominal infection: Enterococcus and anaerobes.</li></ol></div>
@@ -1025,10 +1092,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Coxsackievirus B causes myocarditis; Coxsackievirus also causes pleurodynia.</li><li>Trypanosoma cruzi (Chagas disease) is a flagellated protozoan seen in Giemsa stain in South America; acute symptoms include loss of appetite, chronic ones megacolon, megaesophagus and dilated cardiomyopathy.</li><li>Ixodes ticks transmit Borrelia and Babesia; Trichinella spiralis gives eosinophilia with encysted larvae.</li><li>Portal pyemia (pylephlebitis) after intra-abdominal abscess or enteric infection is caused by Enterococcus and anaerobic bacteria.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
-<h2 class="unit-h" id="unit-embryology">Embryology</h2>
+</div>
+<div class="lec" id="lec-emb-l3" data-lec="emb-l3"><p class="lec-eyebrow">Embryology L3 · 4 sections</p><h2 class="lec-h">Development of the aortic arches and veins</h2>
 
 <section class="sec" id="emb-arches" data-unit="Embryology">
-  <p class="sec-eyebrow">Embryology · 1</p>
+  <p class="sec-eyebrow">Embryology L3 · 1</p>
   <h3>Formation and derivatives of the aortic arches</h3>
   <div class="block mech"><h4>How it works</h4><p>In the 4th week, paired aortic arch vessels link the aortic sac to the dorsal aortae. Some disappear and others are remodeled into the adult great arteries; the recurrent laryngeal nerves hook around the 6th arches, so their adult course depends on which arch segments survive.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Memorize arch by arch: 1 maxillary, 2 stapedial, 3 carotids, 4 aortic arch (left) and right subclavian (right), 5 none, 6 pulmonary arteries and ductus.</li><li>Protect the left recurrent laryngeal nerve during ductus surgery.</li></ol></div>
@@ -1041,7 +1109,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="emb-sac-dorsal" data-unit="Embryology">
-  <p class="sec-eyebrow">Embryology · 2</p>
+  <p class="sec-eyebrow">Embryology L3 · 2</p>
   <h3>Aortic sac, dorsal aorta and the origin of the great arteries</h3>
   <div class="block mech"><h4>How it works</h4><p>The aortic sac, its horns and the dorsal aortae each contribute a segment to the adult vessels. Reading the arch of the aorta from proximal to distal walks through sac, left horn, left 4th arch and left dorsal aorta.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Answer origin questions by locating the segment first: brachiocephalic = right horn; left subclavian = 7th intersegmental artery; right subclavian = right 4th arch + right dorsal aorta at the 7th intersegmental.</li></ol></div>
@@ -1054,7 +1122,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="emb-anomalies" data-unit="Embryology">
-  <p class="sec-eyebrow">Embryology · 3</p>
+  <p class="sec-eyebrow">Embryology L3 · 3</p>
   <h3>Anomalies of the aortic arches</h3>
   <div class="block mech"><h4>How it works</h4><p>Each anomaly is a normal step that failed: the ductus did not close (PDA), the right side persisted instead of the left (right arch), both persisted (double arch, a ring), or a segment narrowed (coarctation).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Suspect a double arch in an infant with dyspnea and dysphagia.</li><li>Classify coarctation by where it sits relative to the ductus.</li></ol></div>
@@ -1067,7 +1135,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="emb-veins" data-unit="Embryology">
-  <p class="sec-eyebrow">Embryology · 4</p>
+  <p class="sec-eyebrow">Embryology L3 · 4</p>
   <h3>Development of the veins</h3>
   <div class="block mech"><h4>How it works</h4><p>At the 5th week three pairs of veins (umbilical, vitelline, cardinal) drain into the sinus venosus. Vitelline veins build the gut's venous drainage, umbilical veins become ligaments after birth, and the cardinal veins become the systemic veins.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Sort derivatives by vein: vitelline = portal and SMV; anterior cardinal = upper body; posterior cardinal = IVC and lower body veins.</li></ol></div>
@@ -1078,9 +1146,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>At the 5th week each horn of the sinus venosus receives the umbilical, vitelline and common cardinal veins.</li><li>Vitelline veins form the portal and superior mesenteric veins. After birth the ductus venosus becomes the ligamentum venosum and the left umbilical vein the ligamentum teres.</li><li>Right common cardinal vein: SVC inside the pericardium. Left common cardinal vein: oblique vein of the left atrium.</li><li>Right anterior cardinal: SVC outside the pericardium, right brachiocephalic and right internal jugular veins. Left anterior cardinal: left superior intercostal, left brachiocephalic and left internal jugular veins.</li><li>Posterior cardinal veins: IVC, common iliac, suprarenal, testicular or ovarian, and renal veins.</li></ul></div>
   <p class="src">Source: Embryology L3 slides (aortic arches)</p>
 </section>
+</div>
+<div class="lec" id="lec-emb-pp" data-lec="emb-pp"><p class="lec-eyebrow">Embryology past papers · 1 sections</p><h2 class="lec-h">Septum intermedium and umbilical ligaments (past papers)</h2>
 
 <section class="sec" id="emb-past" data-unit="Embryology">
-  <p class="sec-eyebrow">Embryology · 5</p>
+  <p class="sec-eyebrow">Embryology past papers · 1</p>
   <h3>Other embryology from past papers</h3>
   <div class="block mech"><h4>How it works</h4><p>Two past-paper facts sit outside the aortic arches lecture. The endocardial cushions fuse in the middle of the common atrioventricular canal to form the septum intermedium, splitting it into right and left channels. After birth the umbilical vessels close: the arteries become the medial umbilical ligaments and the left umbilical vein the ligamentum teres.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Keep arteries and veins apart: umbilical ARTERIES become medial umbilical ligaments; the umbilical VEIN becomes the ligamentum teres.</li></ol></div>
@@ -1091,6 +1161,7 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>The septum intermedium forms by fusion of the endocardial cushions and divides the common atrioventricular canal into right and left channels.</li><li>After birth the umbilical arteries become the medial umbilical ligaments; the left umbilical vein becomes the ligamentum teres.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); partly in Embryology L3 slides</p>
 </section>
+</div>
   </div>
   <div id="view-readme" hidden><div class="readme">
   <h2>Read me</h2>
@@ -1099,6 +1170,7 @@ a { color: var(--fg); }
   <h3>How to use the Drill</h3>
   <ol>
     <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Or go lecture by lecture.</b> The "By lecture" card gives every lecture its own pre-test (up to 8 questions), its own last pass, a level, and a Guide button that opens only that lecture's sections.</li>
     <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
     <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
     <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
@@ -1109,6 +1181,7 @@ a { color: var(--fg); }
 
   <h3>How to use the Mastery Guide</h3>
   <ol>
+    <li>Use the lecture bar at the top to show one lecture at a time, or "All lectures" for everything.</li>
     <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
     <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
     <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
@@ -1143,11 +1216,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

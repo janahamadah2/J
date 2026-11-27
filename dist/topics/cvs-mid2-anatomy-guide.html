@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,21 +93,26 @@ a { color: var(--fg); }
     <p class="eyebrow">CVS block · Mid 2 · Anatomy only · Sunday 29 November 2026</p>
     <h1>CVS Mid 2 Anatomy Guide</h1>
     <p class="lede">10 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button><button class="chip" data-lec="anat-l4">Anatomy L4</button><button class="chip" data-lec="anat-l5">Anatomy L5</button><button class="chip" data-lec="anat-pp">Anatomy past papers</button></nav>
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Anatomy</li>
+<li class="toc-lec"><a href="#lec-anat-l4">Anatomy L4: Blood supply and surface anatomy of the heart</a></li>
 <li><a href="#anat-coronary">Coronary arteries: origin, course and territories</a></li>
 <li><a href="#anat-dominance">Coronary dominance</a></li>
 <li><a href="#anat-cardiac-veins">Venous drainage of the heart</a></li>
 <li><a href="#anat-surface">Surface anatomy of the heart and valves</a></li>
 <li><a href="#anat-pci">Coronary angiography and PCI</a></li>
+<li class="toc-lec"><a href="#lec-anat-l5">Anatomy L5: Blood supply of the head and neck</a></li>
 <li><a href="#anat-carotid">Common, external and internal carotid arteries</a></li>
 <li><a href="#anat-subclavian">Subclavian artery</a></li>
 <li><a href="#anat-facial-veins">Facial veins and the dangerous area of the face</a></li>
 <li><a href="#anat-neck-veins">Jugular, subclavian and brachiocephalic veins</a></li>
+<li class="toc-lec"><a href="#lec-anat-pp">Anatomy past papers: Limb vessels (past papers, no lecture uploaded)</a></li>
 <li><a href="#anat-limb-vessels">Upper and lower limb vessels (past papers)</a></li></ul></details>
-    <h2 class="unit-h" id="unit-anatomy">Anatomy</h2>
+    <div class="lec" id="lec-anat-l4" data-lec="anat-l4"><p class="lec-eyebrow">Anatomy L4 · 5 sections</p><h2 class="lec-h">Blood supply and surface anatomy of the heart</h2>
 
 <section class="sec" id="anat-coronary" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 1</p>
+  <p class="sec-eyebrow">Anatomy L4 · 1</p>
   <h3>Coronary arteries: origin, course and territories</h3>
   <div class="block mech"><h4>How it works</h4><p>The two coronary arteries leave the ascending aorta from sinuses just above the aortic valve cusps. The <b>RCA</b> runs in the coronary groove between right atrium and right ventricle, then posteriorly, and ends as the posterior interventricular artery. The short <b>left main</b> runs between the pulmonary trunk and the left auricle and divides into the <b>circumflex</b> and the <b>LAD</b>. Which artery feeds which wall follows from which groove it runs in.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Read the stenosed artery on the angiogram, then name the wall it feeds: LAD = front (sternocostal surface, anterior 2/3 of the septum, A-V bundle).</li><li>Occlusion of the RCA can threaten the SA node (65%) and the AV node (80%): watch the rhythm.</li><li>The septum is split: anterior 2/3 LAD, posterior 1/3 posterior interventricular artery.</li></ol></div>
@@ -110,7 +125,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-dominance" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 2</p>
+  <p class="sec-eyebrow">Anatomy L4 · 2</p>
   <h3>Coronary dominance</h3>
   <div class="block mech"><h4>How it works</h4><p>Dominance is named after the artery that gives the posterior interventricular artery to the diaphragmatic surface. The slide gives three patterns with their frequencies.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>When a report says left dominant, expect the posterior interventricular artery from the circumflex.</li><li>Note the slide's frequencies (70 / 15 / 15) and check with your instructor: many textbooks give right dominance as the most common pattern.</li></ol></div>
@@ -123,7 +138,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-cardiac-veins" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 3</p>
+  <p class="sec-eyebrow">Anatomy L4 · 3</p>
   <h3>Venous drainage of the heart</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac veins run with the arteries in the same grooves and drain three ways: most into the <b>coronary sinus</b>, which empties into the right atrium; some straight into the right atrium (anterior cardiac veins); and some straight into any chamber (venae cordis minimi).</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Pair each vein with its artery: great cardiac vein with the LAD, middle cardiac vein with the posterior interventricular artery.</li><li>Remember the coronary sinus ends in the posterior wall of the RIGHT atrium.</li></ol></div>
@@ -136,7 +151,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-surface" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 4</p>
+  <p class="sec-eyebrow">Anatomy L4 · 4</p>
   <h3>Surface anatomy of the heart and valves</h3>
   <div class="block mech"><h4>How it works</h4><p>Four points 0.5 inch from the sternum (and the apex 3.5 inches from the midline) outline the heart on the chest wall; joining them in order gives the four borders. The valves lie in a diagonal line behind the sternum, PAMT from top left to bottom middle.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Mark A (left 2nd costal cartilage, lower border), B (right 3rd costal cartilage, upper border), C (right 6th costal cartilage), D (left 5th intercostal space).</li><li>Join A-B (upper), B-C (right), C-D (lower), D-A (left).</li><li>Place the valves in order: pulmonary 3rd costal cartilage, aortic 3rd space, mitral 4th cartilage, tricuspid 4th space.</li></ol></div>
@@ -149,7 +164,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-pci" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 5</p>
+  <p class="sec-eyebrow">Anatomy L4 · 5</p>
   <h3>Coronary angiography and PCI</h3>
   <div class="block mech"><h4>How it works</h4><p>Coronary angiography and PCI reach the coronary orifices from the ascending aorta by passing a catheter backwards (retrograde) up the arterial tree from the wrist or groin.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect local anesthesia, catheter entry through the radial or femoral artery, contrast injected into each coronary orifice, then a stent if a vessel is narrowed by plaque.</li></ol></div>
@@ -160,9 +175,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>A catheter is passed retrograde from the radial or femoral artery into the ascending aorta under local anesthesia.</li><li>Radiopaque contrast is injected into the orifice of each coronary artery to photograph all segments of each vessel.</li><li>A stent may be placed to open vessels narrowed by plaque buildup (atherosclerosis).</li></ul></div>
   <p class="src">Source: Anatomy L4 slides</p>
 </section>
+</div>
+<div class="lec" id="lec-anat-l5" data-lec="anat-l5"><p class="lec-eyebrow">Anatomy L5 · 4 sections</p><h2 class="lec-h">Blood supply of the head and neck</h2>
 
 <section class="sec" id="anat-carotid" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 6</p>
+  <p class="sec-eyebrow">Anatomy L5 · 1</p>
   <h3>Common, external and internal carotid arteries</h3>
   <div class="block mech"><h4>How it works</h4><p>The common carotid arteries start differently on each side, climb inside the carotid sheath and divide at the upper border of the thyroid cartilage. The external carotid gives the face and neck their branches and ends in the parotid gland; the internal carotid gives nothing in the neck and goes straight into the skull.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Find the bifurcation at the upper border of the thyroid cartilage (C3-4).</li><li>Before a jugular puncture, remember the IJV lies lateral to the artery in the sheath.</li><li>Feel the superficial temporal pulse just in front of the tragus.</li></ol></div>
@@ -175,7 +192,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-subclavian" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 7</p>
+  <p class="sec-eyebrow">Anatomy L5 · 2</p>
   <h3>Subclavian artery</h3>
   <div class="block mech"><h4>How it works</h4><p>Scalenus anterior crosses in front of the subclavian artery and so divides it into three parts. Each part has its own branches, and the artery ends at the outer border of the 1st rib by becoming the axillary artery.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Sort branches by part: 1st = vertebral, internal thoracic, thyrocervical trunk; 2nd = costocervical trunk; 3rd = dorsal scapular.</li><li>Remember the thyrocervical trunk gives the inferior thyroid, transverse cervical and suprascapular arteries.</li></ol></div>
@@ -188,7 +205,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-facial-veins" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 8</p>
+  <p class="sec-eyebrow">Anatomy L5 · 3</p>
   <h3>Facial veins and the dangerous area of the face</h3>
   <div class="block mech"><h4>How it works</h4><p>The facial veins join and divide around the parotid gland. The anterior facial vein links to the cavernous sinus inside the skull through the ophthalmic veins and through the deep facial vein and pterygoid plexus, which is why the nose and upper lip are the dangerous area.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Teach clients not to squeeze lesions on the nose and upper lip: infection can reach the cavernous sinus.</li><li>Trace formation: supraorbital + supratrochlear = anterior facial; maxillary + superficial temporal = retromandibular; anterior facial + anterior division of retromandibular = common facial (to IJV).</li></ol></div>
@@ -201,7 +218,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="anat-neck-veins" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 9</p>
+  <p class="sec-eyebrow">Anatomy L5 · 4</p>
   <h3>Jugular, subclavian and brachiocephalic veins</h3>
   <div class="block mech"><h4>How it works</h4><p>Blood from the head reaches the heart by two jugular veins. The external jugular is superficial and drains into the subclavian vein; the internal jugular is deep, begins at the jugular foramen and joins the subclavian to form the brachiocephalic vein. Both brachiocephalic veins form the SVC.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Sort tributaries: EJV = transverse cervical, suprascapular, anterior jugular; IJV = pharyngeal, common facial, lingual, superior and middle thyroid.</li><li>Trace face to heart: anterior facial, common facial, IJV, brachiocephalic, SVC.</li></ol></div>
@@ -212,9 +229,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>External jugular vein: formed by the posterior division of the retromandibular vein and the posterior auricular vein; descends superficial to sternomastoid; ends in the subclavian vein.</li><li>External jugular tributaries: transverse cervical, suprascapular and anterior jugular veins.</li><li>Internal jugular vein: begins as the continuation of the sigmoid sinus at the jugular foramen; joins the subclavian vein to form the brachiocephalic vein.</li><li>Internal jugular tributaries: pharyngeal, common facial, lingual, superior thyroid and middle thyroid veins.</li><li>Right and left brachiocephalic veins unite to form the SVC.</li></ul></div>
   <p class="src">Source: Anatomy L5 slides</p>
 </section>
+</div>
+<div class="lec" id="lec-anat-pp" data-lec="anat-pp"><p class="lec-eyebrow">Anatomy past papers · 1 sections</p><h2 class="lec-h">Limb vessels (past papers, no lecture uploaded)</h2>
 
 <section class="sec" id="anat-limb-vessels" data-unit="Anatomy">
-  <p class="sec-eyebrow">Anatomy · 10</p>
+  <p class="sec-eyebrow">Anatomy past papers · 1</p>
   <h3>Upper and lower limb vessels (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>These limb vessels appear in past Mid 2 papers but not in your uploaded slides, so this section only restates the bank's answers. The subclavian artery continues as the axillary artery beyond the 1st rib; in the hand the radial and ulnar arteries join in two palmar arches; in the foot the anterior tibial continues as the dorsalis pedis.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Pair each palmar arch with its main artery: deep = radial, superficial = ulnar.</li><li>Trace superficial veins to their endings: cephalic to axillary, lesser saphenous to popliteal.</li><li>Ask for the lecture on limb vessels if it is part of your exam, so this section can be taught from it.</li></ol></div>
@@ -225,6 +244,7 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>The subclavian artery becomes the axillary artery at the outer border of the 1st rib.</li><li>Axillary artery: the anterior circumflex humeral artery is one of its branches; the lateral thoracic artery comes from its 2nd part.</li><li>The deep palmar arch is formed mainly by the radial artery, joined by the deep branch of the ulnar artery; the superficial palmar arch is formed mainly by the ulnar artery.</li><li>The dorsalis pedis artery is the continuation of the anterior tibial artery.</li><li>The cephalic vein drains into the axillary vein; the lesser (small) saphenous vein drains into the popliteal vein; blood tests are drawn from the median cubital vein.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
+</div>
   </div>
   <div id="view-readme" hidden><div class="readme">
   <h2>Read me</h2>
@@ -233,6 +253,7 @@ a { color: var(--fg); }
   <h3>How to use the Drill</h3>
   <ol>
     <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Or go lecture by lecture.</b> The "By lecture" card gives every lecture its own pre-test (up to 8 questions), its own last pass, a level, and a Guide button that opens only that lecture's sections.</li>
     <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
     <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
     <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
@@ -243,6 +264,7 @@ a { color: var(--fg); }
 
   <h3>How to use the Mastery Guide</h3>
   <ol>
+    <li>Use the lecture bar at the top to show one lecture at a time, or "All lectures" for everything.</li>
     <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
     <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
     <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
@@ -277,11 +299,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

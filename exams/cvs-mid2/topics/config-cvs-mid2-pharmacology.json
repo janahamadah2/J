@@ -40,6 +40,7 @@
     "../items-cvs-mid2-pharmacology-shamsqb.py"
   ],
   "high_roi_units": [],
+  "lectures": "../lectures-cvs-mid2.py",
   "pretest_per_topic": 10,
   "last_pass_tags": [
     "in-class case",

@@ -277,6 +277,28 @@ def build(cfg_path):
             ids.append(it["id"])
         concepts[c["id"]] = {"title": c["title"], "unit": c["unit"], "points": c["points"], "source": c["source"], "items": ids}
 
+    # ---------------------------------------------------------------- lectures
+    lectures = []
+    if cfg.get("lectures"):
+        lmod = load(cfg_dir, cfg["lectures"])
+        owner_l = {}
+        for L in getattr(lmod, "LECTURES"):
+            if L["unit"] not in units:
+                continue
+            for cid in L["concepts"]:
+                if cid not in concepts:
+                    die("lecture %r lists concept %r, which no content file defines" % (L["id"], cid))
+                if cid in owner_l:
+                    die("concept %r is in two lectures (%s, %s)" % (cid, owner_l[cid], L["id"]))
+                owner_l[cid] = L["id"]
+            lectures.append({"id": L["id"], "unit": L["unit"], "short": L["short"], "title": L["title"]})
+        for cid, c in concepts.items():
+            if cid not in owner_l:
+                die("concept %r belongs to no lecture in %s" % (cid, cfg["lectures"]))
+            c["lec"] = owner_l[cid]
+        for it in items:
+            it["lec"] = concepts[it["k"]]["lec"] if it["k"] else None
+
     # ---------------------------------------------------------------- guide link check
     g = cfg.get("guide")
     if g:
@@ -353,6 +375,9 @@ def build(cfg_path):
     print("row stems: %d matching tables" % sum(1 for it in items if it.get("rs")))
     print("numeric (typed): %d" % sum(1 for it in items if "num" in it))
     print("last pass %d questions" % lp)
+    for L in lectures:
+        li = [it for it in items if it.get("lec") == L["id"]]
+        print("  lecture %-24s %3d questions, %2d last pass" % (L["short"], len(li), sum(1 for it in li if it["lp"])))
     if explained < total_wrong:
         missing = [(it["q"][:60], n_wrong(it) - len(it["x"])) for it in items if n_wrong(it) > len(it["x"])]
         die("%d wrong options have no explanation, e.g. %r" % (total_wrong - explained, missing[:3]))
@@ -364,7 +389,7 @@ def build(cfg_path):
                 "units": units, "high_roi_units": cfg.get("high_roi_units") or [],
                 "last_pass_note": cfg.get("last_pass_note", ""),
                 "guide_url": (g or {}).get("url", ""), "hub_url": cfg.get("hub_url", ""), "pretest_per_topic": cfg.get("pretest_per_topic"), "guide_title": (g or {}).get("title", "")},
-        "items": items, "concepts": concepts,
+        "items": items, "concepts": concepts, "lectures": lectures,
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     tpl = open(os.path.join(ENGINE, "drill-template.html")).read()

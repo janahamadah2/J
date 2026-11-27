@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,6 +93,8 @@ a { color: var(--fg); }
     <p class="eyebrow">__EYEBROW__</p>
     <h1>__TITLE__</h1>
     <p class="lede">__NSEC__ sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <!--__LECBAR__-->
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><!--__TOC__--></ul></details>
     <!--__SECTIONS__-->
   </div>
@@ -108,11 +120,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

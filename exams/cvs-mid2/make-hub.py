@@ -11,6 +11,9 @@ LECT = {"Anatomy": "L4 blood supply and surface anatomy of the heart · L5 blood
         "Biochemistry": "L5 diet fat and CHD · L6 oxidative stress and atherosclerosis",
         "Microbiology": "L3 infective endocarditis",
         "Embryology": "L3 development of the aortic arches"}
+_ln = {}
+exec(open(os.path.join(HERE, "lectures-cvs-mid2.py")).read(), _ln)
+LECTURES = _ln["LECTURES"]
 cards = []
 for t in master["units"]:
     slug = t.lower()
@@ -25,7 +28,8 @@ for t in master["units"]:
     u = urls[slug]
     cards.append(f"""<article class="t"><h2>{html.escape(t)}</h2><p class="m">{html.escape(LECT[t])}</p>
 <p class="n">{nq} questions ({nb} from the Shams past papers) · {nc} guide sections</p>
-<div class="b"><a class="btn p" href="{u['drill']}" target="_blank" rel="noopener">Drill</a><a class="btn" href="{u['guide']}" target="_blank" rel="noopener">Mastery guide</a></div></article>""")
+<div class="b"><a class="btn p" href="{u['drill']}" target="_blank" rel="noopener">Drill</a><a class="btn" href="{u['guide']}" target="_blank" rel="noopener">Mastery guide</a></div>
+<p class="lh">Guide by lecture</p><ul class="ll">{"".join('<li><a href="%s#lec-%s" target="_blank" rel="noopener">%s</a> <span class="m">%s</span></li>' % (u['guide'], L['id'], html.escape(L['short']), html.escape(L['title'])) for L in LECTURES if L['unit'] == t)}</ul></article>""")
 a = urls["all"]
 page = f"""<title>CVS Mid 2 Study Hub</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -48,11 +52,13 @@ h2 {{ font:700 21px/1.25 var(--serif); margin:0; }}
 .btn.p {{ background:var(--fg); color:var(--bg); }}
 @media (hover:hover) {{ .btn:hover {{ background:#f4f5f6; }} .btn.p:hover {{ background:#333; }} }}
 .btn:active {{ background:#e9ebee; }}
+.lh {{ font-size:13px; color:var(--muted); margin:12px 0 2px; text-transform:uppercase; letter-spacing:.04em; }}
+.ll {{ margin:0; padding-left:18px; }} .ll li {{ margin:3px 0; }} .ll a {{ color:var(--fg); font-weight:600; }}
 </style>
 <main>
 <p class="e">{html.escape(master['eyebrow'])}</p>
 <h1>CVS Mid 2 Study Hub</h1>
-<p>Each topic has its own drill (practice questions, pre-test, last pass, Fix my misses) and its own Mastery guide, in lecture order. Each topic drill keeps its own progress.</p>
+<p>Each topic has its own drill and Mastery guide. Inside every drill, the "By lecture" card gives each lecture its own pre-test, last pass and practice; the links below open each lecture's part of the guide. Each topic drill keeps its own progress.</p>
 {''.join(cards)}
 <article class="t all"><h2>All topics together</h2><p class="m">Mixed practice across all seven topics, for the final days before the exam. Progress here is kept separately from the topic drills.</p>
 <div class="b"><a class="btn p" href="{a['drill']}" target="_blank" rel="noopener">Combined drill</a><a class="btn" href="{a['guide']}" target="_blank" rel="noopener">Combined guide</a></div></article>

@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,28 +93,35 @@ a { color: var(--fg); }
     <p class="eyebrow">CVS block · Mid 2 · Physiology only · Sunday 29 November 2026</p>
     <h1>CVS Mid 2 Physiology Guide</h1>
     <p class="lede">17 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button><button class="chip" data-lec="phys-l6">Physiology L6</button><button class="chip" data-lec="phys-l7">Physiology L7</button><button class="chip" data-lec="phys-l8">Physiology L8</button><button class="chip" data-lec="phys-l9">Physiology L9</button><button class="chip" data-lec="phys-pp">Physiology past papers</button></nav>
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Physiology</li>
+<li class="toc-lec"><a href="#lec-phys-l6">Physiology L6: Electrocardiogram I: basic principles</a></li>
 <li><a href="#phys-ecg-leads">ECG leads and what they record</a></li>
 <li><a href="#phys-ecg-waves">ECG paper, waves and intervals</a></li>
+<li class="toc-lec"><a href="#lec-phys-l7">Physiology L7: Electrocardiogram II: analysis</a></li>
 <li><a href="#phys-ecg-rate">Rhythm analysis and heart rate</a></li>
 <li><a href="#phys-sinus">Normal sinus rhythm and its variations</a></li>
 <li><a href="#phys-arrhythmia">Atrial fibrillation and atrial flutter</a></li>
 <li><a href="#phys-av-block">AV nodal blocks</a></li>
 <li><a href="#phys-axis">Mean QRS axis</a></li>
+<li class="toc-lec"><a href="#lec-phys-l8">Physiology L8: Cardiac output and venous return</a></li>
 <li><a href="#phys-co">Cardiac output, stroke volume and ejection fraction</a></li>
 <li><a href="#phys-autonomic">Autonomic control of heart rate and contractility</a></li>
 <li><a href="#phys-starling">Frank-Starling law, preload and afterload</a></li>
 <li><a href="#phys-venous-return">Factors controlling venous return</a></li>
 <li><a href="#phys-co-measure">Measuring cardiac output and conditions that change it</a></li>
+<li class="toc-lec"><a href="#lec-phys-l9">Physiology L9: Coronary circulation</a></li>
 <li><a href="#phys-coronary-flow">Coronary blood flow and oxygen extraction</a></li>
 <li><a href="#phys-phasic-flow">Phasic changes in coronary flow</a></li>
 <li><a href="#phys-coronary-control">Chemical and neural control of coronary flow</a></li>
 <li><a href="#phys-ihd">Ischemic heart disease and myocardial infarction</a></li>
+<li class="toc-lec"><a href="#lec-phys-pp">Physiology past papers: Resistance, baroreceptors and cardiac markers (past papers)</a></li>
 <li><a href="#phys-past">Resistance, blood pressure regulation and cardiac markers (past papers)</a></li></ul></details>
-    <h2 class="unit-h" id="unit-physiology">Physiology</h2>
+    <div class="lec" id="lec-phys-l6" data-lec="phys-l6"><p class="lec-eyebrow">Physiology L6 · 2 sections</p><h2 class="lec-h">Electrocardiogram I: basic principles</h2>
 
 <section class="sec" id="phys-ecg-leads" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 1</p>
+  <p class="sec-eyebrow">Physiology L6 · 1</p>
   <h3>ECG leads and what they record</h3>
   <div class="block mech"><h4>How it works</h4><p>The heart's electrical activity creates potential differences that the body, a good conductor, carries to the skin. Each lead is a picture of that activity from one direction: limb leads in the frontal plane, chest leads in the horizontal plane. Einthoven's triangle is formed by the axes of the limb leads around the heart.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Check electrode placement before recording: wrong leads give wrong pictures.</li><li>Read a deflection by direction: toward the electrode = up, away = down.</li><li>Localize changes by lead group: inferior II, III, aVF; lateral I, aVL, V5, V6; septal V1, V2; anterior V3, V4.</li></ol></div>
@@ -117,7 +134,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-ecg-waves" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 2</p>
+  <p class="sec-eyebrow">Physiology L6 · 2</p>
   <h3>ECG paper, waves and intervals</h3>
   <div class="block mech"><h4>How it works</h4><p>Paper speed converts time to distance: at 25 mm/s each 1 mm is 0.04 s. Each wave marks a step in the conduction sequence SA node, AV node, bundle of His, bundle branches, Purkinje fibers.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Measure intervals horizontally: small box 0.04 s, large box 0.20 s.</li><li>Check PR 0.12-0.20 s, QRS 0.08-0.10 s, QT 0.40-0.43 s.</li><li>Remember the PR includes the AV-junction delay that lets the atria finish contracting.</li></ol></div>
@@ -128,9 +145,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Paper speed is 25 mm/sec: one small box = 0.04 s, one large box = 0.20 s; vertically one large box = 0.5 mV.</li><li>P wave = atrial depolarization; QRS = ventricular depolarization; T wave = ventricular repolarization.</li><li>PR interval = atrial depolarization + delay in the AV junction; the delay lets the atria contract before the ventricles.</li><li>PR 0.12-0.20 s; QRS 0.08-0.10 s; QT 0.40-0.43 s.</li></ul></div>
   <p class="src">Source: Physiology L6 slides (ECG I)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-l7" data-lec="phys-l7"><p class="lec-eyebrow">Physiology L7 · 5 sections</p><h2 class="lec-h">Electrocardiogram II: analysis</h2>
 
 <section class="sec" id="phys-ecg-rate" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 3</p>
+  <p class="sec-eyebrow">Physiology L7 · 1</p>
   <h3>Rhythm analysis and heart rate</h3>
   <div class="block mech"><h4>How it works</h4><p>Because paper runs at a fixed speed, the R-R distance gives the rate: there are 1500 small squares or 300 large squares in a minute. Dividing by the squares between beats gives beats per minute.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Analyze in order: regularity, rate, P waves, PR interval, QRS duration.</li><li>Use 1500 with small squares and 300 with large squares.</li><li>Quick count from an R on a heavy line: 300, 150, 100, 75.</li></ol></div>
@@ -143,7 +162,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-sinus" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 4</p>
+  <p class="sec-eyebrow">Physiology L7 · 2</p>
   <h3>Normal sinus rhythm and its variations</h3>
   <div class="block mech"><h4>How it works</h4><p>A sinus rhythm starts in the SA node and conducts normally, so every P is normal and followed by a QRS. Only the rate (or its variation with breathing) changes in the sinus variants.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>If P, PR and QRS are normal, name the rhythm by rate: slow = sinus bradycardia, fast = sinus tachycardia.</li><li>If the rate rises with inspiration and falls with expiration, call it sinus arrhythmia.</li></ol></div>
@@ -156,7 +175,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-arrhythmia" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 5</p>
+  <p class="sec-eyebrow">Physiology L7 · 3</p>
   <h3>Atrial fibrillation and atrial flutter</h3>
   <div class="block mech"><h4>How it works</h4><p>In atrial fibrillation the atria have no organized depolarization because impulses are not coming from the sinus node, so there are no P waves and the ventricles respond irregularly. In atrial flutter, flutter waves replace the P waves.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Look for P waves first: none and irregularly irregular = atrial fibrillation.</li><li>Flutter waves with a regular rhythm = atrial flutter.</li></ol></div>
@@ -169,7 +188,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-av-block" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 6</p>
+  <p class="sec-eyebrow">Physiology L7 · 4</p>
   <h3>AV nodal blocks</h3>
   <div class="block mech"><h4>How it works</h4><p>AV blocks grade how much gets through the AV junction: all but slowly (1st degree), progressively slower until one fails (Mobitz I), all or nothing (Mobitz II, usually in the bundle of His), or nothing at all (3rd degree). When the ventricles must pace themselves, the impulse starts in a ventricle and the QRS is wide.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Measure the PR on every beat: constant and long = 1st degree; lengthening then dropped = Mobitz I; constant with sudden drops = Mobitz II.</li><li>If P waves have no relation to QRS and the rate is 30-45 with wide QRS, think 3rd degree.</li></ol></div>
@@ -182,7 +201,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-axis" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 7</p>
+  <p class="sec-eyebrow">Physiology L7 · 5</p>
   <h3>Mean QRS axis</h3>
   <div class="block mech"><h4>How it works</h4><p>The mean QRS axis is the sum of all ventricular depolarization vectors. Normally it points left and down because the left ventricle has most of the mass. On the hexaxial circle, 0 degrees points to the client's left and degrees increase clockwise, so +90 points down.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Check lead I and aVF: + + normal; + - left; - + right; - - right superior (indeterminate).</li><li>Report an abnormal axis: it can suggest disease such as pulmonary hypertension from pulmonary embolism.</li></ol></div>
@@ -193,9 +212,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Normal ventricular depolarization flows leftward and downward because most of the ventricular mass is in the left ventricle.</li><li>Normal QRS axis: -30 to +110 degrees. Left axis deviation: -30 to -90. Right axis deviation: +110 to +180. Indeterminate (extreme right): +180 to -90.</li><li>Lead I and aVF: + + normal; + - left axis deviation; - + right axis deviation; - - right superior / indeterminate.</li><li>An abnormal axis can suggest disease such as pulmonary hypertension from a pulmonary embolism.</li></ul></div>
   <p class="src">Source: Physiology L7 slides (ECG II)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-l8" data-lec="phys-l8"><p class="lec-eyebrow">Physiology L8 · 5 sections</p><h2 class="lec-h">Cardiac output and venous return</h2>
 
 <section class="sec" id="phys-co" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 8</p>
+  <p class="sec-eyebrow">Physiology L8 · 1</p>
   <h3>Cardiac output, stroke volume and ejection fraction</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac output is how much each ventricle pumps per minute: rate times stroke volume. Stroke volume is the difference between how full the ventricle gets (EDV) and how much is left (ESV); ejection fraction expresses it as a percentage of EDV and is a good index of ventricular function.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Calculate CO = HR x SV and convert mL to L.</li><li>Calculate SV = EDV - ESV, then EF = SV / EDV x 100.</li><li>Flag an EF of 30% or less as consistent with a failing heart.</li></ol></div>
@@ -208,7 +229,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-autonomic" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 9</p>
+  <p class="sec-eyebrow">Physiology L8 · 2</p>
   <h3>Autonomic control of heart rate and contractility</h3>
   <div class="block mech"><h4>How it works</h4><p>The vagus reaches mainly the atria (SA and AV nodes), so it can slow the rate and AV conduction but cannot touch ventricular contractility. Sympathetic fibers reach the nodes AND the ventricles, so they speed the rate and conduction and strengthen both atria and ventricles; they also release adrenal epinephrine.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Predict vagal effects: slower rate, longer AV delay, weaker atria, ventricles unchanged.</li><li>Predict sympathetic effects: faster rate, shorter AV delay, stronger atria and ventricles.</li></ol></div>
@@ -221,7 +242,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-starling" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 10</p>
+  <p class="sec-eyebrow">Physiology L8 · 3</p>
   <h3>Frank-Starling law, preload and afterload</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac fibers at rest are shorter than their optimum length. More filling stretches them toward optimum, so the next contraction is stronger: the Frank-Starling law (intrinsic control). Sympathetic stimulation is extrinsic: it raises contractility at any filling by increasing Ca2+ influx, shifting the curve to the left.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link a rise in EDV (preload) to a stronger contraction through Frank-Starling.</li><li>Link sympathetic stimulation to a left shift of the curve.</li><li>Keep the loads apart: preload = EDV; afterload = arterial pressure.</li></ol></div>
@@ -234,7 +255,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-venous-return" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 11</p>
+  <p class="sec-eyebrow">Physiology L8 · 4</p>
   <h3>Factors controlling venous return</h3>
   <div class="block mech"><h4>How it works</h4><p>Veins are capacitance vessels holding 60-70% of the blood. Anything that squeezes them or pulls blood toward the chest moves blood back to the heart and raises EDV.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Encourage leg exercise (muscle pump) and deep breathing (respiratory pump) in clients on bed rest.</li><li>Remember sympathetic venoconstriction, cardiac suction and venous valves also help.</li></ol></div>
@@ -247,7 +268,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-co-measure" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 12</p>
+  <p class="sec-eyebrow">Physiology L8 · 5</p>
   <h3>Measuring cardiac output and conditions that change it</h3>
   <div class="block mech"><h4>How it works</h4><p>The Fick principle says the oxygen the lungs take up equals blood flow times the oxygen each liter picks up. So flow (cardiac output) = O2 uptake / arterial-venous O2 difference, with venous blood taken from the pulmonary artery.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Set up Fick: O2 uptake (mL/min) / (arterial - venous O2, mL/L).</li><li>Recognize conditions that raise CO (hyperthyroidism, anemia, fever) and lower it (hypothyroidism, failure, valve disease, arrhythmias, hemorrhage).</li></ol></div>
@@ -258,9 +279,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Fick principle: cardiac output = O2 uptake by the lungs / (arterial O2 - venous O2), e.g. 200 / (200 - 160) = 5 L/min.</li><li>Cardiac output rises in hyperthyroidism, anemia and fever; falls in hypothyroidism, myocardial damage and failure, valvular disease, arrhythmias, hemorrhage and shock.</li><li>Most common causes of heart failure: myocardial infarction, then working against increased afterload (hypertension, aortic stenosis).</li></ul></div>
   <p class="src">Source: Physiology L8 slides (cardiac output)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-l9" data-lec="phys-l9"><p class="lec-eyebrow">Physiology L9 · 4 sections</p><h2 class="lec-h">Coronary circulation</h2>
 
 <section class="sec" id="phys-coronary-flow" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 13</p>
+  <p class="sec-eyebrow">Physiology L9 · 1</p>
   <h3>Coronary blood flow and oxygen extraction</h3>
   <div class="block mech"><h4>How it works</h4><p>Cardiac muscle is packed with mitochondria and works aerobically, so it already takes 60-70% of the oxygen it receives. With so little left to extract, more oxygen can reach it only by more flow.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect symptoms when demand rises and flow cannot: angina on effort.</li><li>Link ischemic pain to lactic acid from anaerobic glycolysis.</li></ol></div>
@@ -273,7 +296,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-phasic-flow" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 14</p>
+  <p class="sec-eyebrow">Physiology L9 · 2</p>
   <h3>Phasic changes in coronary flow</h3>
   <div class="block mech"><h4>How it works</h4><p>The left ventricle squeezes its own coronary vessels in systole and the open aortic valve partly covers their openings, so left ventricular flow happens mainly in diastole. The right ventricle's lower pressure leaves a large aorta-RV gradient in systole, so its flow is preserved.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Treat tachycardia as a threat to coronary flow because diastole shortens.</li><li>Expect the LV subendocardium to be hit first in ischemia.</li><li>Remember aortic stenosis and low aortic diastolic pressure reduce LV flow.</li></ol></div>
@@ -286,7 +309,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-coronary-control" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 15</p>
+  <p class="sec-eyebrow">Physiology L9 · 3</p>
   <h3>Chemical and neural control of coronary flow</h3>
   <div class="block mech"><h4>How it works</h4><p>Coronary flow follows metabolism: working muscle produces CO2, H+, K+, lactate, adenosine and other metabolites, and lack of oxygen itself dilates the vessels. Sympathetic nerves act two ways: directly they constrict (alpha), but indirectly, by making the heart work harder (beta-1), they release dilating metabolites, which wins in the intact body.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Expect coronary dilation in hypoxia and with local metabolites (adenosine).</li><li>Explain that beta blockade unmasks the direct constrictor effect of norepinephrine.</li></ol></div>
@@ -299,7 +322,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="phys-ihd" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 16</p>
+  <p class="sec-eyebrow">Physiology L9 · 4</p>
   <h3>Ischemic heart disease and myocardial infarction</h3>
   <div class="block mech"><h4>How it works</h4><p>Atherosclerotic plaque narrows the coronary lumen. When demand rises, flow cannot keep up and the client gets angina; when a thrombus blocks at least 75% of the lumen, myocardium dies (MI). The ECG separates them: ST depression in ischemia, ST elevation in infarction.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Ask about effort-related retrosternal pain relieved by rest.</li><li>Report ST elevation in a client with chest pain as consistent with MI.</li><li>Expect investigations: ECG, cardiac enzymes (CK, LDH, troponin), echo, treadmill, thallium, angiography.</li></ol></div>
@@ -310,9 +333,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Risk factors of IHD: cigarette smoking, hypertension, diabetes mellitus, increased lipids (cholesterol), lack of exercise, anxiety.</li><li>Angina: retrosternal tightness or pain for a few minutes, often radiating to the inner side of the left arm, precipitated by effort and relieved by rest.</li><li>MI: at least 75% of the coronary lumen blocked by thrombus.</li><li>ECG: ST depression in IHD; ST elevation in MI, in the respective leads.</li><li>Treatment: coronary dilators (nitrates), beta-blockers, angioplasty, stent, bypass surgery.</li></ul></div>
   <p class="src">Source: Physiology L9 slides (coronary circulation)</p>
 </section>
+</div>
+<div class="lec" id="lec-phys-pp" data-lec="phys-pp"><p class="lec-eyebrow">Physiology past papers · 1 sections</p><h2 class="lec-h">Resistance, baroreceptors and cardiac markers (past papers)</h2>
 
 <section class="sec" id="phys-past" data-unit="Physiology">
-  <p class="sec-eyebrow">Physiology · 17</p>
+  <p class="sec-eyebrow">Physiology past papers · 1</p>
   <h3>Resistance, blood pressure regulation and cardiac markers (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Past papers add a few facts beyond your slides. Arterioles are the main resistance vessels, while veins are the capacitance vessels. Standing up lowers blood pressure briefly and the baroreceptor reflex restores it. After an MI, troponin stays raised for about 10 days, longer than myoglobin or CK-MB.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Answer resistance questions with arterioles and compliance questions with veins.</li><li>For a late presentation after MI, pick troponin I.</li></ol></div>
@@ -323,6 +348,7 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Arterioles are the vessels with maximum resistance.</li><li>Blood pressure on standing up from lying down is regulated through the baroreceptors.</li><li>Troponin I (cTnI) stays elevated about 10 days after a myocardial infarction.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
+</div>
   </div>
   <div id="view-readme" hidden><div class="readme">
   <h2>Read me</h2>
@@ -331,6 +357,7 @@ a { color: var(--fg); }
   <h3>How to use the Drill</h3>
   <ol>
     <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Or go lecture by lecture.</b> The "By lecture" card gives every lecture its own pre-test (up to 8 questions), its own last pass, a level, and a Guide button that opens only that lecture's sections.</li>
     <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
     <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
     <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
@@ -341,6 +368,7 @@ a { color: var(--fg); }
 
   <h3>How to use the Mastery Guide</h3>
   <ol>
+    <li>Use the lecture bar at the top to show one lecture at a time, or "All lectures" for everything.</li>
     <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
     <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
     <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
@@ -375,11 +403,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

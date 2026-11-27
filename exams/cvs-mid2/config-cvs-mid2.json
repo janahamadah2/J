@@ -142,5 +142,6 @@
   "hub_url": "https://claude.ai/artifact/PXVXQrpDCUtSC7jAcMMtRe",
   "images": [
     "items-cvs-mid2-physiology-shamsqb.py"
-  ]
+  ],
+  "lectures": "lectures-cvs-mid2.py"
 }

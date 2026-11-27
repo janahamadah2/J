@@ -39,6 +39,16 @@ details.toc li { break-inside: avoid; padding: 2px 0; font-size: 14px; }
 details.toc li.toc-unit { font: 700 15px var(--serif); margin-top: 8px; }
 details.toc a { color: var(--fg); }
 .unit-h { border-top: 2px solid var(--fg); padding-top: 14px; }
+.lecbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { font: 500 14px var(--sans); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; min-height: 36px; }
+.chip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+@media (hover: hover) { .chip:hover { border-color: var(--fg); } }
+.chip:active { background: var(--soft); }
+.lec { border-top: 2px solid var(--fg); margin-top: 30px; padding-top: 12px; scroll-margin-top: 80px; }
+.lec-eyebrow { font-size: 13px; color: var(--muted); margin: 0; letter-spacing: .04em; text-transform: uppercase; }
+.lec-h { margin: 2px 0 4px; }
+details.toc li.toc-lec { font-weight: 600; margin-top: 6px; }
+.lecnote { font-size: 14px; color: var(--muted); }
 .sec { border-bottom: 1px solid var(--line); padding: 22px 0; scroll-margin-top: 80px; }
 .sec-eyebrow { font-size: 12px; color: var(--muted); margin: 0 0 2px; letter-spacing: .04em; text-transform: uppercase; }
 .block { margin: 12px 0; }
@@ -83,19 +93,24 @@ a { color: var(--fg); }
     <p class="eyebrow">CVS block · Mid 2 · Biochemistry only · Sunday 29 November 2026</p>
     <h1>CVS Mid 2 Biochemistry Guide</h1>
     <p class="lede">8 sections in lecture order, one for each concept card in the drill. Each one teaches the mechanism first, then what to do, a client example, the common trap, a memory trick, blanks to test yourself and a Key ideas box.</p>
+    <nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button><button class="chip" data-lec="bio-l5">Biochemistry L5</button><button class="chip" data-lec="bio-l6">Biochemistry L6</button><button class="chip" data-lec="bio-pp">Biochemistry past papers</button></nav>
+    <p class="lecnote" id="lecnote" hidden></p>
     <details class="toc" id="toc"><summary>Contents</summary><ul><li class="toc-unit">Biochemistry</li>
+<li class="toc-lec"><a href="#lec-bio-l5">Biochemistry L5: Diet fat and coronary heart disease</a></li>
 <li><a href="#bio-lipids-chd">Blood lipids and coronary heart disease</a></li>
 <li><a href="#bio-fats">Types of dietary fat and their effects</a></li>
 <li><a href="#bio-cholesterol-sterols">Dietary cholesterol, plant sterols and cholesterol-lowering factors</a></li>
+<li class="toc-lec"><a href="#lec-bio-l6">Biochemistry L6: Oxidative stress and atherosclerosis</a></li>
 <li><a href="#bio-ros">Free radicals, ROS and RNS</a></li>
 <li><a href="#bio-burst-no">Respiratory burst, nitric oxide and antioxidants</a></li>
 <li><a href="#bio-oxldl">Oxidized LDL and the stages of atherosclerosis</a></li>
+<li class="toc-lec"><a href="#lec-bio-pp">Biochemistry past papers: Lipoproteins and eicosanoids (past papers)</a></li>
 <li><a href="#bio-lipoproteins">Lipoproteins and cholesterol metabolism (past papers)</a></li>
 <li><a href="#bio-eicosanoids">Eicosanoids: COX-2 and prostacyclin (past papers)</a></li></ul></details>
-    <h2 class="unit-h" id="unit-biochemistry">Biochemistry</h2>
+    <div class="lec" id="lec-bio-l5" data-lec="bio-l5"><p class="lec-eyebrow">Biochemistry L5 · 3 sections</p><h2 class="lec-h">Diet fat and coronary heart disease</h2>
 
 <section class="sec" id="bio-lipids-chd" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 1</p>
+  <p class="sec-eyebrow">Biochemistry L5 · 1</p>
   <h3>Blood lipids and coronary heart disease</h3>
   <div class="block mech"><h4>How it works</h4><p>Cholesterol travels in blood packed in lipoproteins. LDL carries it to tissues and raises coronary risk; HDL is associated with lower risk. Lowering LDL by diet or drugs lowers risk.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Encourage diet control and expect a 10-20% fall; expect 30-40% with statins.</li><li>Read a high HDL as protective.</li></ol></div>
@@ -108,7 +123,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-fats" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 2</p>
+  <p class="sec-eyebrow">Biochemistry L5 · 2</p>
   <h3>Types of dietary fat and their effects</h3>
   <div class="block mech"><h4>How it works</h4><p>A fat's effect depends on its fatty acids: saturation, the number and position of double bonds, and cis or trans shape. Omega numbers count from the methyl end to the first double bond.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Advise limiting saturated and trans fats.</li><li>Suggest olive oil (MUFA) and fatty fish (omega-3).</li><li>Teach the label clue "partially hydrogenated".</li></ol></div>
@@ -121,7 +136,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-cholesterol-sterols" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 3</p>
+  <p class="sec-eyebrow">Biochemistry L5 · 3</p>
   <h3>Dietary cholesterol, plant sterols and cholesterol-lowering factors</h3>
   <div class="block mech"><h4>How it works</h4><p>Dietary cholesterol matters less than the fat mix. Plant sterols compete with cholesterol in the gut, so less is absorbed and LDL falls.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Correct a client who focuses only on dietary cholesterol.</li><li>Suggest plant-sterol margarines, fiber and MUFA.</li></ol></div>
@@ -132,9 +147,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Dietary cholesterol is found only in animal products; its effect on blood cholesterol is less important than the amount and type of fatty acids.</li><li>Plant sterols reduce LDL-cholesterol by inhibiting intestinal absorption of cholesterol.</li><li>Dietary factors that decrease blood cholesterol: omega-6 PUFA, MUFA, antioxidants (beta carotene, vitamins E and C), plant sterols, vegetable fiber, large-dose vitamin B3.</li></ul></div>
   <p class="src">Source: Biochemistry L5 slides (diet fat and CHD)</p>
 </section>
+</div>
+<div class="lec" id="lec-bio-l6" data-lec="bio-l6"><p class="lec-eyebrow">Biochemistry L6 · 3 sections</p><h2 class="lec-h">Oxidative stress and atherosclerosis</h2>
 
 <section class="sec" id="bio-ros" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 4</p>
+  <p class="sec-eyebrow">Biochemistry L6 · 1</p>
   <h3>Free radicals, ROS and RNS</h3>
   <div class="block mech"><h4>How it works</h4><p>A free radical has an unpaired outer electron and steals one from the nearest molecule, starting chain damage to lipids, proteins and DNA. Non-radicals have no unpaired electron but are strong oxidants. Damage occurs when oxidants outrun antioxidants.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Classify each species as radical or non-radical.</li><li>Separate endogenous (metabolism, phagocytosis) from exogenous (drugs, radiation, smoke) sources.</li></ol></div>
@@ -147,7 +164,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-burst-no" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 5</p>
+  <p class="sec-eyebrow">Biochemistry L6 · 2</p>
   <h3>Respiratory burst, nitric oxide and antioxidants</h3>
   <div class="block mech"><h4>How it works</h4><p>Reactive species are also tools. Neutrophils make superoxide, H2O2 and hypochlorous acid to kill bacteria. Endothelial NO dilates vessels. Antioxidant enzymes and nutrients keep the balance.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link sepsis and inflammation to large iNOS output.</li><li>Explain nitroglycerin works by becoming NO.</li></ol></div>
@@ -160,7 +177,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-oxldl" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 6</p>
+  <p class="sec-eyebrow">Biochemistry L6 · 3</p>
   <h3>Oxidized LDL and the stages of atherosclerosis</h3>
   <div class="block mech"><h4>How it works</h4><p>Oxidation turns LDL into a danger signal. Oxidized LDL in the intima activates endothelium to recruit monocytes; macrophages take it up by scavenger receptors and become foam cells. Smooth muscle cells build a cap, dead cells pile up into a necrotic core, and a vulnerable plaque can rupture.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Trace the stages in order from endothelial dysfunction to thrombosis.</li><li>Link impaired efferocytosis to the necrotic core.</li></ol></div>
@@ -171,9 +188,11 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>Free radicals oxidize LDL cholesterol; oxidized LDL triggers inflammation and plaque buildup.</li><li>Stages: endothelial dysfunction, LDL retention and oxidation in the intima, recruitment of monocytes and T cells by VCAM-1, ICAM-1 and MCP-1, foam cell formation (fatty streak), SMC migration and fibrous cap, necrotic core and calcification, rupture or erosion with thrombosis.</li><li>Macrophages engulf oxidized LDL via scavenger receptors and become lipid-laden foam cells.</li><li>Failure to clear dead macrophages and SMCs (impaired efferocytosis) enlarges an acellular necrotic core.</li></ul></div>
   <p class="src">Source: Biochemistry L6 slides (oxidative stress)</p>
 </section>
+</div>
+<div class="lec" id="lec-bio-pp" data-lec="bio-pp"><p class="lec-eyebrow">Biochemistry past papers · 2 sections</p><h2 class="lec-h">Lipoproteins and eicosanoids (past papers)</h2>
 
 <section class="sec" id="bio-lipoproteins" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 7</p>
+  <p class="sec-eyebrow">Biochemistry past papers · 1</p>
   <h3>Lipoproteins and cholesterol metabolism (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Lipoproteins carry fat in the blood: the intestine makes chylomicrons (apo B-48) and the liver makes VLDL (apo B-100). HDL donates apo C-II and apo E to them; apo C-II activates lipoprotein lipase to unload triglyceride, and apo A-I activates LCAT to esterify cholesterol on HDL. Cholesterol synthesis is controlled at HMG CoA reductase (activated by insulin, blocked by statins), and cholesterol leaves the body as bile acids. Your uploaded lectures do not cover this; the facts come from the past-paper keys.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Match each apo to its job: B-100 VLDL structure, B-48 chylomicron, C-II activates LPL, A-I activates LCAT.</li><li>Hypothyroidism with high cholesterol: less conversion to bile acids.</li><li>Fatty liver: triglyceride made faster than VLDL can export it.</li></ol></div>
@@ -186,7 +205,7 @@ a { color: var(--fg); }
 </section>
 
 <section class="sec" id="bio-eicosanoids" data-unit="Biochemistry">
-  <p class="sec-eyebrow">Biochemistry · 8</p>
+  <p class="sec-eyebrow">Biochemistry past papers · 2</p>
   <h3>Eicosanoids: COX-2 and prostacyclin (past papers)</h3>
   <div class="block mech"><h4>How it works</h4><p>Eicosanoids are made from fatty acids. COX-2 is induced in inflammation and makes inflammatory prostaglandins; prostacyclin (PGI2) from the vessel wall dilates vessels. Your slides list prostaglandin synthesis as a source of free radicals; the rest comes from the past-paper keys.</p></div>
   <div class="block"><h4>What to do first</h4><ol><li>Link COX-2 to inflammation and PGI2 to vasodilation.</li></ol></div>
@@ -197,6 +216,7 @@ a { color: var(--fg); }
   <div class="key"><h4>Key ideas</h4><ul><li>COX-2 makes the prostaglandins of the inflammatory response.</li><li>Prostacyclin (PGI2) is a vasodilator.</li></ul></div>
   <p class="src">Source: Shams Practices QB (past papers); not in your uploaded slides</p>
 </section>
+</div>
   </div>
   <div id="view-readme" hidden><div class="readme">
   <h2>Read me</h2>
@@ -205,6 +225,7 @@ a { color: var(--fg); }
   <h3>How to use the Drill</h3>
   <ol>
     <li><b>Start with the pre-test.</b> It asks 3 questions from every topic and gives each topic a level: Strong (80% and up), Okay (60-79%) or Weak (under 60%). It never uses last-pass questions, so those stay fresh.</li>
+    <li><b>Or go lecture by lecture.</b> The "By lecture" card gives every lecture its own pre-test (up to 8 questions), its own last pass, a level, and a Guide button that opens only that lecture's sections.</li>
     <li><b>Think first.</b> Each question appears without its choices for 10-15 seconds. Answer it in your head before the choices show up. Turn the timer off on any question if you need to.</li>
     <li><b>Be honest after a right answer.</b> Choose "Knew it" or "I guessed" (key G). A guess comes back sooner.</li>
     <li><b>Read the "why" on every miss.</b> You get why your pick is wrong, the key idea and the concept card. A different question on the same concept follows 3-6 questions later.</li>
@@ -215,6 +236,7 @@ a { color: var(--fg); }
 
   <h3>How to use the Mastery Guide</h3>
   <ol>
+    <li>Use the lecture bar at the top to show one lecture at a time, or "All lectures" for everything.</li>
     <li>Read a section in order: how it works, what to do first, the client example, the common trap and the memory trick.</li>
     <li>Cover the page and tap each blank in "Test yourself" only after you have said the answer.</li>
     <li>Finish each section by reading the Key ideas box. Those lines are exactly what the Drill's concept cards show.</li>
@@ -249,11 +271,31 @@ a { color: var(--fg); }
     var b = e.target.closest('.blank');
     if (b) b.classList.toggle('shown');
   });
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.lecbar .chip'));
+  var note = document.getElementById('lecnote');
+  function showLec(lec) {
+    Array.prototype.forEach.call(document.querySelectorAll('.lec'), function (b) { b.hidden = !!lec && b.getAttribute('data-lec') !== lec; });
+    chips.forEach(function (c) { c.classList.toggle('on', (c.getAttribute('data-lec') || '') === (lec || '')); });
+    var t = lec && document.querySelector('.lecbar .chip[data-lec="' + lec + '"]');
+    note.hidden = !lec; if (t) note.textContent = 'Showing only ' + t.textContent + '. Tap "All lectures" to see every section.';
+  }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('.lecbar .chip'); if (!c) return;
+    var lec = c.getAttribute('data-lec');
+    showLec(lec);
+    try { history.replaceState(null, '', lec ? '#lec-' + lec : '#'); } catch (x) {}
+    window.scrollTo(0, 0);
+  });
   function go() {
     var id = (location.hash || '').slice(1);
     if (id === 'readme') { show('readme'); return; }
+    if (id.indexOf('lec-') === 0) { show('guide'); showLec(id.slice(4)); window.scrollTo(0, 0); return; }
     var el = id && document.getElementById(id);
-    if (el) { show('guide'); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30); }
+    if (el) {
+      show('guide');
+      var box = el.closest('.lec'); showLec(box ? box.getAttribute('data-lec') : '');
+      setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+    }
   }
   window.addEventListener('hashchange', go);
   go();

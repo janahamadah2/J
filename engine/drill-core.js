@@ -40,7 +40,7 @@
 
   /* ------------------------------------------------------------ data context */
   function makeCtx(DATA) {
-    var D = { cfg: DATA.cfg, items: DATA.items, concepts: DATA.concepts || {}, byId: {}, hiUnits: {} };
+    var D = { cfg: DATA.cfg, items: DATA.items, concepts: DATA.concepts || {}, lectures: DATA.lectures || [], byId: {}, hiUnits: {} };
     DATA.items.forEach(function (it) { D.byId[it.id] = it; });
     (DATA.cfg.high_roi_units || []).forEach(function (u) { D.hiUnits[u] = 1; });
     return D;
@@ -53,7 +53,7 @@
   function itemOf(D, qid) {
     var p = parseId(qid), it = D.byId[p.base];
     if (!it || p.row < 0) return it;
-    return { id: qid, base: it.id, row: p.row, u: it.u, t: 'row', k: it.k, lp: it.lp, src: it.src, kind: it.kind,
+    return { id: qid, base: it.id, row: p.row, u: it.u, lec: it.lec, t: 'row', k: it.k, lp: it.lp, src: it.src, kind: it.kind,
              q: it.rs[p.row], o: it.o.choices, c: it.c[p.row], w: it.w, x: it.x, m: it.m, parent: it };
   }
 
@@ -270,8 +270,8 @@
   }
 
   var ST_RANK = { shaky: 0, 'new': 1, once: 2, solid: 3 };
-  function buildLastPass(D, S, only20, r) {
-    var lp = D.items.filter(function (it) { return it.lp; });
+  function buildLastPass(D, S, only20, r, lec) {
+    var lp = D.items.filter(function (it) { return it.lp && (!lec || it.lec === lec); });
     var groups = [[], [], [], []];
     lp.forEach(function (it) { groups[ST_RANK[status(it, S.p[it.id])]].push(it.id); });
     var out = [], prev = { tfh: S.tfh || [] };
@@ -309,6 +309,38 @@
     });
     return out;
   }
+  /* ------------------------------------------------------------ lectures */
+  function lecItems(D, lec) { return D.items.filter(function (it) { return it.lec === lec; }); }
+  function lectureLevels(D, S) {
+    var out = {};
+    (D.lectures || []).forEach(function (L) {
+      var sc = [];
+      lecItems(D, L.id).forEach(function (it) { var s = lastScore(S.p[it.id]); if (s !== null) sc.push(s); });
+      if (!sc.length) { out[L.id] = { pct: null, n: 0, level: null }; return; }
+      var pct = Math.round(100 * sc.reduce(function (a, b) { return a + b; }, 0) / sc.length);
+      out[L.id] = { pct: pct, n: sc.length, level: pct >= 80 ? 'Strong' : pct >= 60 ? 'Okay' : 'Weak' };
+    });
+    return out;
+  }
+  // A lecture pre-test: up to k questions from one lecture, never last-pass ones, one per
+  // concept card first (mixing formats), starred and never-answered questions first.
+  function buildLecturePretest(D, S, lec, r, k) {
+    k = k || 8;
+    var pool = lecItems(D, lec).filter(function (it) { return !it.lp; });
+    if (!pool.length) pool = lecItems(D, lec);   // past-paper groups are all last-pass questions
+    var cand = shuffle(pool, r).sort(function (a, b) {
+      return (isStar(S, b.id) - isStar(S, a.id)) ||
+             ((status(a, S.p[a.id]) === 'new' ? 0 : 1) - (status(b, S.p[b.id]) === 'new' ? 0 : 1));
+    });
+    var chosen = [], cons = {}, types = {};
+    function take(test) { cand.forEach(function (it) { if (chosen.length < k && chosen.indexOf(it.id) < 0 && test(it)) { chosen.push(it.id); cons[it.k] = 1; types[it.t] = 1; } }); }
+    take(function (it) { return !cons[it.k] && !types[it.t]; });
+    take(function (it) { return !cons[it.k]; });
+    take(function (it) { return !types[it.t]; });
+    take(function () { return true; });
+    return arrangeSeq(D, chosen, r, { tfh: S.tfh || [] });
+  }
+
   function buildPretest(D, S, r) {
     var units = D.cfg.units.slice(), k = D.cfg.pretest_per_topic || (units.length > 10 ? 2 : 3);
     var hasStar = {}; D.items.forEach(function (it) { if (isStar(S, it.id)) hasStar[it.u] = 1; });
@@ -557,6 +589,10 @@
     (out.miss || []).concat(B.miss || []).forEach(function (m) { var k = m.q + '@' + m.t; if (!seen[k]) { seen[k] = 1; mm.push(m); } });
     out.miss = mm.sort(function (a, b) { return a.t - b.t; }).slice(-400);
     if (B.pre && B.pre.last && (!out.pre.last || B.pre.last.t > out.pre.last.t)) out.pre.last = B.pre.last;
+    if (B.pre && B.pre.lec) {
+      out.pre.lec = out.pre.lec || {};
+      Object.keys(B.pre.lec).forEach(function (k) { var a = out.pre.lec[k], b = B.pre.lec[k]; if (!a || b.t > a.t) out.pre.lec[k] = b; });
+    }
     out.seq = Math.max(out.seq || 0, B.seq || 0);
     if (B.tsec && B.tsec.n > (out.tsec.n || 0)) out.tsec = B.tsec;
     if ((B.sidN || 0) > (out.sidN || 0)) { out.sidN = B.sidN; }
@@ -568,7 +604,7 @@
     eff: eff, status: status, trailingMiss: trailingMiss, lastIsMiss: lastIsMiss, isHi: isHi, isStar: isStar, restLen: restLen,
     isRested: isRested, prevBlocked: prevBlocked, unitItems: unitItems, pool: pool, filterCounts: filterCounts,
     arrangeSeq: arrangeSeq, buildLimited: buildLimited, nextEndless: nextEndless, buildLastPass: buildLastPass,
-    statusCounts: statusCounts, topicLevels: topicLevels, buildPretest: buildPretest, buildTimed: buildTimed, avgSec: avgSec,
+    statusCounts: statusCounts, topicLevels: topicLevels, buildPretest: buildPretest, lecItems: lecItems, lectureLevels: lectureLevels, buildLecturePretest: buildLecturePretest, buildTimed: buildTimed, avgSec: avgSec,
     conceptMembers: conceptMembers, followUp: followUp, arrange: arrange, parseNum: parseNum, grade: grade,
     missLabels: missLabels, record: record, markGuessed: markGuessed, merge: merge, tfOK: tfOK, H18: H18 };
   if (typeof module !== 'undefined' && module.exports) module.exports = Core; else root.Core = Core;

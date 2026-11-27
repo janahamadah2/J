@@ -62,7 +62,7 @@ def section_html(s, num):
     li = lambda xs: "".join("<li>%s</li>" % esc(x) for x in xs)
     return f"""
 <section class="sec" id="{s['id']}" data-unit="{html.escape(s['unit'])}">
-  <p class="sec-eyebrow">{html.escape(s['unit'])} · {num}</p>
+  <p class="sec-eyebrow">{html.escape(s.get('_label') or s['unit'])} · {num}</p>
   <h3>{html.escape(s['title'])}</h3>
   <div class="block mech"><h4>How it works</h4><p>{esc(s['mechanism'])}</p></div>
   <div class="block"><h4>What to do first</h4><ol>{li(s['actions'])}</ol></div>
@@ -94,24 +94,58 @@ def build(cfg_path):
                 die("section %r has unknown topic %r" % (s["id"], s["unit"]))
             seen.add(s["id"])
             sections.append(s)
-    # lecture order = topic order, then file order
-    sections.sort(key=lambda s: cfg["units"].index(s["unit"]))
+    # lecture order: topic order, then the LECTURES list, then concept order within each lecture
+    lec_of, lectures = {}, []
+    if cfg.get("lectures"):
+        lmod = load_module(os.path.join(cfg_dir, cfg["lectures"]), "lectures_mod")
+        for L in lmod.LECTURES:
+            if L["unit"] not in cfg["units"]:
+                continue
+            lectures.append(L)
+            for i, cid in enumerate(L["concepts"]):
+                lec_of[cid] = (len(lectures) - 1, i)
+        for sct in sections:
+            if sct["id"] not in lec_of:
+                die("guide section %r belongs to no lecture in %s" % (sct["id"], cfg["lectures"]))
+        sections.sort(key=lambda sct: lec_of[sct["id"]])
+    else:
+        sections.sort(key=lambda sct: cfg["units"].index(sct["unit"]))
     readme = open(os.path.join(ENGINE, "readme-study-system.html")).read()
-    toc, body, counter = [], [], {}
-    for s in sections:
-        counter[s["unit"]] = counter.get(s["unit"], 0) + 1
-        num = counter[s["unit"]]
+    toc, body, counter, chips = [], [], {}, []
+    cur_lec = None
+    for sct in sections:
+        counter[sct["unit"]] = counter.get(sct["unit"], 0) + 1
+        num = counter[sct["unit"]]
         if num == 1:
-            toc.append('<li class="toc-unit">%s</li>' % html.escape(s["unit"]))
-            body.append('<h2 class="unit-h" id="unit-%s">%s</h2>' % (re.sub(r"\W+", "-", s["unit"].lower()), html.escape(s["unit"])))
-        toc.append('<li><a href="#%s">%s</a></li>' % (s["id"], html.escape(s["title"])))
-        body.append(section_html(s, num))
+            toc.append('<li class="toc-unit">%s</li>' % html.escape(sct["unit"]))
+        L = lectures[lec_of[sct["id"]][0]] if lectures else None
+        if L is not cur_lec:
+            if cur_lec is not None:
+                body.append("</div>")
+            if L is not None:
+                n_in = sum(1 for x in sections if lec_of[x["id"]][0] == lec_of[sct["id"]][0])
+                body.append('<div class="lec" id="lec-%s" data-lec="%s"><p class="lec-eyebrow">%s · %d sections</p>'
+                            '<h2 class="lec-h">%s</h2>' % (L["id"], L["id"], html.escape(L["short"]), n_in, html.escape(L["title"])))
+                toc.append('<li class="toc-lec"><a href="#lec-%s">%s: %s</a></li>' % (L["id"], html.escape(L["short"]), html.escape(L["title"])))
+                chips.append('<button class="chip" data-lec="%s">%s</button>' % (L["id"], html.escape(L["short"])))
+            else:
+                body.append('<div class="lec"><h2 class="unit-h">%s</h2>' % html.escape(sct["unit"]))
+            cur_lec = L if L is not None else sct
+        toc.append('<li><a href="#%s">%s</a></li>' % (sct["id"], html.escape(sct["title"])))
+        if L is not None:
+            sct["_label"] = L["short"]
+            num = lec_of[sct["id"]][1] + 1
+        body.append(section_html(sct, num))
+    if sections:
+        body.append("</div>")
+    lec_bar = ('<nav class="lecbar" aria-label="Lectures"><button class="chip on" data-lec="">All lectures</button>' + "".join(chips) + "</nav>") if chips else ""
     shell = open(os.path.join(ENGINE, "guide-shell.html")).read()
     out = (shell.replace("__TITLE__", html.escape(g["title"]))
                 .replace("__EYEBROW__", html.escape(cfg.get("eyebrow", "")))
                 .replace("__DRILL_URL__", html.escape(g.get("drill_url") or ""))
                 .replace("__HUB_URL__", html.escape(cfg.get("hub_url") or ""))
                 .replace("<!--__README__-->", readme)
+                .replace("<!--__LECBAR__-->", lec_bar)
                 .replace("<!--__TOC__-->", "\n".join(toc))
                 .replace("<!--__SECTIONS__-->", "\n".join(body))
                 .replace("__NSEC__", str(len(sections))))
@@ -122,10 +156,11 @@ def build(cfg_path):
     for s in sections:
         full = " ".join([s["title"], s["mechanism"], s["example"], s["trap"], s["trick"]] +
                         s["actions"] + s["blanks"] + s["key"])
-        index[s["id"]] = {"title": s["title"], "unit": s["unit"], "key": s["key"], "text": norm(full)}
+        index[s["id"]] = {"title": s["title"], "unit": s["unit"], "key": s["key"], "text": norm(full),
+                          "lec": lectures[lec_of[s["id"]][0]]["id"] if lectures else None}
     idx_path = os.path.normpath(os.path.join(cfg_dir, g["index_out"]))
     json.dump(index, open(idx_path, "w"), ensure_ascii=False, indent=0)
-    print("guide: %d sections, %d topics -> %s (%d KB)" % (len(sections), len(counter), out_path, len(out) // 1024))
+    print("guide: %d sections, %d topics, %d lectures -> %s (%d KB)" % (len(sections), len(counter), len(lectures), out_path, len(out) // 1024))
     return index
 
 
